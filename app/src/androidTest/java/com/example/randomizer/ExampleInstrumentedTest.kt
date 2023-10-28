@@ -1,4 +1,4 @@
-package com.example.drawermaterial3
+package com.example.randomizer
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

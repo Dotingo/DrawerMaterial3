@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.drawermaterial3"
+    namespace = "com.example.randomizer"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.drawermaterial3"
+        applicationId = "com.example.randomizer"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

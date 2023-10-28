@@ -1,22 +1,14 @@
-package com.example.drawermaterial3
+package com.example.randomizer
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,11 +35,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.example.drawermaterial3.screens.RandomCountryScreen
-import com.example.drawermaterial3.screens.RandomNameScreen
-import com.example.drawermaterial3.screens.RandomNumber
-import com.example.drawermaterial3.screens.RandomWordScreen
-import com.example.drawermaterial3.ui.theme.DrawerMaterial3Theme
+import com.example.randomizer.screens.RandomCountryScreen
+import com.example.randomizer.screens.RandomNameScreen
+import com.example.randomizer.screens.RandomNumber
+import com.example.randomizer.screens.RandomWordScreen
+import com.example.randomizer.ui.theme.RandomizerTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,7 +59,7 @@ fun Drawer() {
 
     var selectedItem by remember { mutableStateOf(drawerItems[0]) }
 
-    DrawerMaterial3Theme {
+    RandomizerTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background

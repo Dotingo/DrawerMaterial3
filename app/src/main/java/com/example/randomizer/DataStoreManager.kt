@@ -1,4 +1,4 @@
-package com.example.drawermaterial3
+package com.example.randomizer
 
 import android.content.Context
 import androidx.datastore.core.DataStore

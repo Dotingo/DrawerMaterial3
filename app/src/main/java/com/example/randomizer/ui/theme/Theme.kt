@@ -1,4 +1,4 @@
-package com.example.drawermaterial3.ui.theme
+package com.example.randomizer.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -73,7 +73,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun DrawerMaterial3Theme(
+fun RandomizerTheme(
   useDarkTheme: Boolean = isSystemInDarkTheme(),
   content: @Composable() () -> Unit
 ) {

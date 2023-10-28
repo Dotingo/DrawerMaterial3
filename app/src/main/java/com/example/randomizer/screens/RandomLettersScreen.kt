@@ -1,4 +1,4 @@
-package com.example.drawermaterial3.screens
+package com.example.randomizer.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.drawermaterial3.R
+import com.example.randomizer.R
 
 @Composable
 fun RandomWordScreen() {

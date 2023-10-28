@@ -1,4 +1,4 @@
-package com.example.drawermaterial3.ui.theme
+package com.example.randomizer.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF96490B)

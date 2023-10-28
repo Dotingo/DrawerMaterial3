@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DrawerMaterial3"
+rootProject.name = "Randomizer"
 include(":app")
  

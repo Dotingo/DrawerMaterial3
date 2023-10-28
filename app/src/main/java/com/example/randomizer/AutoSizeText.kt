@@ -1,4 +1,4 @@
-package com.example.drawermaterial3
+package com.example.randomizer
 
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
@@ -6,7 +6,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle

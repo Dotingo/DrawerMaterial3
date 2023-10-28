@@ -1,4 +1,4 @@
-package com.example.drawermaterial3.screens
+package com.example.randomizer.screens
 
 import androidx.compose.runtime.Composable
 

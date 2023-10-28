@@ -1,4 +1,4 @@
-package com.example.drawermaterial3.screens
+package com.example.randomizer.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -35,7 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.drawermaterial3.R
+import com.example.randomizer.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,8 +44,8 @@ fun RandomNameScreen() {
     var expandedCountry by remember { mutableStateOf(false) }
     var expandedGender by remember { mutableStateOf(false) }
     val namesCountry = arrayOf(
-        "All", "English", "Slavic", "Spain", "German", "French", "Greek", "Italian",
-        "Scandinavian", "Near East", "Far East", "Central Asia", "South Asia", "Oceania"
+        "All", "English", "Slavic", "Scandinavian", "German", "French", "Spanish", "Italian",
+        "Greek", "African", "Pacific ocean", "Near East", "Far East", "Central Asia", "South Asia"
     )
     val gender = arrayOf("All", "Men", "Women")
     var selectedNamesCountry by remember { mutableStateOf(namesCountry[0]) }

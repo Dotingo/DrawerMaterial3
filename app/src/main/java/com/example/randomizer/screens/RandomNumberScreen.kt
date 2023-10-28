@@ -1,4 +1,4 @@
-package com.example.drawermaterial3.screens
+package com.example.randomizer.screens
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -46,11 +46,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.example.drawermaterial3.AutoSizeText
-import com.example.drawermaterial3.DataStoreManager
-import com.example.drawermaterial3.FontSizeRange
-import com.example.drawermaterial3.NumRangeData
-import com.example.drawermaterial3.R
+import com.example.randomizer.AutoSizeText
+import com.example.randomizer.DataStoreManager
+import com.example.randomizer.FontSizeRange
+import com.example.randomizer.NumRangeData
+import com.example.randomizer.R
 import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 

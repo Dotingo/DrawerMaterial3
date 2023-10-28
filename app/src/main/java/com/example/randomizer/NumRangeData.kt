@@ -1,4 +1,4 @@
-package com.example.drawermaterial3
+package com.example.randomizer
 
 data class NumRangeData(
     val minValue: Int = 0,
