@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Рандомайзер</string>
+    <string name="number_rand">Числа</string>
+    <string name="name_rand">Имена</string>
+    <string name="word_rand">Слова</string>
+    <string name="country_rand">Страны</string>
+    <string name="copied_text">Текст скопирован</string>
+    <string name="min_num">Минимум</string>
+    <string name="max_num">Максимум</string>
+    <string name="repeat_values">Повторения</string>
+    <string name="result_count">Количество результатов</string>
+    <string name="generate_num">Сгенерировать числа</string>
+    <string name="cannot_generate_unique">Невозможно сгенерировать столько уникальных значений</string>
+    <string name="min_greater_max">Минимальное число должно быть меньше максимального</string>
+    <string name="enter_num_value">Введите числовые минимальное и максимальное значения</string>
+    <string name="name_gender">Пол</string>
+    <string name="name_regions">Регион</string>
+    <string name="generate_names">Сгенерировать имена</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.example.randomizer
+package com.example.randomizer.utils
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -33,8 +33,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.example.randomizer.R
 import com.example.randomizer.screens.RandomCountryScreen
 import com.example.randomizer.screens.RandomNameScreen
 import com.example.randomizer.screens.RandomNumber
@@ -51,10 +53,10 @@ fun Drawer() {
     val IcName = ImageVector.vectorResource(id = R.drawable.ic_name)
 
     val drawerItems = listOf(
-        DrawerItem("Numbers", IcNum, IcNum, "random_num"),
-        DrawerItem("Names", IcName, IcName, "random_name"),
-        DrawerItem("Letters", IcAbc, IcAbc, "random_word"),
-        DrawerItem("Countries", IcCountry, IcCountry, "random_countries")
+        DrawerItem(stringResource(R.string.number_rand), IcNum, IcNum, "random_num"),
+        DrawerItem(stringResource(R.string.name_rand), IcName, IcName, "random_name"),
+        DrawerItem(stringResource(R.string.word_rand), IcAbc, IcAbc, "random_word"),
+        DrawerItem(stringResource(R.string.country_rand), IcCountry, IcCountry, "random_countries")
     )
 
     var selectedItem by remember { mutableStateOf(drawerItems[0]) }

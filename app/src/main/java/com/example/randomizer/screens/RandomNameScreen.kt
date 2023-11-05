@@ -29,28 +29,32 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.randomizer.MainViewModel
 import com.example.randomizer.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RandomNameScreen() {
-    var sliderValueState by remember { mutableStateOf(1) }
+fun RandomNameScreen(
+    mainViewModel: MainViewModel = hiltViewModel()
+) {
+    var slideValueState by remember { mutableStateOf(1) }
     var expandedCountry by remember { mutableStateOf(false) }
     var expandedGender by remember { mutableStateOf(false) }
-    val namesCountry = arrayOf(
-        "All", "English", "Slavic", "Scandinavian", "German", "French", "Spanish", "Italian",
-        "Greek", "African", "Pacific ocean", "Near East", "Far East", "Central Asia", "South Asia"
-    )
-    val gender = arrayOf("All", "Men", "Women")
-    var selectedNamesCountry by remember { mutableStateOf(namesCountry[0]) }
+    val regionNames by rememberUpdatedState(stringArrayResource(id = R.array.names_region))
+    val gender by rememberUpdatedState(stringArrayResource(id = R.array.names_gender))
+    var selectedNamesRegions by remember { mutableStateOf(regionNames[0]) }
     var selectedGender by remember { mutableStateOf(gender[0]) }
-
+    val namesList = mainViewModel.namesList
 
     Column(
         modifier = Modifier
@@ -98,7 +102,7 @@ fun RandomNameScreen() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Box(modifier = Modifier.width(150.dp)) {
+            Box(modifier = Modifier.width(145.dp)) {
                 ExposedDropdownMenuBox(
                     expanded = expandedGender,
                     onExpandedChange = {
@@ -108,7 +112,7 @@ fun RandomNameScreen() {
                     OutlinedTextField(
                         value = selectedGender,
                         onValueChange = {},
-                        label = { Text("Gender") },
+                        label = { Text(stringResource(R.string.name_gender)) },
                         readOnly = true,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedGender) },
                         modifier = Modifier.menuAnchor()
@@ -136,7 +140,7 @@ fun RandomNameScreen() {
             }
 
 
-            Box(modifier = Modifier.width(170.dp)) {
+            Box(modifier = Modifier.width(195.dp)) {
                 ExposedDropdownMenuBox(
                     expanded = expandedCountry,
                     onExpandedChange = {
@@ -144,9 +148,9 @@ fun RandomNameScreen() {
                     }
                 ) {
                     OutlinedTextField(
-                        value = selectedNamesCountry,
+                        value = selectedNamesRegions,
                         onValueChange = {},
-                        label = { Text("Country") },
+                        label = { Text(stringResource(R.string.name_regions)) },
                         readOnly = true,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCountry) },
                         modifier = Modifier.menuAnchor()
@@ -158,11 +162,11 @@ fun RandomNameScreen() {
                         modifier = Modifier
                             .heightIn(max = 184.dp)
                     ) {
-                        namesCountry.forEach { item ->
+                        regionNames.forEach { item ->
                             DropdownMenuItem(
                                 text = { Text(text = item) },
                                 onClick = {
-                                    selectedNamesCountry = item
+                                    selectedNamesRegions = item
                                     expandedCountry = false
                                 }
                             )
@@ -177,7 +181,7 @@ fun RandomNameScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Text(text = "Result count:${sliderValueState}")
+                Text(text = stringResource(id = R.string.result_count) +": $slideValueState" )
             }
             Row(
                 modifier = Modifier
@@ -190,9 +194,9 @@ fun RandomNameScreen() {
             ) {
                 Text(text = "1")
                 Slider(
-                    value = sliderValueState.toFloat(),
+                    value = slideValueState.toFloat(),
                     onValueChange = {
-                        sliderValueState = it.toInt()
+                        slideValueState = it.toInt()
                     },
                     valueRange = 1f..3f,
                     modifier = Modifier.weight(1f),
@@ -209,7 +213,7 @@ fun RandomNameScreen() {
 
             }
         ) {
-            Text(text = "Generate random name", color = MaterialTheme.colorScheme.surface)
+            Text(text = stringResource(id = R.string.generate_names), color = MaterialTheme.colorScheme.surface)
         }
     }
 }

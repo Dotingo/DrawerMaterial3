@@ -1,4 +1,4 @@
-package com.example.randomizer
+package com.example.randomizer.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore

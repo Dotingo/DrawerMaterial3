@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="names_region">
+        <item>All</item>
+        <item>English</item>
+        <item>Slavic</item>
+        <item>Scandinavian</item>
+        <item>German</item>
+        <item>French</item>
+        <item>Spanish</item>
+        <item>Italian</item>
+        <item>Greek</item>
+        <item>African</item>
+        <item>Pacific ocean</item>
+        <item>Near East</item>
+        <item>Far East</item>
+        <item>Central Asia</item>
+        <item>South Asia</item>
+    </string-array>
+
+    <string-array name="names_gender">
+        <item>All</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+</resources>

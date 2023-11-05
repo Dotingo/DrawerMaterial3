@@ -1,4 +1,4 @@
-package com.example.randomizer
+package com.example.randomizer.data
 
 data class NumRangeData(
     val minValue: Int = 0,

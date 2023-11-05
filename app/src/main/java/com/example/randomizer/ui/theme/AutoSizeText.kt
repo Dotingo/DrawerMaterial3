@@ -1,4 +1,4 @@
-package com.example.randomizer
+package com.example.randomizer.ui.theme
 
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text

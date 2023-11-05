@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,10 +47,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.example.randomizer.AutoSizeText
-import com.example.randomizer.DataStoreManager
-import com.example.randomizer.FontSizeRange
-import com.example.randomizer.NumRangeData
+import com.example.randomizer.ui.theme.AutoSizeText
+import com.example.randomizer.data.DataStoreManager
+import com.example.randomizer.ui.theme.FontSizeRange
+import com.example.randomizer.data.NumRangeData
 import com.example.randomizer.R
 import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
@@ -126,7 +127,7 @@ fun RandomNumber() {
                         generatedNumbers.joinToString(", ")
                     )
                     clipboardManager.setPrimaryClip(clipData)
-                    Toast.makeText(mContext, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mContext, R.string.copied_text, Toast.LENGTH_SHORT).show()
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_copy),
@@ -158,7 +159,7 @@ fun RandomNumber() {
                     .height(60.dp),
                 singleLine = true,
 
-                label = { Text("Minimum") }
+                label = { Text(stringResource(id = R.string.min_num)) }
 
             )
             OutlinedTextField(
@@ -171,7 +172,7 @@ fun RandomNumber() {
                     .width(150.dp)
                     .height(60.dp),
                 singleLine = true,
-                label = { Text("Maximum") }
+                label = { Text(stringResource(id = R.string.max_num)) }
             )
         }
         Column {
@@ -184,7 +185,7 @@ fun RandomNumber() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Repeat")
+            Text(text = stringResource(id = R.string.repeat_values))
             Checkbox(checked = checkedState, onCheckedChange = { isChecked ->
                 checkedState = isChecked
             })
@@ -197,7 +198,7 @@ fun RandomNumber() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
         ) {
-            Text(text = "Result count:${slideValueState}")
+            Text(text = stringResource(id = R.string.result_count) +": $slideValueState" )
         }
         Row(
             modifier = Modifier
@@ -244,32 +245,24 @@ fun RandomNumber() {
                             min,
                             max,
                             slideValueState,
-                            checkedState // Передаем состояние чекбокса
+                            checkedState
                         )
                         if (randomNumbers != null) {
                             generatedNumbers = randomNumbers
                         } else {
-                            showToast(
-                                mContext,
-                                "Cannot generate the specified number of unique values with the given range"
-                            )
+                            Toast.makeText(mContext, R.string.cannot_generate_unique, Toast.LENGTH_SHORT).show()
+
                         }
                     } else {
-                        showToast(
-                            mContext,
-                            "The minimum number should't be greater than the maximum"
-                        )
+                        Toast.makeText(mContext, R.string.min_greater_max, Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: NumberFormatException) {
-                    showToast(
-                        mContext,
-                        "Enter a numeric value for the minimum and maximum"
-                    )
+                    Toast.makeText(mContext, R.string.enter_num_value, Toast.LENGTH_SHORT).show()
                 }
 
 
             }) {
-            Text(text = "Generate random number", color = MaterialTheme.colorScheme.surface)
+            Text(text = stringResource(id = R.string.generate_num), color = MaterialTheme.colorScheme.surface)
         }
 
     }
@@ -293,8 +286,4 @@ fun generateUniqueRandomNumbers(min: Int, max: Int, count: Int, allowRepeats: Bo
     }
 
     return randomNumbers
-}
-
-fun showToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

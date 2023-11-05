@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="names_region">
+        <item>Все</item>
+        <item>Английский</item>
+        <item>Славянский</item>
+        <item>Скандинавский</item>
+        <item>Немецкий</item>
+        <item>Французский</item>
+        <item>Испанский</item>
+        <item>Итальянский</item>
+        <item>Греческий</item>
+        <item>Африканский</item>
+        <item>Тихоокеанский</item>
+        <item>Ближн. Восток</item>
+        <item>Дальн. Восток</item>
+        <item>Средняя Азия</item>
+        <item>Южная Азия</item>
+    </string-array>
+
+    <string-array name="names_gender">
+        <item>Оба</item>
+        <item>Мужской</item>
+        <item>Женский</item>
+    </string-array>
+</resources>
