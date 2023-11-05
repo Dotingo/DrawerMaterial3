@@ -15,12 +15,20 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     val namesList = mutableStateOf(emptyList<NameEntity>())
 
-    fun getAllNames(reg: String) = viewModelScope.launch {
-        namesList.value = randomizerDb.dao.getAllNames(reg)
+    fun getAllNames(lang: String) = viewModelScope.launch {
+        namesList.value = randomizerDb.dao.getAllNames(lang)
     }
 
-    fun getAllNames() = viewModelScope.launch {
-        namesList.value = randomizerDb.dao.getAllNames()
+    fun getNamesByGender(gen: String, lang: String) = viewModelScope.launch {
+        namesList.value = randomizerDb.dao.getNamesByGender(gen, lang)
+    }
+
+    fun getAllNamesByRegion(reg: String, lang: String) = viewModelScope.launch {
+        namesList.value = randomizerDb.dao.getNamesByGender(reg, lang)
+    }
+
+    fun getAllNamesByAll(gen: String, reg: String, lang: String) = viewModelScope.launch {
+        namesList.value = randomizerDb.dao.getAllNamesByAll(gen, reg, lang)
     }
 
 }
