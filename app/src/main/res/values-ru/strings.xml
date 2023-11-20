@@ -3,7 +3,7 @@
     <string name="app_name">Рандомайзер</string>
     <string name="number_rand">Числа</string>
     <string name="name_rand">Имена</string>
-    <string name="word_rand">Слова</string>
+    <string name="coin_rand">Монетка</string>
     <string name="country_rand">Страны</string>
     <string name="copied_text">Текст скопирован</string>
     <string name="min_num">Минимум</string>
@@ -17,4 +17,5 @@
     <string name="name_gender">Пол</string>
     <string name="name_regions">Регион</string>
     <string name="generate_names">Сгенерировать имена</string>
+    <string name="toss_a_coin">Подбросить монетку</string>
 </resources>

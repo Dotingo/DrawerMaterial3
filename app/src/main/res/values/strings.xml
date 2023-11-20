@@ -2,7 +2,7 @@
     <string name="app_name">Randomizer</string>
     <string name="number_rand">Numbers</string>
     <string name="name_rand">Names</string>
-    <string name="word_rand">Words</string>
+    <string name="coin_rand">Coin</string>
     <string name="copied_text">Text copied to clipboard</string>
     <string name="min_num">Minimum</string>
     <string name="max_num">Maximum</string>
@@ -16,4 +16,5 @@
     <string name="name_gender">Gender</string>
     <string name="name_regions">Region</string>
     <string name="generate_names">Generate names</string>
+    <string name="toss_a_coin">Toss a coin</string>
 </resources>

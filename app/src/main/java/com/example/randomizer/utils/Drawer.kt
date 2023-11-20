@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
@@ -32,25 +34,24 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
 import com.example.randomizer.screens.RandomCountryScreen
 import com.example.randomizer.screens.RandomNameScreen
 import com.example.randomizer.screens.RandomNumber
-import com.example.randomizer.screens.RandomWordScreen
+import com.example.randomizer.screens.RandomCoinScreen
 import com.example.randomizer.ui.theme.RandomizerTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Drawer() {
-    val IcAbc = ImageVector.vectorResource(id = R.drawable.ic_abc)
+    val IcCoin = ImageVector.vectorResource(id = R.drawable.ic_coin)
     val IcNum = ImageVector.vectorResource(id = R.drawable.ic_123)
     val IcCountry = ImageVector.vectorResource(id = R.drawable.ic_globe)
     val IcName = ImageVector.vectorResource(id = R.drawable.ic_name)
@@ -58,7 +59,7 @@ fun Drawer() {
     val drawerItems = listOf(
         DrawerItem(stringResource(R.string.number_rand), IcNum, IcNum, "random_num"),
         DrawerItem(stringResource(R.string.name_rand), IcName, IcName, "random_name"),
-        DrawerItem(stringResource(R.string.word_rand), IcAbc, IcAbc, "random_word"),
+        DrawerItem(stringResource(R.string.coin_rand), IcCoin, IcCoin, "random_coin"),
         DrawerItem(stringResource(R.string.country_rand), IcCountry, IcCountry, "random_countries")
     )
 
@@ -75,37 +76,36 @@ fun Drawer() {
             ModalNavigationDrawer(
                 drawerContent = {
                     ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
-                        Column(
-                            modifier = Modifier.padding(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.randomizer_header),
-                                contentDescription = "header",
-                                modifier = Modifier.clip(MaterialTheme.shapes.small)
-                            )
-                        }
-                        drawerItems.forEach { item ->
-                            NavigationDrawerItem(
-                                label = { Text(text = item.title) },
-                                selected = item == selectedItem,
-                                onClick = {
-                                    selectedItem = item
-                                    scope.launch {
-                                        drawerState.close()
-                                    }
-                                },
-                                icon = {
-                                    Icon(
-                                        imageVector = if (item == selectedItem) {
-                                            item.selectedIcon
-                                        } else item.unselectedIcon,
-                                        contentDescription = item.title
-                                    )
-                                },
-                                modifier = Modifier
-                                    .padding(NavigationDrawerItemDefaults.ItemPadding)
-                            )
+                        LazyColumn {
+                            item {
+                                Image(
+                                    painter = painterResource(id = R.drawable.randomizer_header),
+                                    contentDescription = "header",
+                                    modifier = Modifier.clip(MaterialTheme.shapes.small)
+                                )
+                            }
+                            items(drawerItems) { item ->
+                                NavigationDrawerItem(
+                                    label = { Text(text = item.title) },
+                                    selected = item == selectedItem,
+                                    onClick = {
+                                        selectedItem = item
+                                        scope.launch {
+                                            drawerState.close()
+                                        }
+                                    },
+                                    icon = {
+                                        Icon(
+                                            imageVector = if (item == selectedItem) {
+                                                item.selectedIcon
+                                            } else item.unselectedIcon,
+                                            contentDescription = item.title
+                                        )
+                                    },
+                                    modifier = Modifier
+                                        .padding(NavigationDrawerItemDefaults.ItemPadding)
+                                )
+                            }
                         }
                     }
                 },
@@ -114,7 +114,11 @@ fun Drawer() {
                 Scaffold(topBar = {
 
                     TopAppBar(title = {
-                        Text(text = selectedItem.title)
+                        Text(
+                            text = selectedItem.title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
                     },
                         navigationIcon = {
                             IconButton(onClick = {
@@ -152,8 +156,8 @@ fun Drawer() {
                             RandomNameScreen()
                         }
 
-                        "random_word" -> {
-                            RandomWordScreen()
+                        "random_coin" -> {
+                            RandomCoinScreen()
                         }
 
                         "random_countries" -> {
