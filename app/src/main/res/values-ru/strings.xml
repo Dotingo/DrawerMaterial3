@@ -18,4 +18,6 @@
     <string name="name_regions">Регион</string>
     <string name="generate_names">Сгенерировать имена</string>
     <string name="toss_a_coin">Подбросить монетку</string>
+    <string name="head_coin">Орёл</string>
+    <string name="tail_coin">Решка</string>
 </resources>

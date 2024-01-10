@@ -5,10 +5,10 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,8 +20,8 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,28 +55,36 @@ import com.example.randomizer.data.DataStoreManager
 import com.example.randomizer.ui.theme.FontSizeRange
 import com.example.randomizer.data.NumRangeData
 import com.example.randomizer.R
+import com.example.randomizer.screens.common.ResultSection
+import com.example.randomizer.util.Dimens.ExtraSmallPadding
+import com.example.randomizer.util.Dimens.MediumPadding1
+import com.example.randomizer.util.Dimens.SmallPadding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
-fun RandomNumber() {
+fun RandomNumber(paddingValues: PaddingValues) {
     val mContext = LocalContext.current
     var generatedNumbers by remember { mutableStateOf<List<Int>>(emptyList()) }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(top = 70.dp, start = 10.dp, end = 10.dp),
+            .padding(paddingValues)
+            .padding(horizontal = SmallPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
 
+
         ) {
-        ResultSection(generatedNumbers, mContext)
+        ResultSection(output = generatedNumbers, mContext = mContext, separator = ", ")
         ToolsSection(
             mContext,
+            scope,
             onGeneratedNumbersChange = { newNumbers ->
                 generatedNumbers = newNumbers
             }
@@ -84,91 +93,27 @@ fun RandomNumber() {
 }
 
 @Composable
-private fun ResultSection(
-    generatedNumbers: List<Int>,
-    mContext: Context
-) {
-    val clipboardManager =
-        remember { mContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(fraction = 0.45f)
-    ) {
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(fraction = 0.85f),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            AutoSizeText(
-                text = generatedNumbers.joinToString(", "),
-                maxLines = 12,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                fontSizeRange = FontSizeRange(
-                    min = 10.sp,
-                    max = 28.sp,
-                ),
-                style = LocalTextStyle.current.merge(
-                    TextStyle(lineHeight = 1.2.em)
-                ),
-                textAlign = TextAlign.Center
-
-            )
-
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 5.dp),
-            horizontalArrangement = Arrangement.End
-        ) {
-            IconButton(onClick = {
-                if (generatedNumbers.isNotEmpty()) {
-                    val clipData = ClipData.newPlainText(
-                        "GeneratedNumbers",
-                        generatedNumbers.joinToString(", ")
-                    )
-                    clipboardManager.setPrimaryClip(clipData)
-                    Toast.makeText(mContext, R.string.copied_text, Toast.LENGTH_SHORT).show()
-                }
-            }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_copy),
-                    contentDescription = "copy"
-                )
-            }
-
-        }
-
-    }
-}
-
-@Composable
 private fun ToolsSection(
     mContext: Context,
+    scope: CoroutineScope,
     onGeneratedNumbersChange: (List<Int>) -> Unit
 ) {
     val dataStoreManager = DataStoreManager(mContext)
-    val scope = rememberCoroutineScope()
     val (checkedState, onStateChange) = remember { mutableStateOf(true) }
     var minNumState by remember { mutableStateOf("0") }
     var maxNumState by remember { mutableStateOf("100") }
-    var slideValueState by remember { mutableStateOf(1) }
+    var slideValueState by remember { mutableIntStateOf(1) }
     LaunchedEffect(key1 = true) {
         dataStoreManager.getRange().collect { range ->
             minNumState = range.minValue.toString()
             maxNumState = range.maxValue.toString()
         }
     }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(end = 10.dp, start = 10.dp, top = 10.dp)
+            .padding(end = SmallPadding, start = SmallPadding, bottom = ExtraSmallPadding)
             .height(IntrinsicSize.Max),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
@@ -213,8 +158,7 @@ private fun ToolsSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    end = 50.dp,
-                    start = 50.dp
+                    horizontal = 50.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -244,15 +188,11 @@ private fun ToolsSection(
         ) {
             Text(text = stringResource(id = R.string.repeat_values))
             Checkbox(checked = checkedState, onCheckedChange = null)
-
-
         }
     }
-
+Row {
     Button(
-        modifier = Modifier
-            .padding(bottom = 20.dp)
-            .height(50.dp),
+        modifier = Modifier.padding(bottom = MediumPadding1),
         onClick = {
             try {
                 val minNumCleaned = minNumState.replace(',', '.')
@@ -284,10 +224,16 @@ private fun ToolsSection(
 
                     }
                 } else {
-                    Toast.makeText(mContext, R.string.min_greater_max, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        mContext,
+                        R.string.min_greater_max,
+                        Toast.LENGTH_SHORT).show()
                 }
             } catch (e: NumberFormatException) {
-                Toast.makeText(mContext, R.string.enter_num_value, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    mContext,
+                    R.string.enter_num_value,
+                    Toast.LENGTH_SHORT).show()
             }
 
 
@@ -298,6 +244,8 @@ private fun ToolsSection(
         )
     }
 }
+}
+
 
 fun generateUniqueRandomNumbers(min: Int, max: Int, count: Int, allowRepeats: Boolean): List<Int>? {
     if (!allowRepeats && (max - min + 1) < count) {

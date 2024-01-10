@@ -17,4 +17,6 @@
     <string name="name_regions">Region</string>
     <string name="generate_names">Generate names</string>
     <string name="toss_a_coin">Toss a coin</string>
+    <string name="head_coin">Heads</string>
+    <string name="tail_coin">Tails</string>
 </resources>

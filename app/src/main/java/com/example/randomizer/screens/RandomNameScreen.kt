@@ -8,7 +8,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -32,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +48,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -51,13 +56,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.randomizer.MainViewModel
 import com.example.randomizer.R
 import com.example.randomizer.data.NameEntity
+import com.example.randomizer.screens.common.ResultSection
 import com.example.randomizer.ui.theme.AutoSizeText
 import com.example.randomizer.ui.theme.FontSizeRange
+import com.example.randomizer.util.Dimens.MediumPadding1
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RandomNameScreen() {
+fun RandomNameScreen(paddingValues: PaddingValues) {
     val mContext = LocalContext.current
     var generatedNames by remember { mutableStateOf<List<String>>(emptyList()) }
 
@@ -65,12 +72,13 @@ fun RandomNameScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(top = 70.dp, start = 10.dp, end = 10.dp),
+            .padding(paddingValues)
+            .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
 
         ) {
-        ResultSection(generatedNames, mContext)
+        ResultSection(output = generatedNames, mContext = mContext, separator = "\n")
 
 
         ToolsSection(
@@ -82,77 +90,15 @@ fun RandomNameScreen() {
 }
 
 @Composable
-private fun ResultSection(
-    generatedNames: List<String>,
-    mContext: Context
-) {
-    val clipboardManager =
-        remember { mContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(fraction = 0.45f)
-    ) {
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(fraction = 0.85f),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            AutoSizeText(
-                text = generatedNames.joinToString("\n"),
-                maxLines = 12,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                fontSizeRange = FontSizeRange(
-                    min = 10.sp,
-                    max = 28.sp,
-                ),
-                style = LocalTextStyle.current.merge(
-                    TextStyle(lineHeight = 1.2.em)
-                ),
-                textAlign = TextAlign.Center
-
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 5.dp),
-            horizontalArrangement = Arrangement.End
-        ) {
-            IconButton(onClick = {
-                if (generatedNames.isNotEmpty()) {
-                    val clipData = ClipData.newPlainText(
-                        "GeneratedNumbers",
-                        generatedNames.joinToString(", ")
-                    )
-                    clipboardManager.setPrimaryClip(clipData)
-                    Toast.makeText(mContext, R.string.copied_text, Toast.LENGTH_SHORT).show()
-                }
-            }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_copy),
-                    contentDescription = "copy"
-                )
-            }
-
-        }
-    }
-}
-
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun ToolsSection(
     onGeneratedNamesChange: (List<String>) -> Unit,
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
 
-    var selectedGenderIndex by remember { mutableStateOf(0) }
-    var selectedNamesRegionsIndex by remember { mutableStateOf(0) }
-    var slideValueState by remember { mutableStateOf(1) }
+    var selectedGenderIndex by remember { mutableIntStateOf(0) }
+    var selectedNamesRegionsIndex by remember { mutableIntStateOf(0) }
+    var slideValueState by remember { mutableIntStateOf(1) }
     val regionNames by rememberUpdatedState(stringArrayResource(id = R.array.names_region))
     val gender by rememberUpdatedState(stringArrayResource(id = R.array.names_gender))
     var selectedNamesRegions by remember { mutableStateOf(regionNames[0]) }
@@ -247,10 +193,7 @@ private fun ToolsSection(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    end = 50.dp,
-                    start = 50.dp
-                ),
+                .padding(horizontal = 50.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "1")
@@ -272,9 +215,7 @@ private fun ToolsSection(
         }
     }
 
-    Button(modifier = Modifier
-        .height(70.dp)
-        .padding(bottom = 20.dp),
+    Button(modifier = Modifier.padding(bottom = MediumPadding1),
         onClick = {
             val generatedSet = mutableSetOf<String>()
             val randomNames = mutableListOf<String>()
@@ -293,6 +234,7 @@ private fun ToolsSection(
             color = MaterialTheme.colorScheme.surface
         )
     }
+
 }
 
 

@@ -38,17 +38,19 @@ class MainViewModel @Inject constructor(
         "Central Asia",
         "South Asia"
     )
-    val namesListMutex = Mutex()
 
     fun queryNames(genInd: Int, regInd: Int) {
         viewModelScope.launch() {
-            namesList.value = when{
+            namesList.value = when {
                 (genderList[genInd] == "" && regionList[regInd] == "") ->
                     randomizerDb.dao.getAllNames(getSystemLanguage())
+
                 (genderList[genInd] != "" && regionList[regInd] == "") ->
                     randomizerDb.dao.getNamesByGender(genderList[genInd], getSystemLanguage())
+
                 (genderList[genInd] == "" && regionList[regInd] != "") ->
                     randomizerDb.dao.getAllNamesByRegion(regionList[regInd], getSystemLanguage())
+
                 else ->
 
                     randomizerDb.dao.getAllNamesByAll(

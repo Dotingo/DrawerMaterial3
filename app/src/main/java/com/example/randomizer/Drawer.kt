@@ -1,8 +1,7 @@
-package com.example.randomizer.utils
+package com.example.randomizer
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,8 +37,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.randomizer.R
 import com.example.randomizer.screens.RandomCountryScreen
 import com.example.randomizer.screens.RandomNameScreen
 import com.example.randomizer.screens.RandomNumber
@@ -48,9 +46,14 @@ import com.example.randomizer.screens.RandomCoinScreen
 import com.example.randomizer.ui.theme.RandomizerTheme
 import kotlinx.coroutines.launch
 
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Drawer() {
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
     val IcCoin = ImageVector.vectorResource(id = R.drawable.ic_coin)
     val IcNum = ImageVector.vectorResource(id = R.drawable.ic_123)
     val IcCountry = ImageVector.vectorResource(id = R.drawable.ic_globe)
@@ -70,13 +73,12 @@ fun Drawer() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-            val scope = rememberCoroutineScope()
+
 
             ModalNavigationDrawer(
                 drawerContent = {
                     ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
-                        LazyColumn {
+                        LazyColumn(modifier = Modifier.padding(10.dp)) {
                             item {
                                 Image(
                                     painter = painterResource(id = R.drawable.randomizer_header),
@@ -104,6 +106,7 @@ fun Drawer() {
                                     },
                                     modifier = Modifier
                                         .padding(NavigationDrawerItemDefaults.ItemPadding)
+                                        .padding(top = 10.dp)
                                 )
                             }
                         }
@@ -112,7 +115,6 @@ fun Drawer() {
                 drawerState = drawerState,
             ) {
                 Scaffold(topBar = {
-
                     TopAppBar(title = {
                         Text(
                             text = selectedItem.title,
@@ -139,7 +141,8 @@ fun Drawer() {
                                     contentDescription = "Settings"
                                 )
                             }
-                        })
+                        }
+                    )
 
                 }, content = { innerPadding ->
                     Box(
@@ -149,22 +152,23 @@ fun Drawer() {
                     )
                     when (selectedItem.route) {
                         "random_num" -> {
-                            RandomNumber()
+                            RandomNumber(innerPadding)
                         }
 
                         "random_name" -> {
-                            RandomNameScreen()
+                            RandomNameScreen(innerPadding)
                         }
 
                         "random_coin" -> {
-                            RandomCoinScreen()
+                            RandomCoinScreen(innerPadding)
                         }
 
                         "random_countries" -> {
                             RandomCountryScreen()
                         }
                     }
-                })
+                }
+                )
             }
         }
     }

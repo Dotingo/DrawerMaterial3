@@ -53,11 +53,14 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
+
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
 
     implementation("com.google.dagger:hilt-android:2.48.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
-    implementation ("androidx.compose.material3:material3-window-size-class:1.1.0")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.1.2")
     implementation("androidx.room:room-ktx:2.6.0")
     kapt("androidx.room:room-compiler:2.6.0")
 
