@@ -1,6 +1,8 @@
 package com.example.randomizer
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringArrayResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.randomizer.data.NameEntity
@@ -40,7 +42,7 @@ class MainViewModel @Inject constructor(
     )
 
     fun queryNames(genInd: Int, regInd: Int) {
-        viewModelScope.launch() {
+        viewModelScope.launch {
             namesList.value = when {
                 (genderList[genInd] == "" && regionList[regInd] == "") ->
                     randomizerDb.dao.getAllNames(getSystemLanguage())

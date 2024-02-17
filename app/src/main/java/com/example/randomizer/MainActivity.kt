@@ -5,8 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
+import com.example.randomizer.data.AppTheme
 import com.example.randomizer.ui.theme.RandomizerTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +22,14 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         setContent {
-            RandomizerTheme {
+            var appTheme by remember { mutableStateOf(AppTheme.System) }
+            RandomizerTheme(
+                isDarkTheme = when(appTheme){
+                    AppTheme.Light -> false
+                    AppTheme.Dark -> true
+                    AppTheme.System -> isSystemInDarkTheme()
+                }
+            ) {
                 Drawer()
             }
         }

@@ -1,5 +1,7 @@
 package com.example.randomizer
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,33 +39,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.randomizer.screens.RandomCountryScreen
 import com.example.randomizer.screens.RandomNameScreen
 import com.example.randomizer.screens.RandomNumber
 import com.example.randomizer.screens.RandomCoinScreen
+import com.example.randomizer.screens.SettingsScreen
 import com.example.randomizer.ui.theme.RandomizerTheme
 import kotlinx.coroutines.launch
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Drawer() {
-
+    var isDrawerEnabled by remember { mutableStateOf(true) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-
-    val IcCoin = ImageVector.vectorResource(id = R.drawable.ic_coin)
-    val IcNum = ImageVector.vectorResource(id = R.drawable.ic_123)
-    val IcCountry = ImageVector.vectorResource(id = R.drawable.ic_globe)
-    val IcName = ImageVector.vectorResource(id = R.drawable.ic_name)
+    val navController = rememberNavController()
+    val icCoin = ImageVector.vectorResource(id = R.drawable.ic_coin)
+    val icNum = ImageVector.vectorResource(id = R.drawable.ic_123)
+    val icCountry = ImageVector.vectorResource(id = R.drawable.ic_globe)
+    val icName = ImageVector.vectorResource(id = R.drawable.ic_name)
 
     val drawerItems = listOf(
-        DrawerItem(stringResource(R.string.number_rand), IcNum, IcNum, "random_num"),
-        DrawerItem(stringResource(R.string.name_rand), IcName, IcName, "random_name"),
-        DrawerItem(stringResource(R.string.coin_rand), IcCoin, IcCoin, "random_coin"),
-        DrawerItem(stringResource(R.string.country_rand), IcCountry, IcCountry, "random_countries")
+        DrawerItem(stringResource(R.string.number_rand), icNum, icNum, "random_num"),
+        DrawerItem(stringResource(R.string.name_rand), icName, icName, "random_name"),
+        DrawerItem(stringResource(R.string.coin_rand), icCoin, icCoin, "random_coin"),
+        DrawerItem(stringResource(R.string.country_rand), icCountry, icCountry, "random_countries")
     )
 
     var selectedItem by remember { mutableStateOf(drawerItems[0]) }
@@ -73,9 +78,35 @@ fun Drawer() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-
-
+            NavHost(navController = navController, startDestination = "main",
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(200)
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(200)
+                    )
+                },
+                popEnterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(200)
+                    )
+                },
+                popExitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(200)
+                    )
+                }
+            ) {
+                composable("main") {
             ModalNavigationDrawer(
+                gesturesEnabled = navController.currentBackStackEntry?.destination?.route == "main",
                 drawerContent = {
                     ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
                         LazyColumn(modifier = Modifier.padding(10.dp)) {
@@ -114,65 +145,82 @@ fun Drawer() {
                 },
                 drawerState = drawerState,
             ) {
-                Scaffold(topBar = {
-                    TopAppBar(title = {
-                        Text(
-                            text = selectedItem.title,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                        navigationIcon = {
-                            IconButton(onClick = {
-                                scope.launch {
-                                    drawerState.open()
+                        Scaffold(topBar = {
+                            TopAppBar(title = {
+                                Text(
+                                    text = selectedItem.title,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            },
+                                navigationIcon = {
+                                    IconButton(onClick = {
+                                        scope.launch {
+                                            drawerState.open()
+                                        }
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Menu,
+                                            contentDescription = "Menu"
+                                        )
+                                    }
+                                },
+                                actions = {
+                                    IconButton(onClick = {
+                                        navController.navigate("settings")
+                                        isDrawerEnabled = false
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Settings,
+                                            contentDescription = "Settings"
+                                        )
+                                    }
                                 }
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Menu,
-                                    contentDescription = "Menu"
-                                )
+                            )
+
+                        }, content = { innerPadding ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(innerPadding)
+                            )
+                            when (selectedItem.route) {
+                                "random_num" -> {
+                                    RandomNumber(innerPadding)
+                                }
+
+                                "random_name" -> {
+                                    RandomNameScreen(innerPadding)
+                                }
+
+                                "random_coin" -> {
+                                    RandomCoinScreen(innerPadding)
+                                }
+
+                                "random_countries" -> {
+                                    RandomCountryScreen()
+                                }
                             }
-                        },
-                        actions = {
-                            IconButton(onClick = { }) {
-                                Icon(
-                                    imageVector = Icons.Default.Settings,
-                                    contentDescription = "Settings"
-                                )
-                            }
                         }
-                    )
+                        )
+                    }
 
-                }, content = { innerPadding ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                    )
-                    when (selectedItem.route) {
-                        "random_num" -> {
-                            RandomNumber(innerPadding)
-                        }
-
-                        "random_name" -> {
-                            RandomNameScreen(innerPadding)
-                        }
-
-                        "random_coin" -> {
-                            RandomCoinScreen(innerPadding)
-                        }
-
-                        "random_countries" -> {
-                            RandomCountryScreen()
+                }
+                composable("settings") {
+                    SettingsScreen {
+                        if (navController.currentBackStackEntry?.lifecycle?.currentState
+                            == Lifecycle.State.RESUMED
+                        ) {
+                            isDrawerEnabled = true
+                            navController.popBackStack()
                         }
                     }
                 }
-                )
             }
         }
     }
 }
+
 
 data class DrawerItem(
     val title: String,

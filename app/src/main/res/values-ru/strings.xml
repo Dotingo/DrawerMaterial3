@@ -20,4 +20,10 @@
     <string name="toss_a_coin">Подбросить монетку</string>
     <string name="head_coin">Орёл</string>
     <string name="tail_coin">Решка</string>
+    <string name="settings">Настройки</string>
+    <string name="system_theme">Система</string>
+    <string name="dark_theme">Тёмная</string>
+    <string name="light_theme">Светлая</string>
+    <string name="language">Язык</string>
+    <string name="theme">Тема</string>
 </resources>

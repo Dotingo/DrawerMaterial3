@@ -8,6 +8,7 @@ import androidx.room.Query
 interface Dao {
     @Query("SELECT * FROM names WHERE language = :lang")
     suspend fun getAllNames(lang: String): List<NameEntity>
+
     @Query("SELECT * FROM names WHERE gender = :gen AND language = :lang")
     suspend fun getNamesByGender(gen: String, lang: String): List<NameEntity>
 

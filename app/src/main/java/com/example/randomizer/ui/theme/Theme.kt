@@ -1,19 +1,14 @@
 package com.example.randomizer.ui.theme
 
-import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
-import com.example.randomizer.MainActivity
+import androidx.compose.ui.platform.LocalView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
@@ -82,28 +77,28 @@ private val DarkColors = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun RandomizerTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
 ) {
 
     val isSystemInDarkMode = isSystemInDarkTheme()
 
-    val colors = if (!useDarkTheme) {
-        LightColors
-    } else {
-        DarkColors
+    val colorScheme = if (isDarkTheme) DarkColors else LightColors
+    if (Build.VERSION.SDK_INT >= 29) {
+        LocalView.current.isForceDarkAllowed = false
     }
-
     val systemUiController = rememberSystemUiController()
     SideEffect {
-        systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = !isSystemInDarkMode)
+        systemUiController.setStatusBarColor(
+            color = Color.Transparent,
+            darkIcons = !isSystemInDarkMode
+        )
     }
 
     MaterialTheme(
-        colorScheme = colors,
+        colorScheme = colorScheme,
         content = content
     )
 
