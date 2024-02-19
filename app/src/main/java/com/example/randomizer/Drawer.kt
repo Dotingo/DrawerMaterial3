@@ -49,7 +49,6 @@ import com.example.randomizer.screens.RandomNameScreen
 import com.example.randomizer.screens.RandomNumber
 import com.example.randomizer.screens.RandomCoinScreen
 import com.example.randomizer.screens.SettingsScreen
-import com.example.randomizer.ui.theme.RandomizerTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,154 +72,150 @@ fun Drawer() {
 
     var selectedItem by remember { mutableStateOf(drawerItems[0]) }
 
-    RandomizerTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        NavHost(navController = navController, startDestination = "main",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(200)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(200)
+                )
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(200)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(200)
+                )
+            }
         ) {
-            NavHost(navController = navController, startDestination = "main",
-                enterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(200)
-                    )
-                },
-                exitTransition = {
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(200)
-                    )
-                },
-                popEnterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Right,
-                        animationSpec = tween(200)
-                    )
-                },
-                popExitTransition = {
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Right,
-                        animationSpec = tween(200)
-                    )
-                }
-            ) {
-                composable("main") {
-            ModalNavigationDrawer(
-                gesturesEnabled = navController.currentBackStackEntry?.destination?.route == "main",
-                drawerContent = {
-                    ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
-                        LazyColumn(modifier = Modifier.padding(10.dp)) {
-                            item {
-                                Image(
-                                    painter = painterResource(id = R.drawable.randomizer_header),
-                                    contentDescription = "header",
-                                    modifier = Modifier.clip(MaterialTheme.shapes.small)
-                                )
-                            }
-                            items(drawerItems) { item ->
-                                NavigationDrawerItem(
-                                    label = { Text(text = item.title) },
-                                    selected = item == selectedItem,
-                                    onClick = {
-                                        selectedItem = item
-                                        scope.launch {
-                                            drawerState.close()
-                                        }
-                                    },
-                                    icon = {
-                                        Icon(
-                                            imageVector = if (item == selectedItem) {
-                                                item.selectedIcon
-                                            } else item.unselectedIcon,
-                                            contentDescription = item.title
-                                        )
-                                    },
-                                    modifier = Modifier
-                                        .padding(NavigationDrawerItemDefaults.ItemPadding)
-                                        .padding(top = 10.dp)
-                                )
+            composable("main") {
+                ModalNavigationDrawer(
+                    gesturesEnabled = navController.currentBackStackEntry?.destination?.route == "main",
+                    drawerContent = {
+                        ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
+                            LazyColumn(modifier = Modifier.padding(10.dp)) {
+                                item {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.randomizer_header),
+                                        contentDescription = "header",
+                                        modifier = Modifier.clip(MaterialTheme.shapes.small)
+                                    )
+                                }
+                                items(drawerItems) { item ->
+                                    NavigationDrawerItem(
+                                        label = { Text(text = item.title) },
+                                        selected = item == selectedItem,
+                                        onClick = {
+                                            selectedItem = item
+                                            scope.launch {
+                                                drawerState.close()
+                                            }
+                                        },
+                                        icon = {
+                                            Icon(
+                                                imageVector = if (item == selectedItem) {
+                                                    item.selectedIcon
+                                                } else item.unselectedIcon,
+                                                contentDescription = item.title
+                                            )
+                                        },
+                                        modifier = Modifier
+                                            .padding(NavigationDrawerItemDefaults.ItemPadding)
+                                            .padding(top = 10.dp)
+                                    )
+                                }
                             }
                         }
-                    }
-                },
-                drawerState = drawerState,
-            ) {
-                        Scaffold(topBar = {
-                            TopAppBar(title = {
-                                Text(
-                                    text = selectedItem.title,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
+                    },
+                    drawerState = drawerState,
+                ) {
+                    Scaffold(topBar = {
+                        TopAppBar(title = {
+                            Text(
+                                text = selectedItem.title,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        },
+                            navigationIcon = {
+                                IconButton(onClick = {
+                                    scope.launch {
+                                        drawerState.open()
+                                    }
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Menu,
+                                        contentDescription = "Menu"
+                                    )
+                                }
                             },
-                                navigationIcon = {
-                                    IconButton(onClick = {
-                                        scope.launch {
-                                            drawerState.open()
-                                        }
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Default.Menu,
-                                            contentDescription = "Menu"
-                                        )
-                                    }
-                                },
-                                actions = {
-                                    IconButton(onClick = {
-                                        navController.navigate("settings")
-                                        isDrawerEnabled = false
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Default.Settings,
-                                            contentDescription = "Settings"
-                                        )
-                                    }
-                                }
-                            )
-
-                        }, content = { innerPadding ->
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(innerPadding)
-                            )
-                            when (selectedItem.route) {
-                                "random_num" -> {
-                                    RandomNumber(innerPadding)
-                                }
-
-                                "random_name" -> {
-                                    RandomNameScreen(innerPadding)
-                                }
-
-                                "random_coin" -> {
-                                    RandomCoinScreen(innerPadding)
-                                }
-
-                                "random_countries" -> {
-                                    RandomCountryScreen()
+                            actions = {
+                                IconButton(onClick = {
+                                    navController.navigate("settings")
+                                    isDrawerEnabled = false
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Settings,
+                                        contentDescription = "Settings"
+                                    )
                                 }
                             }
-                        }
                         )
-                    }
 
-                }
-                composable("settings") {
-                    SettingsScreen {
-                        if (navController.currentBackStackEntry?.lifecycle?.currentState
-                            == Lifecycle.State.RESUMED
-                        ) {
-                            isDrawerEnabled = true
-                            navController.popBackStack()
+                    }, content = { innerPadding ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                        )
+                        when (selectedItem.route) {
+                            "random_num" -> {
+                                RandomNumber(innerPadding)
+                            }
+
+                            "random_name" -> {
+                                RandomNameScreen(innerPadding)
+                            }
+
+                            "random_coin" -> {
+                                RandomCoinScreen(innerPadding)
+                            }
+
+                            "random_countries" -> {
+                                RandomCountryScreen()
+                            }
                         }
+                    }
+                    )
+                }
+            }
+            composable("settings") {
+                SettingsScreen {
+                    if (navController.currentBackStackEntry?.lifecycle?.currentState
+                        == Lifecycle.State.RESUMED
+                    ) {
+                        isDrawerEnabled = true
+                        navController.popBackStack()
                     }
                 }
             }
         }
     }
 }
-
 
 data class DrawerItem(
     val title: String,

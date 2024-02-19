@@ -83,8 +83,6 @@ fun RandomizerTheme(
     content: @Composable () -> Unit
 ) {
 
-    val isSystemInDarkMode = isSystemInDarkTheme()
-
     val colorScheme = if (isDarkTheme) DarkColors else LightColors
     if (Build.VERSION.SDK_INT >= 29) {
         LocalView.current.isForceDarkAllowed = false
@@ -93,7 +91,11 @@ fun RandomizerTheme(
     SideEffect {
         systemUiController.setStatusBarColor(
             color = Color.Transparent,
-            darkIcons = !isSystemInDarkMode
+            darkIcons = !isDarkTheme
+        )
+        systemUiController.setNavigationBarColor(
+            color = Color.Transparent,
+            darkIcons = !isDarkTheme
         )
     }
 

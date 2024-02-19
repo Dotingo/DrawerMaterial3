@@ -1,5 +1,6 @@
 package com.example.randomizer.screens
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -21,16 +22,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.randomizer.MainViewModel
 import com.example.randomizer.R
 import com.example.randomizer.data.AppTheme
 import com.example.randomizer.ui.theme.RandomizerTheme
@@ -38,6 +43,12 @@ import com.example.randomizer.ui.theme.RandomizerTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(onBack: () -> Unit) {
+    val viewModel: MainViewModel = hiltViewModel()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.getTheme(context)
+    }
     Scaffold(topBar = {
         TopAppBar(
             title = {
@@ -64,8 +75,9 @@ fun SettingsScreen(onBack: () -> Unit) {
                     .padding(innerPadding)
                     .padding(horizontal = 10.dp)
             ) {
-
-                ThemeSettings()
+                ThemeSettings(viewModel.appTheme.value) {
+                    viewModel.saveTheme(context, it)
+                }
                 HorizontalDivider(
                     modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
                     thickness = 1.dp
@@ -96,27 +108,25 @@ fun ThemeSettings(appTheme: AppTheme, onAppThemeChanged: (AppTheme) -> Unit) {
         FlowRow(
             modifier = Modifier.fillMaxWidth()
         ) {
-
             TextedRadioButton(
-                selected = (appTheme == AppTheme.System),
+                selected = appTheme == AppTheme.System,
                 onClick = { onAppThemeChanged(AppTheme.System) },
                 text = themes[0]
             )
             TextedRadioButton(
-                selected = (appTheme == AppTheme.Light),
+                selected = appTheme == AppTheme.Light,
                 onClick = { onAppThemeChanged(AppTheme.Light) },
-                text = themes[1]
+                text = themes[2]
             )
             TextedRadioButton(
-                selected = (appTheme == AppTheme.Dark),
+                selected = appTheme == AppTheme.Dark,
                 onClick = { onAppThemeChanged(AppTheme.Dark) },
-                text = themes[2]
+                text = themes[1]
             )
 
         }
     }
 }
-
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

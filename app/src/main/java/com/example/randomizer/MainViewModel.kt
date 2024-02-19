@@ -1,29 +1,28 @@
 package com.example.randomizer
 
+import android.content.Context
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringArrayResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.randomizer.data.AppTheme
+import com.example.randomizer.data.DataStoreManager
 import com.example.randomizer.data.NameEntity
 import com.example.randomizer.data.RandomizerDb
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    val randomizerDb: RandomizerDb
+    private val randomizerDb: RandomizerDb
 ) : ViewModel() {
     val namesList = mutableStateOf(emptyList<NameEntity>())
-    val genderList = listOf("", "m", "f")
-    val regionList = listOf(
+    private val genderList = listOf("", "m", "f")
+    private val regionList = listOf(
         "",
         "English",
         "Slavic",
@@ -41,6 +40,23 @@ class MainViewModel @Inject constructor(
         "South Asia"
     )
 
+    private val _appTheme = mutableStateOf(AppTheme.System)
+    val appTheme: State<AppTheme> = _appTheme
+
+    fun getTheme(context: Context) {
+        viewModelScope.launch {
+            _appTheme.value = withContext(Dispatchers.IO) {
+                DataStoreManager(context).getTheme()
+            }
+        }
+    }
+
+    fun saveTheme(context: Context, newTheme: AppTheme) {
+        _appTheme.value = newTheme
+        viewModelScope.launch {
+            DataStoreManager(context).saveTheme(_appTheme.value.name)
+        }
+    }
     fun queryNames(genInd: Int, regInd: Int) {
         viewModelScope.launch {
             namesList.value = when {

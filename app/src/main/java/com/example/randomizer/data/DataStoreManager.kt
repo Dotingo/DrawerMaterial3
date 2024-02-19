@@ -34,11 +34,8 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    suspend fun getTheme():AppTheme{
-        val themeString = context.dataStore.data.map {pref ->
-            pref[stringPreferencesKey(KEY_APP_THEME)] ?: "System"
-        }.first()
-
+    suspend fun getTheme(): AppTheme {
+        val themeString = context.dataStore.data.first()[stringPreferencesKey(KEY_APP_THEME)] ?: "System"
         return AppTheme.valueOf(themeString)
     }
 

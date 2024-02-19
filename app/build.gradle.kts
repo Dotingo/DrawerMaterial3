@@ -43,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     packaging {
         resources {
@@ -53,16 +53,24 @@ android {
 }
 
 dependencies {
+
+    //accompanist
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
 
+    //lottie
     implementation("com.airbnb.android:lottie-compose:6.1.0")
 
+    //dagger hilt
     implementation("com.google.dagger:hilt-android:2.48.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    ksp("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    //window size
     implementation ("androidx.compose.material3:material3-window-size-class:1.2.0")
-    implementation("androidx.room:room-ktx:2.6.0")
-    kapt("androidx.room:room-compiler:2.6.0")
+
+    //room db
+    implementation("androidx.room:room-ktx:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
@@ -85,5 +93,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    //cool preview
     debugImplementation("androidx.compose.ui:ui-tooling-preview:1.6.1")
 }
