@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -115,7 +116,7 @@ private fun ToolsSection(
                 .width(150.dp)
                 .height(60.dp),
             singleLine = true,
-
+            shape = RoundedCornerShape(16.dp, 0.dp, 0.dp, 16.dp),
             label = { Text(stringResource(id = R.string.min_num)) }
 
         )
@@ -129,6 +130,7 @@ private fun ToolsSection(
                 .width(150.dp)
                 .height(60.dp),
             singleLine = true,
+            shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
             label = { Text(stringResource(id = R.string.max_num)) }
         )
     }

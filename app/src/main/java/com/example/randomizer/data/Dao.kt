@@ -1,8 +1,8 @@
 package com.example.randomizer.data
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
+import com.example.randomizer.data.type.NameEntity
 
 @Dao
 interface Dao {

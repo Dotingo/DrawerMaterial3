@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.randomizer.MainViewModel
+import com.example.randomizer.DatabaseViewModel
 import com.example.randomizer.R
 import com.example.randomizer.screens.common.ResultSection
 import com.example.randomizer.util.Dimens.MediumPadding1
@@ -44,7 +44,6 @@ import com.example.randomizer.util.Dimens.MediumPadding1
 fun RandomNameScreen(paddingValues: PaddingValues) {
     val mContext = LocalContext.current
     var generatedNames by remember { mutableStateOf<List<String>>(emptyList()) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +69,7 @@ fun RandomNameScreen(paddingValues: PaddingValues) {
 @OptIn(ExperimentalMaterial3Api::class)
 private fun ToolsSection(
     onGeneratedNamesChange: (List<String>) -> Unit,
-    mainViewModel: MainViewModel = hiltViewModel()
+    dbViewModel: DatabaseViewModel = hiltViewModel()
 ) {
 
     var selectedGenderIndex by remember { mutableIntStateOf(0) }
@@ -82,9 +81,9 @@ private fun ToolsSection(
     var selectedGender by remember { mutableStateOf(gender[0]) }
     var expandedCountry by remember { mutableStateOf(false) }
     var expandedGender by remember { mutableStateOf(false) }
-    val namesList = mainViewModel.namesList
+    val namesList = dbViewModel.namesList
 
-    mainViewModel.queryNames(selectedGenderIndex, selectedNamesRegionsIndex)
+    dbViewModel.queryNames(selectedGenderIndex, selectedNamesRegionsIndex)
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround

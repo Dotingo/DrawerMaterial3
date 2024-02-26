@@ -1,4 +1,4 @@
-package com.example.randomizer.data
+package com.example.randomizer.data.type
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

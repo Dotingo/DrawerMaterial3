@@ -101,6 +101,7 @@ fun RandomizerTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        typography = Typography,
         content = content
     )
 

@@ -1,23 +1,17 @@
 package com.example.randomizer
 
-import android.content.Context
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.randomizer.data.AppTheme
-import com.example.randomizer.data.DataStoreManager
-import com.example.randomizer.data.NameEntity
+import com.example.randomizer.data.type.NameEntity
 import com.example.randomizer.data.RandomizerDb
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class DatabaseViewModel @Inject constructor(
     private val randomizerDb: RandomizerDb
 ) : ViewModel() {
     val namesList = mutableStateOf(emptyList<NameEntity>())
@@ -40,47 +34,30 @@ class MainViewModel @Inject constructor(
         "South Asia"
     )
 
-    private val _appTheme = mutableStateOf(AppTheme.System)
-    val appTheme: State<AppTheme> = _appTheme
-
-    fun getTheme(context: Context) {
-        viewModelScope.launch {
-            _appTheme.value = withContext(Dispatchers.IO) {
-                DataStoreManager(context).getTheme()
-            }
-        }
-    }
-
-    fun saveTheme(context: Context, newTheme: AppTheme) {
-        _appTheme.value = newTheme
-        viewModelScope.launch {
-            DataStoreManager(context).saveTheme(_appTheme.value.name)
-        }
-    }
     fun queryNames(genInd: Int, regInd: Int) {
         viewModelScope.launch {
             namesList.value = when {
                 (genderList[genInd] == "" && regionList[regInd] == "") ->
-                    randomizerDb.dao.getAllNames(getSystemLanguage())
+                    randomizerDb.dao.getAllNames(getLanguage())
 
                 (genderList[genInd] != "" && regionList[regInd] == "") ->
-                    randomizerDb.dao.getNamesByGender(genderList[genInd], getSystemLanguage())
+                    randomizerDb.dao.getNamesByGender(genderList[genInd], getLanguage())
 
                 (genderList[genInd] == "" && regionList[regInd] != "") ->
-                    randomizerDb.dao.getAllNamesByRegion(regionList[regInd], getSystemLanguage())
+                    randomizerDb.dao.getAllNamesByRegion(regionList[regInd], getLanguage())
 
                 else ->
 
                     randomizerDb.dao.getAllNamesByAll(
                         genderList[genInd],
                         regionList[regInd],
-                        getSystemLanguage()
+                        getLanguage()
                     )
             }
         }
     }
 
-    private fun getSystemLanguage(): String {
+    private fun getLanguage(): String {
         val locale = Locale.getDefault()
         val language = locale.language
         return if (language == "ru") {

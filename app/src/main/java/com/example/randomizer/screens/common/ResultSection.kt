@@ -15,22 +15,18 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import com.example.randomizer.R
-import com.example.randomizer.ui.theme.AutoSizeText
-import com.example.randomizer.ui.theme.FontSizeRange
 import com.example.randomizer.ui.theme.RandomizerTheme
 import com.example.randomizer.util.Dimens
 
@@ -44,6 +40,7 @@ fun ResultSection(
         remember {
             mContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,20 +56,11 @@ fun ResultSection(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            AutoSizeText(
+            Text(
                 text = output.joinToString(separator),
-                maxLines = 12,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                fontSizeRange = FontSizeRange(
-                    min = 10.sp,
-                    max = 28.sp,
-                ),
-                style = LocalTextStyle.current.merge(
-                    TextStyle(lineHeight = 1.2.em)
-                ),
+                maxLines = 5,
+                style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center
-
             )
 
         }
@@ -97,9 +85,7 @@ fun ResultSection(
                     contentDescription = "copy"
                 )
             }
-
         }
-
     }
 }
 
@@ -108,7 +94,9 @@ fun ResultSection(
 @Composable
 fun ResultSectionPreview() {
     RandomizerTheme {
-        ResultSection(output = listOf("Nessa", "Vitold", "Jeremy", "John"),
-            mContext = LocalContext.current, separator = "\n")
+        ResultSection(
+            output = listOf("Nessa", "Vitold", "Jeremy", "John"),
+            mContext = LocalContext.current, separator = "\n"
+        )
     }
 }
