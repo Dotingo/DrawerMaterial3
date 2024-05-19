@@ -1,20 +1,16 @@
-package com.example.randomizer.screens
+package com.example.randomizer.presentation.screens.coins
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,95 +30,85 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.randomizer.R
-import com.example.randomizer.util.Dimens.ExtraSmallPadding
-import com.example.randomizer.util.Dimens.MediumPadding1
-import com.example.randomizer.util.Dimens.SmallPadding
+import com.example.randomizer.presentation.util.Dimens
+import com.example.randomizer.presentation.util.Dimens.MediumPadding1
 
 @Composable
 fun RandomCoinScreen(paddingValues: PaddingValues) {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.coin_flip)
-    )
-    var isPlaying by remember {
-        mutableStateOf(false)
-    }
-    var side by remember {
-        mutableIntStateOf(1)
-    }
-    var coinText by remember { mutableStateOf("Tail") }
-    val progress by animateLottieCompositionAsState(
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.coin_flip))
+    var side by remember { mutableIntStateOf(1) }
+    var isAnimating by remember { mutableStateOf(false) }
+    val animationState = animateLottieCompositionAsState(
         composition = composition,
-        isPlaying = isPlaying
-    )
-    val animSpec = LottieClipSpec.Progress(
-        0f,
-        if (side == 1) 1f else 0.5f
-    )
-    LaunchedEffect(key1 = progress) {
-        if (progress == 1f || progress == 0.5f) {
-            isPlaying = false
-        }
-    }
-
-    coinText = if (!isPlaying) {
-        if (side == 1) {
-            stringResource(id = R.string.head_coin)
+        iterations = 5,
+        speed = 15f,
+        isPlaying = isAnimating,
+        clipSpec = if (side == 1) {
+            LottieClipSpec.Progress(0f, 1f)
         } else {
-            stringResource(id = R.string.tail_coin)
+            LottieClipSpec.Progress(0f, 0.5f)
         }
-    } else {
-        ""
-    }
-
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
             .padding(paddingValues)
-            .padding(horizontal = SmallPadding),
+            .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Card(
-            modifier = Modifier.fillMaxHeight(0.6f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.5f),
             elevation = CardDefaults.cardElevation(2.dp)
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxHeight(0.85f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 LottieAnimation(
                     composition = composition,
-                    isPlaying = isPlaying,
-                    speed = 10f,
-                    iterations = 20,
-                    clipSpec = animSpec
+                    progress = { animationState.progress }
                 )
-
             }
             Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.Center
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.15f)
+                    .padding(end = Dimens.ExtraSmallPadding),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = coinText, fontSize = 28.sp);
+                if (!isAnimating) {
+                    Text(
+                        text = if (side == 1) {
+                            stringResource(id = R.string.head_coin)
+                        } else {
+                            stringResource(id = R.string.tail_coin)
+                        }, fontSize = 32.sp
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(ExtraSmallPadding))
         }
-
         Button(modifier = Modifier
             .padding(bottom = MediumPadding1),
             onClick = {
-                if (!isPlaying) {
+                if (!isAnimating) {
                     side = (1..2).random()
-                    isPlaying = true
+                    isAnimating = true
                 }
-
-
             }) {
             Text(text = stringResource(id = R.string.toss_a_coin))
         }
 
+        LaunchedEffect(animationState.isAtEnd && isAnimating) {
+            if (animationState.isAtEnd) {
+                isAnimating = false
+            }
+        }
     }
 }

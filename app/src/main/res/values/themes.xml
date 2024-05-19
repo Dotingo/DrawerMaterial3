@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="Theme.RandomSplashScreen" parent="Theme.SplashScreen">
+        <item  name="windowSplashScreenBackground" >@color/dark_gray</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/dice</item>
+        <item name="postSplashScreenTheme">@style/Theme.Randomizer</item>
+    </style>
+
     <style name="Theme.Randomizer" parent="android:Theme.Material.Light.NoActionBar">
     <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>

@@ -1,4 +1,4 @@
-package com.example.randomizer.screens
+package com.example.randomizer.presentation.screens.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -23,12 +21,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.randomizer.R
 import com.example.randomizer.data.AppTheme
-import com.example.randomizer.screens.common.TextedRadioButton
+import com.example.randomizer.presentation.screens.common.TextedRadioButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +38,7 @@ fun SettingsScreen(
     appTheme: AppTheme,
     onAppThemeChanged: (AppTheme) -> Unit
 ) {
+    val settingsViewModel: SettingsViewModel = viewModel()
     Scaffold(topBar = {
         TopAppBar(
             title = {
@@ -49,7 +51,7 @@ fun SettingsScreen(
             navigationIcon = {
                 IconButton(onClick = { onBack() }) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
                         contentDescription = "back"
                     )
                 }
@@ -63,7 +65,11 @@ fun SettingsScreen(
                     .padding(innerPadding)
                     .padding(horizontal = 10.dp)
             ) {
-                ThemeSettings(appTheme = appTheme, onAppThemeChanged = onAppThemeChanged)
+                ThemeSettings(
+                    viewModel = settingsViewModel,
+                    appTheme = appTheme,
+                    onAppThemeChanged = onAppThemeChanged
+                )
                 HorizontalDivider(
                     modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
                     thickness = 1.dp
@@ -74,19 +80,22 @@ fun SettingsScreen(
                     thickness = 1.dp
                 )
             }
-        })
+        }
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ThemeSettings(appTheme: AppTheme, onAppThemeChanged: (AppTheme) -> Unit) {
-
+fun ThemeSettings(
+    viewModel: SettingsViewModel,
+    appTheme: AppTheme,
+    onAppThemeChanged: (AppTheme) -> Unit
+) {
     val themes = arrayOf(
         stringResource(id = R.string.system_theme),
         stringResource(id = R.string.dark_theme),
         stringResource(id = R.string.light_theme)
     )
-
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -98,32 +107,26 @@ fun ThemeSettings(appTheme: AppTheme, onAppThemeChanged: (AppTheme) -> Unit) {
             TextedRadioButton(
                 selected = appTheme == AppTheme.System,
                 onClick = {
-                    if (appTheme != AppTheme.System)
-                        onAppThemeChanged(AppTheme.System)
+                    onAppThemeChanged(viewModel.changeTheme(appTheme, AppTheme.System))
                 },
                 text = themes[0]
             )
             TextedRadioButton(
                 selected = appTheme == AppTheme.Light,
                 onClick = {
-                    if (appTheme != AppTheme.Light)
-                        onAppThemeChanged(AppTheme.Light)
-
+                    onAppThemeChanged(viewModel.changeTheme(appTheme, AppTheme.Light))
                 },
                 text = themes[2]
             )
             TextedRadioButton(
                 selected = appTheme == AppTheme.Dark,
                 onClick = {
-                    if (appTheme != AppTheme.Dark)
-                        onAppThemeChanged(AppTheme.Dark)
+                    onAppThemeChanged(viewModel.changeTheme(appTheme, AppTheme.Dark))
                 },
                 text = themes[1]
             )
-
         }
     }
-
 }
 
 @OptIn(ExperimentalLayoutApi::class)

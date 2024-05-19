@@ -2,7 +2,6 @@ package com.example.randomizer.di
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.randomizer.data.RandomizerDb
 import dagger.Module
 import dagger.Provides
@@ -24,8 +23,8 @@ object MainModule {
                 "randomizer.db"
             ).createFromAsset("db/randomizer.db").build()
         } catch (e: Exception) {
-            // Handle the exception (e.g., log the error)
-            throw e // Rethrow the exception to notify callers
+
+            throw e
         }
     }
 }

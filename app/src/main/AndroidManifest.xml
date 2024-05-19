@@ -11,13 +11,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Randomizer"
+        android:theme="@style/Theme.RandomSplashScreen"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Randomizer">
+            android:theme="@style/Theme.RandomSplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

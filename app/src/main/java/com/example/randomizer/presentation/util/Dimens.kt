@@ -1,4 +1,4 @@
-package com.example.randomizer.util
+package com.example.randomizer.presentation.util
 
 import androidx.compose.ui.unit.dp
 

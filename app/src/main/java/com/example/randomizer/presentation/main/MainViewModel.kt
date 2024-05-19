@@ -1,4 +1,4 @@
-package com.example.randomizer
+package com.example.randomizer.presentation.main
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -11,16 +11,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SettingsViewModel: ViewModel() {
+class MainViewModel: ViewModel() {
 
     private val _appTheme = MutableStateFlow(AppTheme.System)
     val appTheme: StateFlow<AppTheme> = _appTheme
+
+    private val _isThemeLoaded = MutableStateFlow(false)
+    val isThemeLoaded: StateFlow<Boolean> = _isThemeLoaded
 
     fun getTheme(context: Context) {
         viewModelScope.launch {
             _appTheme.value = withContext(Dispatchers.IO) {
                 DataStoreManager(context).getTheme()
             }
+            _isThemeLoaded.value = true
         }
     }
 
@@ -29,6 +33,5 @@ class SettingsViewModel: ViewModel() {
         viewModelScope.launch {
             DataStoreManager(context).saveTheme(_appTheme.value.name)
         }
-
     }
 }

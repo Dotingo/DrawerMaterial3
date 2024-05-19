@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.dagger.hilt.android.compiler)
 
+    implementation (libs.androidx.core.splashscreen)
 
     //room db
     implementation(libs.androidx.room.ktx)
@@ -74,6 +75,7 @@ dependencies {
     //cool preview
     debugImplementation(libs.androidx.ui.tooling.preview)
 
+    implementation (libs.androidx.runtime.livedata)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.timber)

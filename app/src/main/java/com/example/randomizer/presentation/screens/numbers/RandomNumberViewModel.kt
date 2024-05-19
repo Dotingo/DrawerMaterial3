@@ -1,0 +1,107 @@
+package com.example.randomizer.presentation.screens.numbers
+
+import android.app.Application
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.randomizer.R
+import com.example.randomizer.data.DataStoreManager
+import com.example.randomizer.data.NumRangeData
+import kotlinx.coroutines.launch
+
+class RandomNumberViewModel(application: Application): AndroidViewModel(application) {
+    private val context = application
+    private val _generatedNumbers = MutableLiveData<List<Int>>(emptyList())
+    val generatedNumbers: LiveData<List<Int>> = _generatedNumbers
+    private val dataStoreManager = DataStoreManager(context)
+    private val _minNumState = MutableLiveData("0")
+    val minNumState: LiveData<String> = _minNumState
+
+    private val _maxNumState = MutableLiveData("100")
+    val maxNumState: LiveData<String> = _maxNumState
+
+    init {
+        fetchDataFromDataStore()
+    }
+    private fun fetchDataFromDataStore() {
+        viewModelScope.launch {
+            dataStoreManager.getRange().collect { range ->
+                _minNumState.value = range.minValue.toString()
+                _maxNumState.value = range.maxValue.toString()
+            }
+        }
+    }
+    fun setMinNum(value: String) {
+        _minNumState.value = value
+    }
+
+    // Function to update maxNumState
+    fun setMaxNum(value: String) {
+        _maxNumState.value = value
+    }
+    fun generateRandomNumber(minNum: String, maxNum: String, slideValueState: Int, checkedState: Boolean){
+
+        try {
+            val min = minNum.replace(',', '.').toInt()
+            val max = maxNum.replace(',', '.').toInt()
+
+            viewModelScope.launch {
+                dataStoreManager.saveNumRange(
+                    NumRangeData(min, max)
+                )
+            }
+
+            if (min < max) {
+                val randomNumbers = generateUniqueRandomNumbers(
+                    min,
+                    max,
+                    slideValueState,
+                    checkedState
+                )
+                if (randomNumbers.isNotEmpty()) {
+                    _generatedNumbers.value = randomNumbers
+                } else {
+                    Toast.makeText(
+                        context,
+                        R.string.cannot_generate_unique,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+            } else {
+                Toast.makeText(
+                    context,
+                    R.string.min_greater_max,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } catch (e: NumberFormatException) {
+            Toast.makeText(
+                context,
+                R.string.enter_num_value,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
+    private fun generateUniqueRandomNumbers(min: Int, max: Int, count: Int, allowRepeats: Boolean): List<Int> {
+        if (!allowRepeats && (max - min + 1) < count) {
+            return listOf()
+        }
+        val randomNumbers = mutableListOf<Int>()
+        val generatedSet = mutableSetOf<Int>()
+
+        while (randomNumbers.size < count) {
+            val randomNum = (min..max).random()
+            if (allowRepeats || !generatedSet.contains(randomNum)) {
+                randomNumbers.add(randomNum)
+                generatedSet.add(randomNum)
+            }
+        }
+
+        return randomNumbers
+    }
+}

@@ -1,4 +1,4 @@
-package com.example.randomizer.screens.common
+package com.example.randomizer.presentation.screens.common
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -27,18 +28,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
-import com.example.randomizer.ui.theme.RandomizerTheme
-import com.example.randomizer.util.Dimens
+import com.example.randomizer.presentation.ui.theme.RandomizerTheme
+import com.example.randomizer.presentation.util.Dimens
 
 @Composable
 fun ResultSection(
-    output: List<Any>,
-    mContext: Context,
+    output: List<Any>?,
     separator: String
 ) {
+    val context = LocalContext.current
     val clipboardManager =
         remember {
-            mContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         }
 
     Card(
@@ -47,37 +48,38 @@ fun ResultSection(
             .fillMaxHeight(0.5f),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.85f),
+                .weight(1f),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            Text(
-                text = output.joinToString(separator),
-                maxLines = 5,
-                style = MaterialTheme.typography.headlineLarge,
-                textAlign = TextAlign.Center
-            )
+            output?.joinToString(separator)?.let {
+                Text(
+                    text = it,
+                    maxLines = 5,
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center
+                )
+            }
 
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .weight(0.15f)
                 .padding(end = Dimens.ExtraSmallPadding),
             horizontalArrangement = Arrangement.End
         ) {
             IconButton(onClick = {
-                if (output.isNotEmpty()) {
+                if (output?.isNotEmpty() == true) {
                     val clipData = ClipData.newPlainText(
                         "GeneratedNumbers",
                         output.joinToString(", ")
                     )
                     clipboardManager.setPrimaryClip(clipData)
-                    Toast.makeText(mContext, R.string.copied_text, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.copied_text, Toast.LENGTH_SHORT).show()
                 }
             }) {
                 Icon(
@@ -86,17 +88,5 @@ fun ResultSection(
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun ResultSectionPreview() {
-    RandomizerTheme {
-        ResultSection(
-            output = listOf("Nessa", "Vitold", "Jeremy", "John"),
-            mContext = LocalContext.current, separator = "\n"
-        )
     }
 }

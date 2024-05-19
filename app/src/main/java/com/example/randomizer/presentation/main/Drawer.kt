@@ -1,4 +1,4 @@
-package com.example.randomizer.ui
+package com.example.randomizer.presentation.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,10 +23,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,10 +36,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
-import com.example.randomizer.screens.RandomCountryScreen
-import com.example.randomizer.screens.RandomNameScreen
-import com.example.randomizer.screens.RandomNumber
-import com.example.randomizer.screens.RandomCoinScreen
+import com.example.randomizer.presentation.screens.coins.RandomCoinScreen
+import com.example.randomizer.presentation.screens.countries.RandomCountryScreen
+import com.example.randomizer.presentation.screens.names.RandomNameScreen
+import com.example.randomizer.presentation.screens.numbers.RandomNumber
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -124,7 +121,7 @@ fun Drawer(
                             }
                         }) {
                             Icon(
-                                imageVector = Icons.Default.Menu,
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_menu),
                                 contentDescription = "Menu"
                             )
                         }
@@ -135,7 +132,7 @@ fun Drawer(
 
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Settings,
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_settings),
                                 contentDescription = "Settings"
                             )
                         }

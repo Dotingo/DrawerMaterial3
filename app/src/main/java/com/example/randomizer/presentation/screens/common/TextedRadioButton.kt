@@ -1,4 +1,4 @@
-package com.example.randomizer.screens.common
+package com.example.randomizer.presentation.screens.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

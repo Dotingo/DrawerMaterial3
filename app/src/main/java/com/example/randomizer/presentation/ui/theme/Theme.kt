@@ -1,4 +1,4 @@
-package com.example.randomizer.ui.theme
+package com.example.randomizer.presentation.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

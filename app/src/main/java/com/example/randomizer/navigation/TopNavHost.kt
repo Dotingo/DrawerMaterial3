@@ -1,4 +1,4 @@
-package com.example.randomizer.navigate
+package com.example.randomizer.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
@@ -12,10 +12,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.randomizer.SettingsViewModel
-import com.example.randomizer.data.type.ScreenRouteType
-import com.example.randomizer.screens.SettingsScreen
-import com.example.randomizer.ui.Drawer
+import com.example.randomizer.presentation.main.MainViewModel
+import com.example.randomizer.presentation.screens.settings.SettingsScreen
+import com.example.randomizer.presentation.main.Drawer
 
 /**
  * [NavHost] for top level screens.
@@ -31,11 +30,11 @@ fun TopNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = ScreenRouteType.Main.route,
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel()
 ) = NavHost(
     modifier = modifier,
     navController = navController,
-    route = "top_level_nav_host)",
+    route = "top_level_nav_host",
     startDestination = startDestination,
     enterTransition = {
         slideIntoContainer(
@@ -72,18 +71,18 @@ fun TopNavHost(
 
     composable(route = ScreenRouteType.Settings.route) {
         val context = LocalContext.current
-        SettingsScreen(appTheme = viewModel.appTheme.collectAsStateWithLifecycle().value, onAppThemeChanged = {
-            viewModel.saveTheme(context, it)
-        }, onBack = {
-            if (navController.currentBackStackEntry?.lifecycle?.currentState
-                == Lifecycle.State.RESUMED
-            ) {
-                navController.popBackStack()
+        SettingsScreen(
+            appTheme = viewModel.appTheme.collectAsStateWithLifecycle().value,
+            onAppThemeChanged = {
+                viewModel.saveTheme(context, it)
+            },
+            onBack = {
+                if (navController.currentBackStackEntry?.lifecycle?.currentState
+                    == Lifecycle.State.RESUMED
+                ) {
+                    navController.popBackStack()
+                }
             }
-        })
-
-
-
-
+        )
     }
 }
