@@ -34,13 +34,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.names.RandomNameScreen
 import com.example.randomizer.presentation.screens.common.ResultSection
-import com.example.randomizer.presentation.ui.theme.RandomizerTheme
 import com.example.randomizer.presentation.util.Dimens.ExtraSmallPadding
 import com.example.randomizer.presentation.util.Dimens.MediumPadding1
 import com.example.randomizer.presentation.util.Dimens.SmallPadding
@@ -169,13 +166,5 @@ fun RandomNumber(
                 color = MaterialTheme.colorScheme.surface
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun RandomNumScreenPrev() {
-    RandomizerTheme {
-        RandomNameScreen(paddingValues = PaddingValues())
     }
 }

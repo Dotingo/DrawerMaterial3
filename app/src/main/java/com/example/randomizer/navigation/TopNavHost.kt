@@ -14,7 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.randomizer.presentation.main.MainViewModel
 import com.example.randomizer.presentation.screens.settings.SettingsScreen
-import com.example.randomizer.presentation.main.Drawer
+import com.example.randomizer.presentation.main.MainDrawer
 
 /**
  * [NavHost] for top level screens.
@@ -62,7 +62,7 @@ fun TopNavHost(
     }
 ) {
     composable(route = ScreenRouteType.Main.route) {
-        Drawer(navigateToSettingsScreen = {
+        MainDrawer(navigateToSettingsScreen = {
             navController.navigate(route = ScreenRouteType.Settings.route) {
                 launchSingleTop = true
             }

@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 /**
  *  [TextedRadioButton] is a row of [RadioButton] with text after the button.
  *  @param selected whether this radio button is selected or not
- *  @param onClick called when this radio button is clicked. If null, then this radio button will not be interactable, unless something else handles its input events and updates its state.
+ *  @param onClick called when this radio button is clicked. If null, then this radio button will not be intractable, unless something else handles its input events and updates its state.
  *  @param text displays text with the name of the radio button
  */
 
