@@ -1,5 +1,13 @@
 package com.example.randomizer.presentation.screens.settings
 
+import android.app.LocaleManager
+import android.content.Context
+import android.content.res.Configuration
+import android.os.Build
+import android.os.LocaleList
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -16,16 +24,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import java.util.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.randomizer.R
 import com.example.randomizer.data.AppTheme
@@ -137,18 +151,42 @@ fun LanguageSettings() {
         "English",
         "Русский"
     )
-    var selectedLang by remember { mutableStateOf(languages[0]) }
-
+    var selectedLang by rememberSaveable { mutableStateOf(languages[0]) }
+    val context = LocalContext.current
+    val systemLocale = LocalConfiguration.current.locales[0].displayName
     Text(text = stringResource(id = R.string.language))
     FlowRow(
         modifier = Modifier.fillMaxWidth()
     ) {
-        languages.forEach { lang ->
+        languages.forEachIndexed { index, lang ->
             TextedRadioButton(
                 selected = (lang == selectedLang),
-                onClick = { selectedLang = lang },
+                onClick = {
+                    if (selectedLang != lang) {
+                        Log.d("my", systemLocale)
+                        selectedLang = lang
+                        changeLocales(
+                            context,
+                            when (languages.indexOf(selectedLang)) {
+                                0 -> systemLocale
+                                1 -> "en"
+                                2 -> "ru"
+                                else -> systemLocale
+                            }
+                        )
+                    }
+                },
                 text = lang
             )
         }
+    }
+}
+
+fun changeLocales(context: Context, localeString: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.getSystemService(LocaleManager::class.java)
+            .applicationLocales = LocaleList.forLanguageTags(localeString)
+    } else {
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(localeString))
     }
 }
