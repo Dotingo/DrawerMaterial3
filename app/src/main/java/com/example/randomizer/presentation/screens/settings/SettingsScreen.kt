@@ -21,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -144,7 +143,6 @@ fun LanguageSettings(viewModel: SettingsViewModel = viewModel()) {
     val systemLocale = LocalConfiguration.current.locales[0].language
     val initialLang = if (systemLocale == "ru") languages[1] else languages[0]
     var isChangingLanguage by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(systemLocale) {
         viewModel.initializeLanguage(initialLang)
     }
