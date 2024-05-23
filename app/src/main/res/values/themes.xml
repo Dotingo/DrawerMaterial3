@@ -7,7 +7,7 @@
         <item name="postSplashScreenTheme">@style/Theme.Randomizer</item>
     </style>
 
-    <style name="Theme.Randomizer" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.Randomizer" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 </resources>

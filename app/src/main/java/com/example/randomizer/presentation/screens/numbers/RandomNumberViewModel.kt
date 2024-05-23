@@ -1,6 +1,7 @@
 package com.example.randomizer.presentation.screens.numbers
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -11,7 +12,7 @@ import com.example.randomizer.data.DataStoreManager
 import com.example.randomizer.data.NumRangeData
 import kotlinx.coroutines.launch
 
-class RandomNumberViewModel(application: Application): AndroidViewModel(application) {
+class RandomNumberViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application
     private val _generatedNumbers = MutableLiveData<List<Int>>(emptyList())
     val generatedNumbers: LiveData<List<Int>> = _generatedNumbers
@@ -25,6 +26,7 @@ class RandomNumberViewModel(application: Application): AndroidViewModel(applicat
     init {
         fetchDataFromDataStore()
     }
+
     private fun fetchDataFromDataStore() {
         viewModelScope.launch {
             dataStoreManager.getRange().collect { range ->
@@ -33,6 +35,7 @@ class RandomNumberViewModel(application: Application): AndroidViewModel(applicat
             }
         }
     }
+
     fun setMinNum(value: String) {
         _minNumState.value = value
     }
@@ -41,7 +44,14 @@ class RandomNumberViewModel(application: Application): AndroidViewModel(applicat
     fun setMaxNum(value: String) {
         _maxNumState.value = value
     }
-    fun generateRandomNumber(minNum: String, maxNum: String, slideValueState: Int, checkedState: Boolean){
+
+    fun generateRandomNumber(
+        context: Context,
+        minNum: String,
+        maxNum: String,
+        slideValueState: Int,
+        checkedState: Boolean
+    ) {
 
         try {
             val min = minNum.replace(',', '.').toInt()
@@ -65,7 +75,7 @@ class RandomNumberViewModel(application: Application): AndroidViewModel(applicat
                 } else {
                     Toast.makeText(
                         context,
-                        R.string.cannot_generate_unique,
+                        context.getString(R.string.cannot_generate_unique),
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -73,21 +83,26 @@ class RandomNumberViewModel(application: Application): AndroidViewModel(applicat
             } else {
                 Toast.makeText(
                     context,
-                    R.string.min_greater_max,
+                    context.getString(R.string.min_greater_max),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         } catch (e: NumberFormatException) {
             Toast.makeText(
                 context,
-                R.string.enter_num_value,
+                context.getString(R.string.enter_num_value),
                 Toast.LENGTH_SHORT
             ).show()
         }
 
     }
 
-    private fun generateUniqueRandomNumbers(min: Int, max: Int, count: Int, allowRepeats: Boolean): List<Int> {
+    private fun generateUniqueRandomNumbers(
+        min: Int,
+        max: Int,
+        count: Int,
+        allowRepeats: Boolean
+    ): List<Int> {
         if (!allowRepeats && (max - min + 1) < count) {
             return listOf()
         }

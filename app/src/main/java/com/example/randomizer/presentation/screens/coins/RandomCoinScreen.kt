@@ -1,5 +1,7 @@
 package com.example.randomizer.presentation.screens.coins
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +23,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +42,7 @@ fun RandomCoinScreen(paddingValues: PaddingValues) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.coin_flip))
     var side by remember { mutableIntStateOf(1) }
     var isAnimating by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
     val animationState = animateLottieCompositionAsState(
         composition = composition,
         iterations = 5,
@@ -60,7 +65,16 @@ fun RandomCoinScreen(paddingValues: PaddingValues) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.5f),
+                .fillMaxHeight(0.8f)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null
+                ) {
+                    if (!isAnimating) {
+                        side = (1..2).random()
+                        isAnimating = true
+                    }
+                },
             elevation = CardDefaults.cardElevation(2.dp)
         ) {
             Column(
@@ -72,7 +86,8 @@ fun RandomCoinScreen(paddingValues: PaddingValues) {
             ) {
                 LottieAnimation(
                     composition = composition,
-                    progress = { animationState.progress }
+                    progress = { animationState.progress },
+                    modifier = Modifier.scale(1.5f)
                 )
             }
             Row(

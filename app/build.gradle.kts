@@ -9,6 +9,10 @@ android {
     namespace = "com.example.randomizer"
     compileSdk = 34
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.example.randomizer"
         minSdk = 24
