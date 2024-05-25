@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.randomizer.R
@@ -81,12 +82,14 @@ fun RandomNumber(
                     imeAction = ImeAction.Done
                 ),
                 onValueChange = { newValue ->
-                    randomNumberViewModel.setMinNum(newValue)
+                    val filteredText = newValue.filter { it != ',' && it != '.' && it != ' ' }
+                    randomNumberViewModel.setMinNum(filteredText)
                 },
                 modifier = Modifier
                     .width(150.dp)
                     .height(60.dp),
                 singleLine = true,
+                visualTransformation = VisualTransformation.None,
                 shape = RoundedCornerShape(16.dp, 0.dp, 0.dp, 16.dp),
                 label = { Text(stringResource(id = R.string.min_num)) }
 
@@ -95,12 +98,14 @@ fun RandomNumber(
                 value = maxNumState,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = { newValue ->
-                    randomNumberViewModel.setMaxNum(newValue)
+                    val filteredText = newValue.filter { it != ',' && it != '.' && it != ' ' }
+                    randomNumberViewModel.setMaxNum(filteredText)
                 },
                 modifier = Modifier
                     .width(150.dp)
                     .height(60.dp),
                 singleLine = true,
+                visualTransformation = VisualTransformation.None,
                 shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
                 label = { Text(stringResource(id = R.string.max_num)) }
             )
