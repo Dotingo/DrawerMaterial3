@@ -25,4 +25,5 @@
     <string name="light_theme">Light</string>
     <string name="language">Language</string>
     <string name="theme">Theme</string>
+    <string name="list_rand">Lists</string>
 </resources>

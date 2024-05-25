@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
 import com.example.randomizer.presentation.screens.coins.RandomCoinScreen
-import com.example.randomizer.presentation.screens.countries.RandomCountryScreen
+import com.example.randomizer.presentation.screens.lists.RandomListScreen
 import com.example.randomizer.presentation.screens.names.RandomNameScreen
 import com.example.randomizer.presentation.screens.numbers.RandomNumber
 import kotlinx.coroutines.launch
@@ -51,14 +51,14 @@ fun MainDrawer(
     val scope = rememberCoroutineScope()
     val icCoin = ImageVector.vectorResource(id = R.drawable.ic_coin)
     val icNum = ImageVector.vectorResource(id = R.drawable.ic_123)
-    val icCountry = ImageVector.vectorResource(id = R.drawable.ic_globe)
+    val icCountry = ImageVector.vectorResource(id = R.drawable.ic_list)
     val icName = ImageVector.vectorResource(id = R.drawable.ic_name)
 
     val drawerItems = listOf(
         DrawerItem(stringResource(R.string.number_rand), icNum, icNum, "random_num"),
         DrawerItem(stringResource(R.string.name_rand), icName, icName, "random_name"),
         DrawerItem(stringResource(R.string.coin_rand), icCoin, icCoin, "random_coin"),
-        DrawerItem(stringResource(R.string.country_rand), icCountry, icCountry, "random_countries")
+        DrawerItem(stringResource(R.string.list_rand), icCountry, icCountry, "random_list")
     )
 
     var selectedItem by remember { mutableStateOf(drawerItems[0]) }
@@ -158,8 +158,8 @@ fun MainDrawer(
                         RandomCoinScreen(innerPadding)
                     }
 
-                    "random_countries" -> {
-                        RandomCountryScreen()
+                    "random_list" -> {
+                        RandomListScreen(innerPadding)
                     }
                 }
             }
