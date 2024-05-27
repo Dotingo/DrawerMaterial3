@@ -11,35 +11,45 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import kotlin.random.Random
 
 @Composable
 fun RandomListScreen(paddingValues: PaddingValues) {
     val list = listOf("Список 1", "Список 2", "Список 3", "Список 4")
-    LazyColumn(
-        contentPadding = paddingValues,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 10.dp)
-    ) {
-        items(list.size) { index ->
-            Lists(name = list[index])
+    Scaffold(floatingActionButton = {
+        ExtendedFloatingActionButton(
+            onClick = { /*TODO*/ },
+            icon = { Icon(Icons.Filled.Add, "Add button.") },
+            text = { Text(text = "Add list") },
+        )
+    }) {
+        LazyColumn(
+            contentPadding = paddingValues,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp)
+                .padding(it)
+        ) {
+            items(list.size) { index ->
+                Lists(name = list[index])
 
+            }
         }
+
     }
 }
 
 @Composable
-fun Lists(modifier: Modifier = Modifier, name: String) {
+fun Lists(name: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
