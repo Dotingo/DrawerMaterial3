@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -66,7 +67,9 @@ fun TopNavHost(
             navController.navigate(route = ScreenRouteType.Settings.route) {
                 launchSingleTop = true
             }
-        })
+        },
+            viewModel = viewModel
+        )
     }
 
     composable(route = ScreenRouteType.Settings.route) {
@@ -86,3 +89,9 @@ fun TopNavHost(
         )
     }
 }
+
+data class DrawerItem(
+    val title: String,
+    val icon: ImageVector,
+    val route: String
+)

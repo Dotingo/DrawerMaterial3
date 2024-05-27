@@ -8,6 +8,7 @@ import com.example.randomizer.data.DataStoreManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -33,5 +34,12 @@ class MainViewModel: ViewModel() {
         viewModelScope.launch {
             DataStoreManager(context).saveTheme(_appTheme.value.name)
         }
+    }
+
+    private val _currentRandomizerScreen = MutableStateFlow("random_num")
+    val currentRandomizerScreen: StateFlow<String> = _currentRandomizerScreen.asStateFlow()
+
+    fun setCurrentRandomizerScreen(screen: String) {
+        _currentRandomizerScreen.value = screen
     }
 }

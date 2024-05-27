@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
+import com.example.randomizer.navigation.DrawerItem
 import com.example.randomizer.presentation.screens.coins.RandomCoinScreen
 import com.example.randomizer.presentation.screens.lists.RandomListScreen
 import com.example.randomizer.presentation.screens.names.RandomNameScreen
@@ -46,22 +48,37 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainDrawer(
     navigateToSettingsScreen: () -> Unit,
+    viewModel: MainViewModel
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val icCoin = ImageVector.vectorResource(id = R.drawable.ic_coin)
-    val icNum = ImageVector.vectorResource(id = R.drawable.ic_123)
-    val icCountry = ImageVector.vectorResource(id = R.drawable.ic_list)
-    val icName = ImageVector.vectorResource(id = R.drawable.ic_name)
-
     val drawerItems = listOf(
-        DrawerItem(stringResource(R.string.number_rand), icNum, icNum, "random_num"),
-        DrawerItem(stringResource(R.string.name_rand), icName, icName, "random_name"),
-        DrawerItem(stringResource(R.string.coin_rand), icCoin, icCoin, "random_coin"),
-        DrawerItem(stringResource(R.string.list_rand), icCountry, icCountry, "random_list")
+        DrawerItem(
+            stringResource(R.string.number_rand),
+            ImageVector.vectorResource(id = R.drawable.ic_123),
+            "random_num"
+        ),
+        DrawerItem(
+            stringResource(R.string.name_rand),
+            ImageVector.vectorResource(id = R.drawable.ic_name),
+            "random_name"
+        ),
+        DrawerItem(
+            stringResource(R.string.coin_rand),
+            ImageVector.vectorResource(id = R.drawable.ic_coin),
+            "random_coin"
+        ),
+        DrawerItem(
+            stringResource(R.string.list_rand),
+            ImageVector.vectorResource(id = R.drawable.ic_list),
+            "random_list"
+        )
     )
-
-    var selectedItem by remember { mutableStateOf(drawerItems[0]) }
+    val currentRandomizerScreen = viewModel.currentRandomizerScreen.collectAsState()
+    var selectedItem by remember {
+        mutableStateOf(drawerItems.find { it.route == currentRandomizerScreen.value }
+            ?: drawerItems[0])
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -84,15 +101,14 @@ fun MainDrawer(
                                 selected = item == selectedItem,
                                 onClick = {
                                     selectedItem = item
+                                    viewModel.setCurrentRandomizerScreen(item.route)
                                     scope.launch {
                                         drawerState.close()
                                     }
                                 },
                                 icon = {
                                     Icon(
-                                        imageVector = if (item == selectedItem) {
-                                            item.selectedIcon
-                                        } else item.unselectedIcon,
+                                        imageVector = item.icon,
                                         contentDescription = item.title
                                     )
                                 },
@@ -138,40 +154,29 @@ fun MainDrawer(
                         }
                     }
                 )
-
-            }, content = { innerPadding ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                )
-                when (selectedItem.route) {
-                    "random_num" -> {
-                        RandomNumber(innerPadding)
-                    }
-
-                    "random_name" -> {
-                        RandomNameScreen(innerPadding)
-                    }
-
-                    "random_coin" -> {
-                        RandomCoinScreen(innerPadding)
-                    }
-
-                    "random_list" -> {
-                        RandomListScreen(innerPadding)
+            },
+                content = { innerPadding ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    )
+                    when (viewModel.currentRandomizerScreen.collectAsState().value) {
+                        "random_num" -> {
+                            RandomNumber(innerPadding)
+                        }
+                        "random_name" -> {
+                            RandomNameScreen(innerPadding)
+                        }
+                        "random_coin" -> {
+                            RandomCoinScreen(innerPadding)
+                        }
+                        "random_list" -> {
+                            RandomListScreen(innerPadding)
+                        }
                     }
                 }
-            }
             )
         }
     }
-
 }
-
-data class DrawerItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val route: String
-)
