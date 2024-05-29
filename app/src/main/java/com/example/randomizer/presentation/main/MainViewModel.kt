@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.randomizer.data.AppTheme
 import com.example.randomizer.data.DataStoreManager
+import com.example.randomizer.navigation.ScreenRouteType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +37,7 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    private val _currentRandomizerScreen = MutableStateFlow("random_num")
+    private val _currentRandomizerScreen = MutableStateFlow(ScreenRouteType.Main.Number.route)
     val currentRandomizerScreen: StateFlow<String> = _currentRandomizerScreen.asStateFlow()
 
     fun setCurrentRandomizerScreen(screen: String) {

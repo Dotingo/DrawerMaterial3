@@ -1,5 +1,7 @@
 package com.example.randomizer.presentation.main
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,8 +38,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.randomizer.R
 import com.example.randomizer.navigation.DrawerItem
+import com.example.randomizer.navigation.ScreenRouteType
 import com.example.randomizer.presentation.screens.coins.RandomCoinScreen
 import com.example.randomizer.presentation.screens.lists.RandomListScreen
 import com.example.randomizer.presentation.screens.names.RandomNameScreen
@@ -50,28 +56,29 @@ fun MainDrawer(
     navigateToSettingsScreen: () -> Unit,
     viewModel: MainViewModel
 ) {
+    val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val drawerItems = listOf(
         DrawerItem(
             stringResource(R.string.number_rand),
             ImageVector.vectorResource(id = R.drawable.ic_123),
-            "random_num"
+            ScreenRouteType.Main.Number.route
         ),
         DrawerItem(
             stringResource(R.string.name_rand),
             ImageVector.vectorResource(id = R.drawable.ic_name),
-            "random_name"
+            ScreenRouteType.Main.Name.route
         ),
         DrawerItem(
             stringResource(R.string.coin_rand),
             ImageVector.vectorResource(id = R.drawable.ic_coin),
-            "random_coin"
+            ScreenRouteType.Main.Coin.route
         ),
         DrawerItem(
             stringResource(R.string.list_rand),
             ImageVector.vectorResource(id = R.drawable.ic_list),
-            "random_list"
+            ScreenRouteType.Main.List.route
         )
     )
     val currentRandomizerScreen = viewModel.currentRandomizerScreen.collectAsState()
@@ -102,6 +109,13 @@ fun MainDrawer(
                                 onClick = {
                                     selectedItem = item
                                     viewModel.setCurrentRandomizerScreen(item.route)
+                                    navController.navigate(item.route) {
+                                        popUpTo(0) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
                                     scope.launch {
                                         drawerState.close()
                                     }
@@ -161,19 +175,26 @@ fun MainDrawer(
                             .fillMaxSize()
                             .padding(innerPadding)
                     )
-                    when (viewModel.currentRandomizerScreen.collectAsState().value) {
-                        "random_num" -> {
-                            RandomNumber(innerPadding)
+                    NavHost(
+                        navController = navController,
+                        startDestination = ScreenRouteType.Main.Number.route,
+                        enterTransition = {
+                            EnterTransition.None
+                        },
+                        exitTransition = {
+                            ExitTransition.None
+                        },
+                        popEnterTransition = {
+                            EnterTransition.None
+                        },
+                        popExitTransition = {
+                            ExitTransition.None
                         }
-                        "random_name" -> {
-                            RandomNameScreen(innerPadding)
-                        }
-                        "random_coin" -> {
-                            RandomCoinScreen(innerPadding)
-                        }
-                        "random_list" -> {
-                            RandomListScreen(innerPadding)
-                        }
+                    ) {
+                        composable(ScreenRouteType.Main.Number.route) { RandomNumber(innerPadding) }
+                        composable(ScreenRouteType.Main.Name.route) { RandomNameScreen(innerPadding) }
+                        composable(ScreenRouteType.Main.Coin.route) { RandomCoinScreen(innerPadding) }
+                        composable(ScreenRouteType.Main.List.route) { RandomListScreen(innerPadding) }
                     }
                 }
             )
