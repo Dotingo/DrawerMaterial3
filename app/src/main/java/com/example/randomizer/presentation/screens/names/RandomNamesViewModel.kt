@@ -1,11 +1,11 @@
 package com.example.randomizer.presentation.screens.names
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.randomizer.data.RandomizerDb
 import com.example.randomizer.data.type.NameEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -15,12 +15,12 @@ class RandomNamesViewModel @Inject constructor(
     private val randomizerDb: RandomizerDb
 ) : ViewModel() {
 
-    private val _namesList = MutableLiveData<List<NameEntity>>(emptyList())
+    private val _namesList = MutableStateFlow<List<NameEntity>>(emptyList())
 
     fun generateRandomName(count: Int): List<String> {
         val randomNames = mutableListOf<String>()
         while (randomNames.size < count) {
-        val randomName = _namesList.value!!.random().name
+        val randomName = _namesList.value.random().name
             if (!randomNames.contains(randomName)) {
                 randomNames.add(randomName)
             }

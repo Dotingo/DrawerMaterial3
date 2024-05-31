@@ -4,24 +4,24 @@ import android.app.Application
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.randomizer.R
 import com.example.randomizer.data.DataStoreManager
 import com.example.randomizer.data.NumRangeData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class RandomNumberViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application
-    private val _generatedNumbers = MutableLiveData<List<Int>>(emptyList())
-    val generatedNumbers: LiveData<List<Int>> = _generatedNumbers
+    private val _generatedNumbers = MutableStateFlow<List<Int>>(emptyList())
+    val generatedNumbers: StateFlow<List<Int>> = _generatedNumbers
     private val dataStoreManager = DataStoreManager(context)
-    private val _minNumState = MutableLiveData("0")
-    val minNumState: LiveData<String> = _minNumState
+    private val _minNumState = MutableStateFlow("0")
+    val minNumState: StateFlow<String> = _minNumState
 
-    private val _maxNumState = MutableLiveData("100")
-    val maxNumState: LiveData<String> = _maxNumState
+    private val _maxNumState = MutableStateFlow("100")
+    val maxNumState: StateFlow<String> = _maxNumState
 
     init {
         fetchDataFromDataStore()
