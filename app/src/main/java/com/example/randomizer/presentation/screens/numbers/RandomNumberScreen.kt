@@ -21,8 +21,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,8 +66,8 @@ fun RandomNumber(
         // calling result section function
         ResultSection(output = generatedNumbersText.value, separator = ", ")
 
-        val minNumState by randomNumberViewModel.minNumState.observeAsState("0")
-        val maxNumState by randomNumberViewModel.maxNumState.observeAsState("100")
+        val minNumState by randomNumberViewModel.minNumState.collectAsState("0")
+        val maxNumState by randomNumberViewModel.maxNumState.collectAsState("100")
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -117,7 +117,7 @@ fun RandomNumber(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = stringResource(id = R.string.result_count) + ": $slideValueState")
+                Text(text = "${stringResource(id = R.string.result_count)} $slideValueState")
             }
             Row(
                 modifier = Modifier
@@ -166,7 +166,7 @@ fun RandomNumber(
                     slideValueState,
                     checkedState
                 )
-                generatedNumbersText.value = randomNumberViewModel.generatedNumbers.value!!
+                generatedNumbersText.value = randomNumberViewModel.generatedNumbers.value
             }
         ) {
             Text(
