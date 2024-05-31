@@ -1,5 +1,8 @@
 package com.example.randomizer.presentation.screens.lists
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,16 +10,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,14 +30,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.randomizer.presentation.ui.theme.RandomizerTheme
+import com.example.randomizer.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateListScreen() {
+fun CreateListScreen(onBack: () -> Unit) {
 
     var listName by remember {
         mutableStateOf("")
@@ -45,14 +49,29 @@ fun CreateListScreen() {
     }
 
     Scaffold(topBar = {
-        TopAppBar(title = { Text(text = "Создать список") }, navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null
-                )
+        TopAppBar(
+            title = { Text(text = stringResource(R.string.create_list)) },
+            navigationIcon = {
+                IconButton(onClick = {
+                    onBack()
+                }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                        contentDescription = null
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = {
+                    onBack()
+                }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_apply),
+                        contentDescription = "apply"
+                    )
+                }
             }
-        })
+        )
     }) { paddingValues ->
         Column(
             modifier = Modifier
@@ -67,14 +86,14 @@ fun CreateListScreen() {
                 value = listName,
                 onValueChange = { listName = it },
                 singleLine = true,
-                label = { Text(text = "Название списка") }
+                label = { Text(text = stringResource(R.string.list_name)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp),
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 OutlinedTextField(
                     modifier = Modifier
@@ -83,36 +102,55 @@ fun CreateListScreen() {
                     value = listItem,
                     onValueChange = { listItem = it },
                     singleLine = true,
-                    label = { Text(text = "Элемент") }
+                    label = { Text(text = stringResource(R.string.item)) }
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Button(
-                    shape = RoundedCornerShape(8),
-                    modifier = Modifier.height(63.dp),
-                    onClick = { /*TODO*/ }
+                Box(
+                    modifier = Modifier
+                        .padding(top = 7.dp, start = 5.dp, end = 5.dp)
+                        .height(50.dp)
+                        .width(50.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary)
+                        .clickable {
+
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Добавить элемент")
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_add),
+                        contentDescription = "add",
+                        modifier = Modifier.size(29.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
                 }
             }
+            val size = 50
             Spacer(modifier = Modifier.height(10.dp))
-            LazyColumn {
-                items(100){
-                    Row(modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "item $it", modifier = Modifier.weight(1f), fontSize = 22.sp)
-                        Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                items(size) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "item $it",
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
+                            contentDescription = "delete"
+                        )
                     }
-                    Spacer(modifier = Modifier.height(30.dp))
+                    if (it != size - 1) {
+                        HorizontalDivider()
+                    }
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun CreateListScreenPreview() {
-    RandomizerTheme {
-        CreateListScreen()
-    }
-}

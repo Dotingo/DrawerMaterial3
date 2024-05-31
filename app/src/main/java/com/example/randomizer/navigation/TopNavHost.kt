@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.randomizer.presentation.main.MainViewModel
 import com.example.randomizer.presentation.screens.settings.SettingsScreen
 import com.example.randomizer.presentation.main.MainDrawer
+import com.example.randomizer.presentation.screens.lists.CreateListScreen
 
 /**
  * [NavHost] for top level screens.
@@ -63,13 +64,30 @@ fun TopNavHost(
     }
 ) {
     composable(route = ScreenRouteType.Main.route) {
-        MainDrawer(navigateToSettingsScreen = {
-            navController.navigate(route = ScreenRouteType.Settings.route) {
-                launchSingleTop = true
-            }
-        },
+        MainDrawer(
+            navigateToSettingsScreen = {
+                navController.navigate(route = ScreenRouteType.Settings.route) {
+                    launchSingleTop = true
+                }
+            },
+            navigateToCreateListScreen = {
+                navController.navigate(route = ScreenRouteType.Main.List.CreateList.route) {
+                    launchSingleTop = true
+                }
+            },
             viewModel = viewModel
         )
+    }
+
+    composable(ScreenRouteType.Main.List.CreateList.route) {
+        CreateListScreen(
+            onBack = {
+                if (navController.currentBackStackEntry?.lifecycle?.currentState
+                    == Lifecycle.State.RESUMED
+                ) {
+                    navController.popBackStack()
+                }
+            })
     }
 
     composable(route = ScreenRouteType.Settings.route) {

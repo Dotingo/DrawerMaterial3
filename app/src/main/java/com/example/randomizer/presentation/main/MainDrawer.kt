@@ -3,7 +3,6 @@ package com.example.randomizer.presentation.main
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -54,6 +53,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainDrawer(
     navigateToSettingsScreen: () -> Unit,
+    navigateToCreateListScreen: () -> Unit,
     viewModel: MainViewModel
 ) {
     val navController = rememberNavController()
@@ -136,6 +136,7 @@ fun MainDrawer(
             },
             drawerState = drawerState,
         ) {
+
             Scaffold(topBar = {
                 TopAppBar(title = {
                     Text(
@@ -170,11 +171,7 @@ fun MainDrawer(
                 )
             },
                 content = { innerPadding ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                    )
+
                     NavHost(
                         navController = navController,
                         startDestination = ScreenRouteType.Main.Number.route,
@@ -194,7 +191,7 @@ fun MainDrawer(
                         composable(ScreenRouteType.Main.Number.route) { RandomNumber(innerPadding) }
                         composable(ScreenRouteType.Main.Name.route) { RandomNameScreen(innerPadding) }
                         composable(ScreenRouteType.Main.Coin.route) { RandomCoinScreen(innerPadding) }
-                        composable(ScreenRouteType.Main.List.route) { RandomListScreen(innerPadding) }
+                        composable(ScreenRouteType.Main.List.route) { RandomListScreen(navigateToCreateListScreen, innerPadding) }
                     }
                 }
             )

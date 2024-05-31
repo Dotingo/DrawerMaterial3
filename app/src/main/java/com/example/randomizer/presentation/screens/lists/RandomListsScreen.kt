@@ -8,12 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,15 +25,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
 import com.example.randomizer.presentation.util.Lists
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RandomListScreen(paddingValues: PaddingValues) {
+fun RandomListScreen(navigateToCreateListScreen: () -> Unit, paddingValues: PaddingValues) {
     val focusManager = LocalFocusManager.current
     var lists by remember {
         mutableStateOf(Lists.originList)
@@ -47,9 +46,9 @@ fun RandomListScreen(paddingValues: PaddingValues) {
     }
     Scaffold(floatingActionButton = {
         ExtendedFloatingActionButton(
-            onClick = { /*TODO*/ },
-            icon = { Icon(Icons.Filled.Add, "Add button.") },
-            text = { Text(text = "Add list") },
+            onClick = { navigateToCreateListScreen() },
+            icon = { Icon(ImageVector.vectorResource(id = R.drawable.ic_add), "create list button") },
+            text = { Text(text = stringResource(id = R.string.create_list)) },
         )
     }) {
         Column(
@@ -71,15 +70,20 @@ fun RandomListScreen(paddingValues: PaddingValues) {
                 onActiveChange = {},
                 trailingIcon = {
                     if (query.isNotBlank()) {
-                        IconButton(onClick = { query = ""
-                            lists = Lists.search(query)}) {
-                            Icon(imageVector = Icons.Default.Clear, contentDescription = "clear")
+                        IconButton(onClick = {
+                            query = ""
+                            lists = Lists.search(query)
+                        }) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
+                                contentDescription = "clear"
+                            )
                         }
                     }
                 },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Search,
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
                         contentDescription = "search"
                     )
                 },
@@ -110,17 +114,25 @@ fun Lists(name: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = name, style = MaterialTheme.typography.titleLarge)
             Text(
-                text = "Количество элементов: ${(1..20).random()}",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary
+                text = name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "${stringResource(R.string.items_count)} ${(1..20).random()}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
         Icon(
-            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = null
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_right),
+            contentDescription = null,
+            modifier = Modifier.size(16.dp)
         )
     }
 }
