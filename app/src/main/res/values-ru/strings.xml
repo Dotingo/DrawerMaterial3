@@ -9,7 +9,7 @@
     <string name="min_num">Минимум</string>
     <string name="max_num">Максимум</string>
     <string name="repeat_values">Повторения</string>
-    <string name="result_count">Количество результатов</string>
+    <string name="result_count">Количество результатов:</string>
     <string name="generate_num">Сгенерировать числа</string>
     <string name="cannot_generate_unique">Невозможно сгенерировать столько уникальных значений</string>
     <string name="min_greater_max">Минимальное число должно быть меньше максимального</string>
@@ -28,4 +28,8 @@
     <string name="theme">Тема</string>
     <string name="list_rand">Списки</string>
     <string name="search_bar_placeholder">Поиск…</string>
+    <string name="create_list">Создать список</string>
+    <string name="list_name">Название списка</string>
+    <string name="item">Элемент</string>
+    <string name="items_count">Количество элементов:</string>
 </resources>

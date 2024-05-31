@@ -7,7 +7,7 @@
     <string name="min_num">Minimum</string>
     <string name="max_num">Maximum</string>
     <string name="repeat_values">Repeat</string>
-    <string name="result_count">Result count</string>
+    <string name="result_count">Result count:</string>
     <string name="generate_num">Generate numbers</string>
     <string name="cannot_generate_unique">Cannot generate the specified number of unique values with the given range</string>
     <string name="min_greater_max">The minimum number must be less than the maximum</string>
@@ -27,4 +27,8 @@
     <string name="theme">Theme</string>
     <string name="list_rand">Lists</string>
     <string name="search_bar_placeholder">Search…</string>
+    <string name="create_list">Create list</string>
+    <string name="list_name">List name</string>
+    <string name="item">Item</string>
+    <string name="items_count">Items count:</string>
 </resources>
