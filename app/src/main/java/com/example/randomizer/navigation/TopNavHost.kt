@@ -13,10 +13,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.randomizer.presentation.main.MainDrawer
 import com.example.randomizer.presentation.main.MainViewModel
 import com.example.randomizer.presentation.screens.settings.SettingsScreen
-import com.example.randomizer.presentation.main.MainDrawer
-import com.example.randomizer.presentation.screens.lists.CreateListScreen
 
 /**
  * [NavHost] for top level screens.
@@ -70,26 +69,9 @@ fun TopNavHost(
                     launchSingleTop = true
                 }
             },
-            navigateToCreateListScreen = {
-                navController.navigate(route = ScreenRouteType.Main.List.CreateList.route) {
-                    launchSingleTop = true
-                }
-            },
             viewModel = viewModel
         )
     }
-
-    composable(ScreenRouteType.Main.List.CreateList.route) {
-        CreateListScreen(
-            onBack = {
-                if (navController.currentBackStackEntry?.lifecycle?.currentState
-                    == Lifecycle.State.RESUMED
-                ) {
-                    navController.popBackStack()
-                }
-            })
-    }
-
     composable(route = ScreenRouteType.Settings.route) {
         val context = LocalContext.current
         SettingsScreen(
@@ -107,7 +89,6 @@ fun TopNavHost(
         )
     }
 }
-
 data class DrawerItem(
     val title: String,
     val icon: ImageVector,
