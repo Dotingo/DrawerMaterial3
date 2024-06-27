@@ -31,4 +31,7 @@
     <string name="list_name">List name</string>
     <string name="item">Item</string>
     <string name="items_count">Items count:</string>
+    <string name="pick">Pick</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="group">Group</string>
 </resources>

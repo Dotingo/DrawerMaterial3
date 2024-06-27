@@ -32,4 +32,7 @@
     <string name="list_name">Название списка</string>
     <string name="item">Элемент</string>
     <string name="items_count">Количество элементов:</string>
+    <string name="pick">Выбрать</string>
+    <string name="shuffle">Перемешать</string>
+    <string name="group">Сгруппировать</string>
 </resources>
