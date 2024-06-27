@@ -1,5 +1,6 @@
 package com.example.randomizer.presentation.screens.lists
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -36,7 +37,10 @@ import com.example.randomizer.presentation.util.Lists
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RandomListScreen(navigateToCreateListScreen: () -> Unit, paddingValues: PaddingValues) {
+fun MenuListScreen(
+    navigateToCreateListScreen: () -> Unit,
+    navigateToList: () -> Unit
+) {
     val focusManager = LocalFocusManager.current
     var lists by remember {
         mutableStateOf(Lists.originList)
@@ -47,14 +51,19 @@ fun RandomListScreen(navigateToCreateListScreen: () -> Unit, paddingValues: Padd
     Scaffold(floatingActionButton = {
         ExtendedFloatingActionButton(
             onClick = { navigateToCreateListScreen() },
-            icon = { Icon(ImageVector.vectorResource(id = R.drawable.ic_add), "create list button") },
+            icon = {
+                Icon(
+                    ImageVector.vectorResource(id = R.drawable.ic_add),
+                    "create list button"
+                )
+            },
             text = { Text(text = stringResource(id = R.string.create_list)) },
         )
     }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(it)
         ) {
             SearchBar(
                 query = query,
@@ -90,17 +99,14 @@ fun RandomListScreen(navigateToCreateListScreen: () -> Unit, paddingValues: Padd
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp)
-            ) {
-
-            }
+            ) {}
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 10.dp)
-                    .padding(it)
             ) {
-                items(lists.size) { index ->
-                    Lists(name = lists[index])
+                items(0) { index ->
+                    Lists(name = lists[index], navigateToList)
                 }
             }
         }
@@ -108,9 +114,13 @@ fun RandomListScreen(navigateToCreateListScreen: () -> Unit, paddingValues: Padd
 }
 
 @Composable
-fun Lists(name: String) {
+fun Lists(name: String, navigateToList: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navigateToList()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
@@ -121,7 +131,7 @@ fun Lists(name: String) {
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                text = "${stringResource(R.string.items_count)} ${(1..20).random()}",
+                text = "${stringResource(R.string.items_count)} ",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary,
                 maxLines = 1,

@@ -1,7 +1,5 @@
 package com.example.randomizer.presentation.main
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -37,27 +35,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.randomizer.R
 import com.example.randomizer.navigation.DrawerItem
+import com.example.randomizer.navigation.DrawerNavHost
 import com.example.randomizer.navigation.ScreenRouteType
-import com.example.randomizer.presentation.screens.coins.RandomCoinScreen
-import com.example.randomizer.presentation.screens.lists.RandomListScreen
-import com.example.randomizer.presentation.screens.names.RandomNameScreen
-import com.example.randomizer.presentation.screens.numbers.RandomNumber
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainDrawer(
     navigateToSettingsScreen: () -> Unit,
-    navigateToCreateListScreen: () -> Unit,
-    viewModel: MainViewModel
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    var gesturesEnabled by remember {
+        mutableStateOf(true)
+    }
     val scope = rememberCoroutineScope()
     val drawerItems = listOf(
         DrawerItem(
@@ -78,7 +75,7 @@ fun MainDrawer(
         DrawerItem(
             stringResource(R.string.list_rand),
             ImageVector.vectorResource(id = R.drawable.ic_list),
-            ScreenRouteType.Main.List.route
+            ScreenRouteType.Main.ListScreen.route
         )
     )
     val currentRandomizerScreen = viewModel.currentRandomizerScreen.collectAsState()
@@ -92,6 +89,7 @@ fun MainDrawer(
         color = MaterialTheme.colorScheme.background
     ) {
         ModalNavigationDrawer(
+            gesturesEnabled = gesturesEnabled,
             drawerContent = {
                 ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
                     LazyColumn(modifier = Modifier.padding(10.dp)) {
@@ -137,62 +135,52 @@ fun MainDrawer(
             drawerState = drawerState,
         ) {
 
-            Scaffold(topBar = {
-                TopAppBar(title = {
-                    Text(
-                        text = selectedItem.title,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            scope.launch {
-                                drawerState.open()
-                            }
-                        }) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_menu),
-                                contentDescription = "Menu"
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = navigateToSettingsScreen
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
 
-                        ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_settings),
-                                contentDescription = "Settings"
-                            )
+            Scaffold(topBar = {
+                if (
+                    currentRoute != ScreenRouteType.Main.ListScreen.List.CreateList.route &&
+                    currentRoute != ScreenRouteType.Main.ListScreen.List.InsideList.route
+                ) {
+                    gesturesEnabled = true
+                    TopAppBar(title = {
+                        Text(
+                            text = selectedItem.title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    },
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                scope.launch {
+                                    drawerState.open()
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_menu),
+                                    contentDescription = "Menu"
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(
+                                onClick = navigateToSettingsScreen
+                            ) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_settings),
+                                    contentDescription = "Settings"
+                                )
+                            }
                         }
-                    }
-                )
+                    )
+                }
+                else{
+                    gesturesEnabled = false
+                }
             },
                 content = { innerPadding ->
-
-                    NavHost(
-                        navController = navController,
-                        startDestination = ScreenRouteType.Main.Number.route,
-                        enterTransition = {
-                            EnterTransition.None
-                        },
-                        exitTransition = {
-                            ExitTransition.None
-                        },
-                        popEnterTransition = {
-                            EnterTransition.None
-                        },
-                        popExitTransition = {
-                            ExitTransition.None
-                        }
-                    ) {
-                        composable(ScreenRouteType.Main.Number.route) { RandomNumber(innerPadding) }
-                        composable(ScreenRouteType.Main.Name.route) { RandomNameScreen(innerPadding) }
-                        composable(ScreenRouteType.Main.Coin.route) { RandomCoinScreen(innerPadding) }
-                        composable(ScreenRouteType.Main.List.route) { RandomListScreen(navigateToCreateListScreen, innerPadding) }
-                    }
+                    DrawerNavHost(navController = navController, innerPadding = innerPadding)
                 }
             )
         }

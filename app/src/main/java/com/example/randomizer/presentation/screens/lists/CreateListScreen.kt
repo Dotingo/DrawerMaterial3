@@ -1,5 +1,6 @@
 package com.example.randomizer.presentation.screens.lists
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -25,12 +28,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -40,14 +45,16 @@ import com.example.randomizer.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateListScreen(onBack: () -> Unit) {
-
     var listName by remember {
         mutableStateOf("")
     }
     var listItem by remember {
         mutableStateOf("")
     }
-
+    val listItems = remember {
+        mutableStateListOf<String>()
+    }
+    var resultString = ""
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(text = stringResource(R.string.create_list)) },
@@ -63,7 +70,9 @@ fun CreateListScreen(onBack: () -> Unit) {
             },
             actions = {
                 IconButton(onClick = {
-                    onBack()
+//                    onBack()
+                    resultString = listItems.joinToString("|")
+                    Log.d("My", resultString)
                 }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_apply),
@@ -100,7 +109,9 @@ fun CreateListScreen(onBack: () -> Unit) {
                         .fillMaxSize()
                         .weight(1f),
                     value = listItem,
-                    onValueChange = { listItem = it },
+                    onValueChange = {newValue ->
+                        val filteredText = newValue.filter { it != '|'}
+                        listItem = filteredText },
                     singleLine = true,
                     label = { Text(text = stringResource(R.string.item)) }
                 )
@@ -111,9 +122,10 @@ fun CreateListScreen(onBack: () -> Unit) {
                         .height(50.dp)
                         .width(50.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary)
-                        .clickable {
-
+                        .background(if (listItem.isNotBlank()) MaterialTheme.colorScheme.primary else Color.Gray)
+                        .clickable(enabled = listItem.isNotBlank()) {
+                            listItems.add(listItem)
+                            listItem = ""
                         },
                     contentAlignment = Alignment.Center
                 ) {
@@ -121,14 +133,13 @@ fun CreateListScreen(onBack: () -> Unit) {
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_add),
                         contentDescription = "add",
                         modifier = Modifier.size(29.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = if (listItem.isNotBlank()) MaterialTheme.colorScheme.onPrimary else Color.DarkGray
                     )
                 }
             }
-            val size = 50
             Spacer(modifier = Modifier.height(10.dp))
             LazyColumn(modifier = Modifier.weight(1f)) {
-                items(size) {
+                itemsIndexed(listItems){index, item ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -136,16 +147,18 @@ fun CreateListScreen(onBack: () -> Unit) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "item $it",
+                            text = item,
                             modifier = Modifier.weight(1f),
                             style = MaterialTheme.typography.titleSmall
                         )
+                        IconButton(onClick = { listItems.removeAt(index) }) {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
                             contentDescription = "delete"
                         )
+                        }
                     }
-                    if (it != size - 1) {
+                    if (index != listItems.size - 1) {
                         HorizontalDivider()
                     }
                 }
