@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,22 +33,38 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
-import com.example.randomizer.presentation.util.Lists
+import androidx.compose.foundation.lazy.items
+import com.example.randomizer.data.type.ListEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuListScreen(
     navigateToCreateListScreen: () -> Unit,
-    navigateToList: () -> Unit
+    navigateToList: (Int) -> Unit,
+    paddingValues: PaddingValues,
+    listViewModel: ListViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
-    var lists by remember {
-        mutableStateOf(Lists.originList)
-    }
+
     var query by remember {
         mutableStateOf("")
     }
+    val lists by listViewModel.getALlTodos.collectAsStateWithLifecycle(initialValue = emptyList())
+    var listsSearch by remember {
+        mutableStateOf(lists)
+    }
+
+    LaunchedEffect(key1 = lists, key2 = query) {
+        listsSearch = if (query.isEmpty()) {
+            lists
+        } else {
+            lists.filter { it.name.contains(query, ignoreCase = true) }
+        }
+    }
+
     Scaffold(floatingActionButton = {
         ExtendedFloatingActionButton(
             onClick = { navigateToCreateListScreen() },
@@ -58,6 +75,7 @@ fun MenuListScreen(
                 )
             },
             text = { Text(text = stringResource(id = R.string.create_list)) },
+            modifier = Modifier.padding(paddingValues)
         )
     }) {
         Column(
@@ -69,7 +87,6 @@ fun MenuListScreen(
                 query = query,
                 onQueryChange = {
                     query = it
-                    lists = Lists.search(query)
                 },
                 onSearch = {
                     focusManager.clearFocus()
@@ -81,7 +98,6 @@ fun MenuListScreen(
                     if (query.isNotBlank()) {
                         IconButton(onClick = {
                             query = ""
-                            lists = Lists.search(query)
                         }) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
@@ -105,8 +121,8 @@ fun MenuListScreen(
                     .fillMaxSize()
                     .padding(horizontal = 10.dp)
             ) {
-                items(0) { index ->
-                    Lists(name = lists[index], navigateToList)
+                items(items = listsSearch, key = { it.id!! }) { list ->
+                    Lists(list, navigateToList, list.items)
                 }
             }
         }
@@ -114,24 +130,25 @@ fun MenuListScreen(
 }
 
 @Composable
-fun Lists(name: String, navigateToList: () -> Unit) {
+fun Lists(listEntity: ListEntity, navigateToList: (id: Int) -> Unit, count: String) {
+    val list = if (count.isNotBlank()) count.split("|").toList() else emptyList()
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                navigateToList()
+                navigateToList(listEntity.id!!)
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = name,
+                text = listEntity.name,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                text = "${stringResource(R.string.items_count)} ",
+                text = "${stringResource(R.string.items_count)} ${list.size}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary,
                 maxLines = 1,

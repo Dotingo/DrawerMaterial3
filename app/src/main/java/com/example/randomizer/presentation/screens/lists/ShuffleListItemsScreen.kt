@@ -1,17 +1,13 @@
 package com.example.randomizer.presentation.screens.lists
 
-import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.randomizer.presentation.screens.common.ResultSection
+import com.example.randomizer.presentation.screens.components.ResultSection
 
 @Composable
 fun ShuffleListItemsScreen(paddingValues: PaddingValues) {

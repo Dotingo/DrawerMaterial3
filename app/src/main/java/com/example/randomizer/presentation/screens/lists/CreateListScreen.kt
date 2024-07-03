@@ -1,6 +1,5 @@
 package com.example.randomizer.presentation.screens.lists
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,9 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -39,12 +38,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.randomizer.R
+import com.example.randomizer.data.type.ListEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateListScreen(onBack: () -> Unit) {
+fun CreateListScreen(onBack: () -> Unit, listViewModel: ListViewModel = hiltViewModel()) {
     var listName by remember {
         mutableStateOf("")
     }
@@ -54,7 +56,6 @@ fun CreateListScreen(onBack: () -> Unit) {
     val listItems = remember {
         mutableStateListOf<String>()
     }
-    var resultString = ""
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(text = stringResource(R.string.create_list)) },
@@ -69,10 +70,12 @@ fun CreateListScreen(onBack: () -> Unit) {
                 }
             },
             actions = {
-                IconButton(onClick = {
-//                    onBack()
-                    resultString = listItems.joinToString("|")
-                    Log.d("My", resultString)
+                IconButton(
+                    enabled = listName.isNotEmpty() && listItems.isNotEmpty(),
+                    onClick = {
+                    val list = ListEntity(name =  listName, items =  listItems.joinToString("|"))
+                    listViewModel.insertList(list)
+                    onBack()
                 }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_apply),
@@ -95,6 +98,7 @@ fun CreateListScreen(onBack: () -> Unit) {
                 value = listName,
                 onValueChange = { listName = it },
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences),
                 label = { Text(text = stringResource(R.string.list_name)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -109,6 +113,7 @@ fun CreateListScreen(onBack: () -> Unit) {
                         .fillMaxSize()
                         .weight(1f),
                     value = listItem,
+                    keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences),
                     onValueChange = {newValue ->
                         val filteredText = newValue.filter { it != '|'}
                         listItem = filteredText },
