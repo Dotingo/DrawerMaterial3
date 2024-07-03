@@ -23,7 +23,6 @@ object MainModule {
                 "randomizer.db"
             ).createFromAsset("db/randomizer.db").build()
         } catch (e: Exception) {
-
             throw e
         }
     }
