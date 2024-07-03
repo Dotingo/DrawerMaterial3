@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 RandomizerTheme(
                     isDarkTheme = shouldUseDarkTheme(appTheme = activityState)
                 ) {
-                    TopNavHost()
+                    TopNavHost(viewModel = viewModel)
                 }
             }
         }

@@ -36,7 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.common.ResultSection
+import com.example.randomizer.presentation.screens.components.ResultSection
 import com.example.randomizer.presentation.util.Dimens.MediumPadding1
 
 @Composable

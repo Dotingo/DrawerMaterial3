@@ -39,7 +39,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.common.ResultSection
+import com.example.randomizer.presentation.screens.components.ResultSection
 import com.example.randomizer.presentation.util.Dimens.ExtraSmallPadding
 import com.example.randomizer.presentation.util.Dimens.MediumPadding1
 import com.example.randomizer.presentation.util.Dimens.SmallPadding
@@ -51,7 +51,7 @@ fun RandomNumber(
     randomNumberViewModel: RandomNumberViewModel = viewModel()
 ) {
 
-    val generatedNumbersText = rememberSaveable {
+    var generatedNumbersText by rememberSaveable {
         mutableStateOf(listOf<Int>())
     }
     Column(
@@ -64,7 +64,7 @@ fun RandomNumber(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         // calling result section function
-        ResultSection(output = generatedNumbersText.value, separator = ", ")
+        ResultSection(output = generatedNumbersText, separator = ", ")
 
         val minNumState by randomNumberViewModel.minNumState.collectAsState("0")
         val maxNumState by randomNumberViewModel.maxNumState.collectAsState("100")
@@ -137,7 +137,6 @@ fun RandomNumber(
                     modifier = Modifier.weight(1f),
                 )
                 Text(text = "10")
-
             }
             Row(
                 modifier = Modifier
@@ -166,7 +165,7 @@ fun RandomNumber(
                     slideValueState,
                     checkedState
                 )
-                generatedNumbersText.value = randomNumberViewModel.generatedNumbers.value
+                generatedNumbersText = randomNumberViewModel.generatedNumbers.value
             }
         ) {
             Text(

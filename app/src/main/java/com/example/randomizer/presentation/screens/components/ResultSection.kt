@@ -1,4 +1,4 @@
-package com.example.randomizer.presentation.screens.common
+package com.example.randomizer.presentation.screens.components
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -30,18 +30,18 @@ import com.example.randomizer.presentation.util.Dimens
 @Composable
 fun ResultSection(
     output: List<Any>?,
+    size: Float = 0.5f,
     separator: String
 ) {
     val context = LocalContext.current
-    val clipboardManager =
-        remember {
-            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        }
+    val clipboardManager = remember {
+        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.5f),
+            .fillMaxHeight(size),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(

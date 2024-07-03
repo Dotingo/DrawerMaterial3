@@ -141,7 +141,7 @@ fun MainDrawer(
             Scaffold(topBar = {
                 if (
                     currentRoute != ScreenRouteType.Main.ListScreen.List.CreateList.route &&
-                    currentRoute != ScreenRouteType.Main.ListScreen.List.InsideList.route
+                    currentRoute != "${ScreenRouteType.Main.ListScreen.List.InsideList.route}/{id}"
                 ) {
                     gesturesEnabled = true
                     TopAppBar(title = {

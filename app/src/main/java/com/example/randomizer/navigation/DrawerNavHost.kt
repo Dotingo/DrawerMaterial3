@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.randomizer.presentation.screens.coins.RandomCoinScreen
 import com.example.randomizer.presentation.screens.lists.CreateListScreen
 import com.example.randomizer.presentation.screens.lists.MenuListScreen
@@ -49,11 +51,12 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
                             launchSingleTop = true
                         }
                     },
-                    navigateToList = {
-                        navController.navigate(route = ScreenRouteType.Main.ListScreen.List.InsideList.route) {
+                    navigateToList = { id ->
+                        navController.navigate(route = "${ScreenRouteType.Main.ListScreen.List.InsideList.route}/$id") {
                             launchSingleTop = true
                         }
-                    }
+                    },
+                    paddingValues = innerPadding
                 )
             }
             composable(ScreenRouteType.Main.ListScreen.List.CreateList.route) {
@@ -66,18 +69,26 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
                         }
                     })
             }
-            composable(ScreenRouteType.Main.ListScreen.List.InsideList.route) {
+            composable(
+                route = "${ScreenRouteType.Main.ListScreen.List.InsideList.route}/{id}",
+                arguments = listOf(navArgument("id") {
+                    type = NavType.IntType
+                })
+            ) { navBackStackEntry ->
                 val listNavController = rememberNavController()
-                RandomListScreen(
-                    listNavController,
-                    onBack = {
-                        if (navController.currentBackStackEntry?.lifecycle?.currentState
-                            == Lifecycle.State.RESUMED
-                        ) {
-                            navController.popBackStack()
+                navBackStackEntry.arguments?.getInt("id").let { id ->
+                    RandomListScreen(
+                        navController = listNavController,
+                        id = id!!,
+                        onBack = {
+                            if (navController.currentBackStackEntry?.lifecycle?.currentState
+                                == Lifecycle.State.RESUMED
+                            ) {
+                                navController.popBackStack()
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }

@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.dagger.hilt.android.compiler)
 
+    //splashscreen
     implementation (libs.androidx.core.splashscreen)
 
     //room db

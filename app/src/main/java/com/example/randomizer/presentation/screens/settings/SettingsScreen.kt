@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.randomizer.R
 import com.example.randomizer.data.AppTheme
-import com.example.randomizer.presentation.screens.common.TextedRadioButton
+import com.example.randomizer.presentation.screens.components.TextedRadioButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

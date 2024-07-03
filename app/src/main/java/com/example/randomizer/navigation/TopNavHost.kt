@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -31,7 +30,7 @@ fun TopNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = ScreenRouteType.Main.route,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel
 ) = NavHost(
     modifier = modifier,
     navController = navController,
@@ -89,6 +88,7 @@ fun TopNavHost(
         )
     }
 }
+
 data class DrawerItem(
     val title: String,
     val icon: ImageVector,
