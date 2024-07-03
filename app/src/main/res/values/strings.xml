@@ -34,4 +34,8 @@
     <string name="pick">Pick</string>
     <string name="shuffle">Shuffle</string>
     <string name="group">Group</string>
+    <string name="delete_a_list">Delete a list</string>
+    <string name="alert_delete_desc">After confirmation, this list will be deleted</string>
+    <string name="cancel_bt">CANCEL</string>
+    <string name="ok_bt">OK</string>
 </resources>

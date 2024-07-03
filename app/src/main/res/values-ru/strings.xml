@@ -35,4 +35,8 @@
     <string name="pick">Выбрать</string>
     <string name="shuffle">Перемешать</string>
     <string name="group">Сгруппировать</string>
+    <string name="delete_a_list">Удаление списка</string>
+    <string name="alert_delete_desc">После подтверждения данный список будет удалён</string>
+    <string name="cancel_bt">ОТМЕНА</string>
+    <string name="ok_bt">ОК</string>
 </resources>
