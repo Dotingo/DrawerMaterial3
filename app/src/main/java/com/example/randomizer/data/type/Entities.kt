@@ -12,3 +12,11 @@ data class NameEntity(
     val name: String,
     val language: String
 )
+
+@Entity(tableName = "lists")
+data class ListEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int? = null,
+    val name: String,
+    val items: String
+)
