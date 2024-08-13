@@ -36,6 +36,7 @@ fun RandomListScreen(
     var openDialog by remember {
         mutableStateOf(false)
     }
+    val splitItems = listViewModel.list.items.split("|")
     LaunchedEffect(key1 = true,
         block = {
             listViewModel.getListById(id)
@@ -127,7 +128,7 @@ fun RandomListScreen(
         )
         NavHost(navController, startDestination = NavigationItem.Pick.route) {
             composable(NavigationItem.Pick.route) {
-                PickListItemsScreen(paddingValues, listViewModel.list.items)
+                PickListItemsScreen(paddingValues, splitItems)
             }
             composable(NavigationItem.Shuffle.route) {
                 ShuffleListItemsScreen(paddingValues)

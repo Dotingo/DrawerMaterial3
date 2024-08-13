@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
@@ -26,12 +27,12 @@ import com.example.randomizer.presentation.screens.components.ResultSection
 import com.example.randomizer.presentation.util.Dimens.MediumPadding1
 
 @Composable
-fun PickListItemsScreen(paddingValues: PaddingValues, items: String) {
+fun PickListItemsScreen(paddingValues: PaddingValues, items: List<String>) {
 
-    var randomItems by remember {
+    var randomItemsMain by remember {
         mutableStateOf(listOf<String>())
     }
-    val itemss = items.split("|")
+
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -39,41 +40,56 @@ fun PickListItemsScreen(paddingValues: PaddingValues, items: String) {
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        ResultSection(output = randomItems, size = 0.7f, separator = "")
+        ResultSection(output = randomItemsMain, size = 0.7f, separator = ", ")
+
         var slideValueState by remember { mutableIntStateOf(1) }
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            if (itemss.size > 2) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(text = "${stringResource(id = R.string.result_count)} $slideValueState")
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 50.dp
-                        ),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "${stringResource(id = R.string.result_count)} $slideValueState",
+                    modifier = Modifier.alpha(if (items.size > 2) 1f else 0f)
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 50.dp
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (items.size > 2) {
                     Text(text = "1")
                     Slider(
                         value = slideValueState.toFloat(),
                         onValueChange = {
                             slideValueState = it.toInt()
                         },
-                        valueRange = 1f..itemss.size.toFloat(),
+                        valueRange = 1f..items.size.toFloat(),
                         modifier = Modifier.weight(1f),
                     )
-                    Text(text = "${itemss.size}")
+                    Text(text = "${items.size}")
                 }
             }
             Button(
                 modifier = Modifier.padding(bottom = MediumPadding1),
                 onClick = {
-                    randomItems = listOf(itemss.random())
+                    val randomItems = mutableListOf<String>()
+                    val generatedSet = mutableSetOf<String>()
+
+                    while (randomItems.size < slideValueState) {
+                        val randomNum = items.random()
+                        if (!generatedSet.contains(randomNum)) {
+                            randomItems.add(randomNum)
+                            generatedSet.add(randomNum)
+                        }
+                    }
+                    randomItemsMain = randomItems
                 }
             ) {
                 Text(

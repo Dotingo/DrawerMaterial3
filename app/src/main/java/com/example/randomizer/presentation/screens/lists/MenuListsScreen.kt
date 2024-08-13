@@ -65,28 +65,29 @@ fun MenuListScreen(
         }
     }
 
-    Scaffold(floatingActionButton = {
-        ExtendedFloatingActionButton(
-            onClick = { navigateToCreateListScreen() },
-            icon = {
-                Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_add),
-                    "create list button"
-                )
-            },
-            text = { Text(text = stringResource(id = R.string.create_list)) },
-            modifier = Modifier.padding(paddingValues)
-        )
-    }) {
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { navigateToCreateListScreen() },
+                icon = {
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_add),
+                        "create list button"
+                    )
+                },
+                text = { Text(text = stringResource(id = R.string.create_list)) },
+            )
+        }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(top = (paddingValues.calculateTopPadding().value - it.calculateTopPadding().value).dp)
         ) {
             SearchBar(
                 query = query,
-                onQueryChange = {
-                    query = it
+                onQueryChange = {changedQuery ->
+                    query = changedQuery
                 },
                 onSearch = {
                     focusManager.clearFocus()
@@ -121,7 +122,7 @@ fun MenuListScreen(
                     .fillMaxSize()
                     .padding(horizontal = 10.dp)
             ) {
-                items(items = listsSearch, key = { it.id!! }) { list ->
+                items(items = listsSearch, key = {item -> item.id!! }) { list ->
                     Lists(list, navigateToList, list.items)
                 }
             }
