@@ -33,9 +33,14 @@
     <string name="items_count">Items count:</string>
     <string name="pick">Pick</string>
     <string name="shuffle">Shuffle</string>
-    <string name="group">Group</string>
+    <string name="groups">Groups</string>
     <string name="delete_a_list">Delete a list</string>
     <string name="alert_delete_desc">After confirmation, this list will be deleted</string>
     <string name="cancel_bt">CANCEL</string>
     <string name="ok_bt">OK</string>
+    <string name="shuffle_list">Shuffle the list</string>
+    <string name="pick_item">Pick item</string>
+    <string name="create_groups">Create groups</string>
+    <string name="greater_then_two">For creating groups, the number of items in the list must be greater than two</string>
+    <string name="group">Group</string>
 </resources>
