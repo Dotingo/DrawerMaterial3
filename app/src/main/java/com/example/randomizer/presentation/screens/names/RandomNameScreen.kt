@@ -176,16 +176,16 @@ fun RandomNameScreen(
                     onValueChange = {
                         slideValueState = it.toInt()
                     },
-                    valueRange = 1f..5f,
+                    valueRange = 1f..10f,
                     modifier = Modifier.weight(1f),
                 )
-                Text(text = "5")
+                Text(text = "10")
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = stringResource(id = R.string.result_count) + ": $slideValueState")
+                Text(text = stringResource(id = R.string.result_count) + " $slideValueState")
             }
         }
 
