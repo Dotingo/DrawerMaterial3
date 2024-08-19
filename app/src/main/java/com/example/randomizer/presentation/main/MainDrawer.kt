@@ -174,8 +174,7 @@ fun MainDrawer(
                             }
                         }
                     )
-                }
-                else{
+                } else {
                     gesturesEnabled = false
                 }
             },

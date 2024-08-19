@@ -52,7 +52,7 @@ fun MenuListScreen(
     var query by remember {
         mutableStateOf("")
     }
-    val lists by listViewModel.getALlTodos.collectAsStateWithLifecycle(initialValue = emptyList())
+    val lists by listViewModel.getAllLists.collectAsStateWithLifecycle(initialValue = emptyList())
     var listsSearch by remember {
         mutableStateOf(lists)
     }
