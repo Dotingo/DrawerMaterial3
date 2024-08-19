@@ -17,7 +17,7 @@ class ListViewModel @Inject constructor(
     private val randomizerDb: RandomizerDb
 ) : ViewModel() {
 
-    val getALlTodos = selectList()
+    val getAllLists = selectList()
     var list by mutableStateOf(ListEntity(name = "", items = ""))
         private set
 
@@ -42,6 +42,34 @@ class ListViewModel @Inject constructor(
         }
     }
 
+    fun updateList(list: ListEntity) {
+        viewModelScope.launch {
+            randomizerDb.dao.updateList(list)
+        }
+    }
+
     private fun selectList(): Flow<List<ListEntity>> = randomizerDb.dao.getAllLists()
 
+    fun shuffleList(list: List<String>, count: Int): List<String> {
+        val shuffledItems = list.shuffled()
+        return shuffledItems.take(count)
+    }
+
+    fun groupItems(items: List<String>, count: Int): List<List<String>> {
+        val shuffledArray = items.shuffled()
+        val groups = groupArray(shuffledArray, count)
+        return groups
+    }
+
+    private fun <T> groupArray(array: List<T>, groupCount: Int): List<List<T>> {
+
+        val groups = MutableList(groupCount) { mutableListOf<T>() }
+
+        array.forEachIndexed { index, element ->
+            groups[index % groupCount].add(element)
+        }
+
+        return groups
+    }
 }
+
