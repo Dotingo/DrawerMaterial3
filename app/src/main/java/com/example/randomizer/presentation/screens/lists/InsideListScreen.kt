@@ -20,10 +20,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.randomizer.R
+import com.example.randomizer.navigation.ListNavigation
 import com.example.randomizer.navigation.NavigationItem
 import com.example.randomizer.presentation.screens.components.DeleteDialog
 
@@ -36,88 +35,105 @@ fun RandomListScreen(
     var openDialog by remember {
         mutableStateOf(false)
     }
-    val splitItems = listViewModel.list.items.split("|")
-    LaunchedEffect(key1 = true,
-        block = {
-            listViewModel.getListById(id)
-        })
-    Scaffold(topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    text = listViewModel.list.name,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = {
-                    onBack()
-                }) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
-                        contentDescription = null
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = {
 
-                }
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
-                        contentDescription = "edit"
+    LaunchedEffect(key1 = id) {
+        listViewModel.getListById(id)
+    }
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    LaunchedEffect(navBackStackEntry) {
+        if (currentRoute != "edit_screen") {
+            listViewModel.getListById(id)
+        }
+    }
+
+    val splitItems = listViewModel.list.items.split("|")
+
+    Scaffold(topBar = {
+        if (currentRoute != "edit_screen") {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = listViewModel.list.name,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
-                }
-                IconButton(
-                    onClick = {
-                        openDialog = true
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onBack()
+                    }) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                            contentDescription = null
+                        )
                     }
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_trash),
-                        contentDescription = "delete"
-                    )
+                },
+                actions = {
+                    IconButton(onClick = {
+                        navController.navigate("edit_screen")
+                    }
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
+                            contentDescription = "edit"
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            openDialog = true
+                        }
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_trash),
+                            contentDescription = "delete"
+                        )
+                    }
                 }
-            }
-        )
+            )
+        }
     },
         bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-                val items =
-                    listOf(
+            if (currentRoute != "edit_screen") {
+                NavigationBar {
+                    val items = listOf(
                         NavigationItem.Pick,
                         NavigationItem.Shuffle,
                         NavigationItem.Group
                     )
-                items.forEach { item ->
-                    val selected = currentRoute == item.route
-                    NavigationBarItem(
-                        selected = selected,
-                        onClick = {
-                            navController.navigate(item.route){
-                                popUpTo(0)
-                            }
-                        },
-                        icon = {
-                            if (!selected) {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(item.icon),
-                                    contentDescription = "pick item"
+                    items.forEach { item ->
+                        val selected = currentRoute == item.route
+                        NavigationBarItem(
+                            selected = selected,
+                            onClick = {
+                                navController.navigate(item.route) {
+                                    popUpTo(0)
+                                }
+                            },
+                            icon = {
+                                if (!selected) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(item.icon),
+                                        contentDescription = "pick item"
+                                    )
+                                } else {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(item.filledIcon),
+                                        contentDescription = "pick item"
+                                    )
+                                }
+                            },
+                            label = {
+                                Text(
+                                    text = stringResource(item.label),
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 1
                                 )
-                            } else {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(item.filledIcon),
-                                    contentDescription = "pick item"
-                                )
-                            }
-                        },
-                        label = { Text(text = stringResource(item.label)) })
+                            })
+                    }
                 }
-
             }
         }) { paddingValues ->
         DeleteDialog(
@@ -126,16 +142,6 @@ fun RandomListScreen(
             onBack = onBack,
             listViewModel = listViewModel
         )
-        NavHost(navController, startDestination = NavigationItem.Pick.route) {
-            composable(NavigationItem.Pick.route) {
-                PickListItemsScreen(paddingValues, splitItems)
-            }
-            composable(NavigationItem.Shuffle.route) {
-                ShuffleListItemsScreen(paddingValues)
-            }
-            composable(NavigationItem.Group.route) {
-                GroupListItemsScreen(paddingValues)
-            }
-        }
+        ListNavigation(navController, paddingValues, splitItems, onBack, listViewModel)
     }
 }
