@@ -6,12 +6,12 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -46,16 +46,13 @@ fun ResultSection(
             .fillMaxHeight(size),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
-                .verticalScrollWithScrollbar(
-                    rememberScrollState(),
-                    scrollbarConfig = ScrollBarConfig(
-                        indicatorColor = MaterialTheme.colorScheme.secondary,
-                        padding = PaddingValues(4.dp, 8.dp, 4.dp, 4.dp)
-                    )
-                )
+                .verticalScroll(scrollState)
+                .verticalScrollbar(scrollState)
                 .fillMaxWidth()
+                .padding(horizontal = 3.dp)
                 .weight(1f),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
