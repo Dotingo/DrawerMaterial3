@@ -8,22 +8,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Button
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,12 +32,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.components.ScrollBarConfig
-import com.example.randomizer.presentation.screens.components.verticalScrollWithScrollbar
-import com.example.randomizer.presentation.util.Dimens.MediumPadding1
+import com.example.randomizer.presentation.screens.components.CustomSlider
+import com.example.randomizer.presentation.screens.components.GenerateButton
+import com.example.randomizer.presentation.screens.components.InfoScreen
+import com.example.randomizer.presentation.screens.components.verticalScrollbar
 
 @Composable
 fun GroupListItemsScreen(
@@ -52,17 +48,17 @@ fun GroupListItemsScreen(
     if (items.size > 2) {
         GroupItemsContent(paddingValues, items, listViewModel)
     } else {
-        InsufficientItemsContent(paddingValues)
+        InfoScreen(paddingValues, stringResource(id = R.string.greater_then_two))
     }
 }
 
 @Composable
-fun GroupItemsContent(
+private fun GroupItemsContent(
     paddingValues: PaddingValues,
     items: List<String>,
     listViewModel: ListViewModel
 ) {
-    var slideValue by remember { mutableIntStateOf(2) }
+    var currentSlideValue by remember { mutableIntStateOf(2) }
     var result by remember { mutableStateOf<List<List<String>>>(emptyList()) }
 
     Column(
@@ -75,16 +71,16 @@ fun GroupItemsContent(
         GroupsResultSection(result)
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            GroupSlider(slideValue, items.size) { slideValue = it }
-            CreateGroupsButton {
-                result = listViewModel.groupItems(items, slideValue)
+            CustomSlider(2..items.size, currentSlideValue) { currentSlideValue = it }
+            GenerateButton(label = stringResource(R.string.create_groups)) {
+                result = listViewModel.groupItems(items, currentSlideValue)
             }
         }
     }
 }
 
 @Composable
-fun GroupsResultSection(result: List<List<String>>) {
+private fun GroupsResultSection(result: List<List<String>>) {
     val context = LocalContext.current
     val clipboardManager = remember {
         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -96,16 +92,12 @@ fun GroupsResultSection(result: List<List<String>>) {
             .fillMaxHeight(0.7f),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .padding(3.dp)
-                .verticalScrollWithScrollbar(
-                    rememberScrollState(),
-                    scrollbarConfig = ScrollBarConfig(
-                        indicatorColor = MaterialTheme.colorScheme.secondary,
-                        padding = PaddingValues(4.dp, 8.dp, 4.dp, 4.dp)
-                    )
-                )
+                .verticalScroll(scrollState)
+                .verticalScrollbar(scrollState)
         ) {
             result.forEachIndexed { index, group ->
                 val groupText = group.joinToString(", ")
@@ -122,7 +114,7 @@ fun GroupsResultSection(result: List<List<String>>) {
 }
 
 @Composable
-fun GroupRow(
+private fun GroupRow(
     groupNumber: Int,
     groupText: String,
     clipboardManager: ClipboardManager,
@@ -151,63 +143,3 @@ fun GroupRow(
     }
 }
 
-@Composable
-fun GroupSlider(slideValue: Int, maxValue: Int, onValueChange: (Int) -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "${stringResource(id = R.string.result_count)} $slideValue"
-        )
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 50.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = "2")
-        Slider(
-            value = slideValue.toFloat(),
-            onValueChange = { onValueChange(it.toInt()) },
-            valueRange = 2f..maxValue.toFloat(),
-            modifier = Modifier.weight(1f)
-        )
-        Text(text = maxValue.toString())
-    }
-}
-
-@Composable
-fun CreateGroupsButton(onClick: () -> Unit) {
-    Button(
-        modifier = Modifier.padding(bottom = MediumPadding1),
-        onClick = onClick
-    ) {
-        Text(text = stringResource(R.string.create_groups))
-    }
-}
-
-@Composable
-fun InsufficientItemsContent(paddingValues: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_info),
-            contentDescription = "info",
-            modifier = Modifier.size(120.dp)
-        )
-        Spacer(modifier = Modifier.height(15.dp))
-        Text(
-            text = stringResource(id = R.string.greater_then_two),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.displayMedium
-        )
-    }
-}
