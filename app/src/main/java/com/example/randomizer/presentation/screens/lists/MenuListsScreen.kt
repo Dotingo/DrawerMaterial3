@@ -37,7 +37,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import com.example.randomizer.data.type.ListEntity
+import com.example.randomizer.presentation.screens.components.lazyVerticalScrollbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -117,15 +119,18 @@ fun MenuListScreen(
                     .fillMaxWidth()
                     .padding(5.dp)
             ) {}
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 10.dp)
-            ) {
-                items(items = listsSearch, key = {item -> item.id!! }) { list ->
-                    Lists(list, navigateToList, list.items)
+                val lazyListState = rememberLazyListState()
+                LazyColumn(
+                    state = lazyListState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 10.dp)
+                        .lazyVerticalScrollbar(lazyListState)
+                ) {
+                    items(items = listsSearch, key = {item -> item.id!! }) { list ->
+                        Lists(list, navigateToList, list.items)
+                    }
                 }
-            }
         }
     }
 }
@@ -164,3 +169,4 @@ fun Lists(listEntity: ListEntity, navigateToList: (id: Int) -> Unit, count: Stri
         )
     }
 }
+
