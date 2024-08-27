@@ -76,19 +76,18 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
                 })
             ) { navBackStackEntry ->
                 val listNavController = rememberNavController()
-                val id =  navBackStackEntry.arguments?.getInt("id")
-                    RandomListScreen(
-                        navController = listNavController,
-                        id = id!!,
-                        onBack = {
-                            if (navController.currentBackStackEntry?.lifecycle?.currentState
-                                == Lifecycle.State.RESUMED
-                            ) {
-                                navController.popBackStack()
-                            }
+                val id = navBackStackEntry.arguments?.getInt("id")
+                RandomListScreen(
+                    navController = listNavController,
+                    id = id!!,
+                    onBack = {
+                        if (navController.currentBackStackEntry?.lifecycle?.currentState
+                            == Lifecycle.State.RESUMED
+                        ) {
+                            navController.popBackStack()
                         }
-                    )
-
+                    }
+                )
             }
         }
     }

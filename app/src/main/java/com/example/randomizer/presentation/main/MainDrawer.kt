@@ -138,6 +138,7 @@ fun MainDrawer(
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
 
+
             Scaffold(topBar = {
                 if (
                     currentRoute != ScreenRouteType.Main.ListScreen.List.CreateList.route &&
