@@ -2,7 +2,9 @@ package com.example.randomizer.di
 
 import android.app.Application
 import androidx.room.Room
+import com.example.randomizer.data.Dao
 import com.example.randomizer.data.RandomizerDb
+import com.example.randomizer.repository.RandomizerRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,4 +28,12 @@ object MainModule {
             throw e
         }
     }
+
+    @Provides
+    @Singleton
+    fun provideDao(db: RandomizerDb):Dao = db.dao()
+
+    @Provides
+    @Singleton
+    fun provideRandomizerRepository(dao: Dao): RandomizerRepository = RandomizerRepository(dao)
 }

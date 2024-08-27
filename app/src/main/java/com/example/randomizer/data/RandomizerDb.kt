@@ -7,5 +7,5 @@ import com.example.randomizer.data.type.NameEntity
 
 @Database(entities = [NameEntity::class, ListEntity::class], version = 2)
 abstract class RandomizerDb: RoomDatabase() {
-    abstract val dao: Dao
+    abstract fun dao(): Dao
 }

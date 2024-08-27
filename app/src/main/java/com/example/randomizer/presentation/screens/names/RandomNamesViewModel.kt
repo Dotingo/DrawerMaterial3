@@ -2,8 +2,8 @@ package com.example.randomizer.presentation.screens.names
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.randomizer.data.RandomizerDb
 import com.example.randomizer.data.type.NameEntity
+import com.example.randomizer.repository.RandomizerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RandomNamesViewModel @Inject constructor(
-    private val randomizerDb: RandomizerDb
+    private val repository: RandomizerRepository
 ) : ViewModel() {
 
     private val _namesList = MutableStateFlow<List<NameEntity>>(emptyList())
@@ -52,16 +52,16 @@ class RandomNamesViewModel @Inject constructor(
         viewModelScope.launch {
             _namesList.value = when {
                 (genderList[genInd] == "" && regionList[regInd] == "") ->
-                    randomizerDb.dao.getAllNames(getLanguage())
+                    repository.getAllNames(getLanguage())
 
                 (genderList[genInd] != "" && regionList[regInd] == "") ->
-                    randomizerDb.dao.getNamesByGender(genderList[genInd], getLanguage())
+                    repository.getNamesByGender(genderList[genInd], getLanguage())
 
                 (genderList[genInd] == "" && regionList[regInd] != "") ->
-                    randomizerDb.dao.getAllNamesByRegion(regionList[regInd], getLanguage())
+                    repository.getAllNamesByRegion(regionList[regInd], getLanguage())
 
                 else ->
-                    randomizerDb.dao.getAllNamesByAll(
+                    repository.getAllNamesByAll(
                         genderList[genInd],
                         regionList[regInd],
                         getLanguage()
