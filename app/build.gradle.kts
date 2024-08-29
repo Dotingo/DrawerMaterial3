@@ -59,7 +59,6 @@ dependencies {
 
     //accompanist
     implementation(libs.accompanist.systemuicontroller)
-
     implementation (libs.androidx.appcompat)
 
     //lottie
