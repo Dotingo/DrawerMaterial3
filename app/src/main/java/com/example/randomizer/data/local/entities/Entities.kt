@@ -1,4 +1,4 @@
-package com.example.randomizer.data.type
+package com.example.randomizer.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -19,4 +19,12 @@ data class ListEntity(
     val id: Int? = null,
     val name: String,
     val items: String
+)
+
+@Entity(tableName = "countries")
+data class CountriesEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int? = null,
+    val country: String,
+    val language: String
 )

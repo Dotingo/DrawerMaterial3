@@ -11,6 +11,7 @@ sealed class ScreenRouteType(val route: String) {
                 data object InsideList : ScreenRouteType("inside_list")
             }
         }
+        data object Country : ScreenRouteType(route = "random_country_screen")
     }
 
     data object Settings : ScreenRouteType(route = "settings_screen")
