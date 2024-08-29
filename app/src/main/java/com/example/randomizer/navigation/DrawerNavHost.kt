@@ -13,6 +13,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.randomizer.presentation.screens.coins.RandomCoinScreen
+import com.example.randomizer.presentation.screens.colors.RandomColorScreen
 import com.example.randomizer.presentation.screens.countries.RandomCountriesScreen
 import com.example.randomizer.presentation.screens.lists.CreateListScreen
 import com.example.randomizer.presentation.screens.lists.MenuListScreen
@@ -92,5 +93,6 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
             }
         }
         composable(ScreenRouteType.Main.Country.route) { RandomCountriesScreen(paddingValues = innerPadding) }
+        composable(ScreenRouteType.Main.Color.route) { RandomColorScreen(paddingValues = innerPadding) }
     }
 }

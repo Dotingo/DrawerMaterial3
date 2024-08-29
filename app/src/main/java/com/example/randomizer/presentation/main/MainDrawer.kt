@@ -81,6 +81,11 @@ fun MainDrawer(
             stringResource(R.string.country_rand),
             ImageVector.vectorResource(id = R.drawable.ic_globe),
             ScreenRouteType.Main.Country.route
+        ),
+        DrawerItem(
+            stringResource(R.string.color_rand),
+            ImageVector.vectorResource(id = R.drawable.ic_color_swatch),
+            ScreenRouteType.Main.Color.route
         )
     )
     val currentRandomizerScreen = viewModel.currentRandomizerScreen.collectAsState()
