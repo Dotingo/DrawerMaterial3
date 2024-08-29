@@ -3,9 +3,9 @@ package com.example.randomizer.presentation.main
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.randomizer.data.AppTheme
-import com.example.randomizer.data.DataStoreManager
+import com.example.randomizer.data.local.datastore.DataStoreManager
 import com.example.randomizer.navigation.ScreenRouteType
+import com.example.randomizer.presentation.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,9 +1,10 @@
 package com.example.randomizer.presentation.screens.names
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.randomizer.data.type.NameEntity
-import com.example.randomizer.repository.RandomizerRepository
+import com.example.randomizer.data.local.entities.NameEntity
+import com.example.randomizer.repository.NamesDaoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -12,11 +13,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RandomNamesViewModel @Inject constructor(
-    private val repository: RandomizerRepository
+    private val repository: NamesDaoRepository
 ) : ViewModel() {
 
     private val _namesList = MutableStateFlow<List<NameEntity>>(emptyList())
 
+    @SuppressLint("SuspiciousIndentation")
     fun generateRandomName(count: Int): List<String> {
         val randomNames = mutableListOf<String>()
         while (randomNames.size < count) {
@@ -71,12 +73,9 @@ class RandomNamesViewModel @Inject constructor(
     }
 
     private fun getLanguage(): String {
-        val locale = Locale.getDefault()
-        val language = locale.language
-        return if (language == "ru") {
-            "ru"
-        } else {
-            "en"
+        return when (Locale.getDefault().language) {
+            "ru" -> "ru"
+            else -> "en"
         }
     }
 }

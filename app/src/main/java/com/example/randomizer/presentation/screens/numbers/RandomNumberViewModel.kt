@@ -6,8 +6,8 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.randomizer.R
-import com.example.randomizer.data.DataStoreManager
-import com.example.randomizer.data.NumRangeData
+import com.example.randomizer.data.local.datastore.DataStoreManager
+import com.example.randomizer.data.local.model.NumRangeData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

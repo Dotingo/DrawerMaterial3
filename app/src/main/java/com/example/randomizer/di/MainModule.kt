@@ -2,9 +2,13 @@ package com.example.randomizer.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.randomizer.data.Dao
-import com.example.randomizer.data.RandomizerDb
-import com.example.randomizer.repository.RandomizerRepository
+import com.example.randomizer.data.local.dao.CountriesDao
+import com.example.randomizer.data.local.dao.ListsDao
+import com.example.randomizer.data.local.dao.NamesDao
+import com.example.randomizer.data.local.database.RandomizerDb
+import com.example.randomizer.repository.CountriesDaoRepository
+import com.example.randomizer.repository.ListsDaoRepository
+import com.example.randomizer.repository.NamesDaoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,9 +35,25 @@ object MainModule {
 
     @Provides
     @Singleton
-    fun provideDao(db: RandomizerDb):Dao = db.dao()
+    fun provideNamesDao(db: RandomizerDb): NamesDao = db.namesDao()
 
     @Provides
     @Singleton
-    fun provideRandomizerRepository(dao: Dao): RandomizerRepository = RandomizerRepository(dao)
+    fun provideNamesDaoRepository(namesDao: NamesDao): NamesDaoRepository = NamesDaoRepository(namesDao)
+
+    @Provides
+    @Singleton
+    fun provideListsDao(db: RandomizerDb): ListsDao = db.listsDao()
+
+    @Provides
+    @Singleton
+    fun provideListsDaoRepository(listsDao: ListsDao): ListsDaoRepository = ListsDaoRepository(listsDao)
+
+    @Provides
+    @Singleton
+    fun provideCountriesDao(db: RandomizerDb): CountriesDao = db.countriesDao()
+
+    @Provides
+    @Singleton
+    fun provideCountriesDaoRepository(countriesDao: CountriesDao): CountriesDaoRepository = CountriesDaoRepository(countriesDao)
 }

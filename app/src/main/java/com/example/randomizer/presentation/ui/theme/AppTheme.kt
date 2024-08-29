@@ -1,17 +1,17 @@
-package com.example.randomizer.presentation.util
+package com.example.randomizer.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import com.example.randomizer.data.AppTheme
 
 
 /**
  * Map a AppTheme into a [Boolean].
  *
- * @param appTheme the [AppTheme].
- *
  * @return the corresponding boolean value of this AppTheme.
  */
+enum class AppTheme {
+    Light, Dark, System
+}
 
 @Composable
 fun shouldUseDarkTheme(

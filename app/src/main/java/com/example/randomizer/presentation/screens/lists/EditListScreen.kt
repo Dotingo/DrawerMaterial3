@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import com.example.randomizer.R
-import com.example.randomizer.data.type.ListEntity
+import com.example.randomizer.data.local.entities.ListEntity
 import com.example.randomizer.presentation.screens.components.DeleteDialog
 
 @OptIn(ExperimentalMaterial3Api::class)

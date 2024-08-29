@@ -71,7 +71,10 @@ private fun GroupItemsContent(
         GroupsResultSection(result)
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CustomSlider(2..items.size, currentSlideValue) { currentSlideValue = it }
+            CustomSlider(
+                valueRange = 2..items.size,
+                currentValue = currentSlideValue
+            ) { currentSlideValue = it }
             GenerateButton(label = stringResource(R.string.create_groups)) {
                 result = listViewModel.groupItems(items, currentSlideValue)
             }

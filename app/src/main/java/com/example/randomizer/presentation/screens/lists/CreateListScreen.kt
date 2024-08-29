@@ -42,7 +42,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.randomizer.R
-import com.example.randomizer.data.type.ListEntity
+import com.example.randomizer.data.local.entities.ListEntity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

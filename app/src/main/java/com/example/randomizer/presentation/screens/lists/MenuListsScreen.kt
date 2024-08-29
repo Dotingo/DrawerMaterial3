@@ -38,7 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import com.example.randomizer.data.type.ListEntity
+import com.example.randomizer.data.local.entities.ListEntity
 import com.example.randomizer.presentation.screens.components.lazyVerticalScrollbar
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,4 +1,4 @@
-package com.example.randomizer.data
+package com.example.randomizer.data.local.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.randomizer.data.local.model.NumRangeData
+import com.example.randomizer.presentation.ui.theme.AppTheme
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 

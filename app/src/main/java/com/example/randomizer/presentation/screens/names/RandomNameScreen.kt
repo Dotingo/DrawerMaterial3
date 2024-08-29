@@ -34,7 +34,7 @@ import com.example.randomizer.presentation.screens.components.ResultSection
 @Composable
 fun RandomNameScreen(
     paddingValues: PaddingValues,
-    dbViewModel: RandomNamesViewModel = hiltViewModel()
+    viewModel: RandomNamesViewModel = hiltViewModel()
 ) {
     var generatedNames by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
     var selectedGenderIndex by remember { mutableIntStateOf(0) }
@@ -55,7 +55,7 @@ fun RandomNameScreen(
         ResultSection(output = generatedNames, separator = "\n")
 
         LaunchedEffect(selectedGenderIndex, selectedNamesRegionsIndex) {
-            dbViewModel.queryNames(selectedGenderIndex, selectedNamesRegionsIndex)
+            viewModel.queryNames(selectedGenderIndex, selectedNamesRegionsIndex)
         }
 
         Row(
@@ -88,7 +88,7 @@ fun RandomNameScreen(
         GenerateButton(
             label = stringResource(id = R.string.generate_names)
         ) {
-            generatedNames = dbViewModel.generateRandomName(currentValueState)
+            generatedNames = viewModel.generateRandomName(currentValueState)
         }
     }
 }

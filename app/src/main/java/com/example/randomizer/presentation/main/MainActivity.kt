@@ -15,7 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.randomizer.navigation.TopNavHost
 import com.example.randomizer.presentation.ui.theme.RandomizerTheme
-import com.example.randomizer.presentation.util.shouldUseDarkTheme
+import com.example.randomizer.presentation.ui.theme.shouldUseDarkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

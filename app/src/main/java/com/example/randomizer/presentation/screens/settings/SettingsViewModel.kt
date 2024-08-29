@@ -3,7 +3,7 @@ package com.example.randomizer.presentation.screens.settings
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
-import com.example.randomizer.data.AppTheme
+import com.example.randomizer.presentation.ui.theme.AppTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

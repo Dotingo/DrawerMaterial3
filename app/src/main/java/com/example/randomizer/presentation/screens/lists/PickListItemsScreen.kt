@@ -44,7 +44,7 @@ fun PickListItemsScreen(
         ResultSection(output = randomItemsResult, size = 0.7f, separator = ", ")
 
         if (canDisplaySlider) {
-            CustomSlider(1..items.size, slideValue) { newValue ->
+            CustomSlider(valueRange = 1..items.size, currentValue = slideValue) { newValue ->
                 slideValue = newValue
             }
         }

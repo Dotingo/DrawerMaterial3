@@ -14,8 +14,13 @@ import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
 
 @Composable
-fun CustomSlider(valueRange: IntRange, currentValue: Int, onValueChange: (Int) -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+fun CustomSlider(
+    modifier: Modifier = Modifier,
+    valueRange: IntRange,
+    currentValue: Int,
+    onValueChange: (Int) -> Unit
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         Text(
             text = "${stringResource(id = R.string.result_count)} $currentValue"
         )
