@@ -39,7 +39,8 @@ object MainModule {
 
     @Provides
     @Singleton
-    fun provideNamesDaoRepository(namesDao: NamesDao): NamesDaoRepository = NamesDaoRepository(namesDao)
+    fun provideNamesDaoRepository(namesDao: NamesDao): NamesDaoRepository =
+        NamesDaoRepository(namesDao)
 
     @Provides
     @Singleton
@@ -47,7 +48,8 @@ object MainModule {
 
     @Provides
     @Singleton
-    fun provideListsDaoRepository(listsDao: ListsDao): ListsDaoRepository = ListsDaoRepository(listsDao)
+    fun provideListsDaoRepository(listsDao: ListsDao): ListsDaoRepository =
+        ListsDaoRepository(listsDao)
 
     @Provides
     @Singleton
@@ -55,5 +57,6 @@ object MainModule {
 
     @Provides
     @Singleton
-    fun provideCountriesDaoRepository(countriesDao: CountriesDao): CountriesDaoRepository = CountriesDaoRepository(countriesDao)
+    fun provideCountriesDaoRepository(countriesDao: CountriesDao): CountriesDaoRepository =
+        CountriesDaoRepository(countriesDao)
 }
