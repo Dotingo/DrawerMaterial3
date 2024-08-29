@@ -44,4 +44,6 @@
     <string name="create_groups">Создать группы</string>
     <string name="greater_then_two">Для создания групп количество элементов в списке должно быть больше двух</string>
     <string name="group">Группа</string>
+    <string name="generate_countries">Сгенерировать страны</string>
+    <string name="open_on_wikipedia">Открыть в Википедии</string>
 </resources>
