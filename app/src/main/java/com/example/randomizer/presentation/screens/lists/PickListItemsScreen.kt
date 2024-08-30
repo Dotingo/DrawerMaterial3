@@ -41,7 +41,12 @@ fun PickListItemsScreen(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ResultSection(output = randomItemsResult, size = 0.7f, separator = ", ")
+        ResultSection(
+            output = randomItemsResult,
+            size = 0.7f,
+            separator = ", ",
+            clipboardText = randomItemsResult.joinToString(", ")
+        )
 
         if (canDisplaySlider) {
             CustomSlider(valueRange = 1..items.size, currentValue = slideValue) { newValue ->

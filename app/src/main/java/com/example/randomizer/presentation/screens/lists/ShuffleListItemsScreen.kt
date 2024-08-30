@@ -37,7 +37,12 @@ fun ShuffleListItemsScreen(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ResultSection(randomItemsResult, size = 0.8f, separator = ", ")
+        ResultSection(
+            randomItemsResult,
+            size = 0.8f,
+            separator = ", ",
+            clipboardText = randomItemsResult.joinToString(", ")
+        )
 
         GenerateButton(label = stringResource(id = R.string.shuffle_list)) {
             randomItemsResult = listViewModel.shuffleList(items, items.size)

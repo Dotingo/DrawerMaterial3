@@ -52,10 +52,10 @@ fun RandomNameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        ResultSection(output = generatedNames, separator = "\n")
+        ResultSection(output = generatedNames, separator = "\n", clipboardText = generatedNames.joinToString(", "))
 
         LaunchedEffect(selectedGenderIndex, selectedNamesRegionsIndex) {
-            viewModel.queryNames(selectedGenderIndex, selectedNamesRegionsIndex)
+            viewModel.getNames(selectedGenderIndex, selectedNamesRegionsIndex)
         }
 
         Row(

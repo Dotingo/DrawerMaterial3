@@ -62,7 +62,11 @@ fun RandomNumber(
         var resultCount by remember { mutableIntStateOf(1) }
         val context = LocalContext.current
 
-        ResultSection(output = generatedNumbersText, separator = ", ")
+        ResultSection(
+            output = generatedNumbersText,
+            separator = ", ",
+            clipboardText = generatedNumbersText.joinToString(", ")
+        )
         InputSection(minNumState, randomNumberViewModel, maxNumState)
         CustomSlider(
             valueRange = 1..10,
@@ -74,7 +78,7 @@ fun RandomNumber(
             text = stringResource(id = R.string.repeat_values),
             onCheckedChange = { allowDuplicates = it }
         )
-        GenerateButton(stringResource(id = R.string.generate_num)){
+        GenerateButton(stringResource(id = R.string.generate_num)) {
             randomNumberViewModel.generateRandomNumber(
                 context,
                 randomNumberViewModel.minNumState.value,

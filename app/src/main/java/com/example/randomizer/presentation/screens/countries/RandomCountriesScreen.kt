@@ -59,7 +59,8 @@ fun RandomCountriesScreen(
         }
         ResultSection(
             output = generatedCountry,
-            separator = ""
+            separator = "",
+            clipboardText = generatedCountry.joinToString("")
         )
         Spacer(modifier = Modifier.height(10.dp))
         if (generatedCountry.isNotEmpty()) {

@@ -50,7 +50,7 @@ class RandomNamesViewModel @Inject constructor(
         "South Asia"
     )
 
-    fun queryNames(genInd: Int, regInd: Int) {
+    fun getNames(genInd: Int, regInd: Int) {
         viewModelScope.launch {
             _namesList.value = when {
                 (genderList[genInd] == "" && regionList[regInd] == "") ->
