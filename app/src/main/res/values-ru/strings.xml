@@ -47,4 +47,6 @@
     <string name="generate_countries">Сгенерировать страны</string>
     <string name="open_on_wikipedia">Открыть в Википедии</string>
     <string name="color_rand">Цвета</string>
+    <string name="color_type">Тип цвета</string>
+    <string name="generate_colors">Сгенерировать цвета</string>
 </resources>

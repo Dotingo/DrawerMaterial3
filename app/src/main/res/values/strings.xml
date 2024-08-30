@@ -46,4 +46,6 @@
     <string name="generate_countries">Generate countries</string>
     <string name="open_on_wikipedia">Open on Wikipedia</string>
     <string name="color_rand">Colors</string>
+    <string name="color_type">Color Type</string>
+    <string name="generate_colors">Generate colors</string>
 </resources>
