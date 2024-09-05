@@ -49,4 +49,12 @@
     <string name="color_rand">Цвета</string>
     <string name="color_type">Тип цвета</string>
     <string name="generate_colors">Сгенерировать цвета</string>
+    <string name="edit_item">Редактировать элемент</string>
+    <string name="dice_rand">Кости</string>
+    <string name="roll_a_dice">Бросить кости</string>
+    <string name="total_num">"Общее число: "</string>
+    <string name="add_dice">Добавить кость</string>
+    <string name="change_dice">Изменить кости</string>
+    <string name="apply">Принять</string>
+    <string name="close">Закрыть</string>
 </resources>

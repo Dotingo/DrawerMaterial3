@@ -48,4 +48,12 @@
     <string name="color_rand">Colors</string>
     <string name="color_type">Color Type</string>
     <string name="generate_colors">Generate colors</string>
+    <string name="edit_item">Edit item</string>
+    <string name="dice_rand">Dices</string>
+    <string name="roll_a_dice">Roll a dice</string>
+    <string name="total_num">Total number: </string>
+    <string name="add_dice">Add dice</string>
+    <string name="change_dice">Change dice</string>
+    <string name="apply">Apply</string>
+    <string name="close">Close</string>
 </resources>
