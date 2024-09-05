@@ -79,11 +79,7 @@ fun TopNavHost(
                 viewModel.saveTheme(context, it)
             },
             onBack = {
-                if (navController.currentBackStackEntry?.lifecycle?.currentState
-                    == Lifecycle.State.RESUMED
-                ) {
-                    navController.popBackStack()
-                }
+                navigateBack(navController)
             }
         )
     }
@@ -94,3 +90,10 @@ data class DrawerItem(
     val icon: ImageVector,
     val route: String
 )
+
+fun navigateBack(navController: NavHostController) {
+    if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
+    ) {
+        navController.popBackStack()
+    }
+}
