@@ -4,7 +4,6 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,7 +13,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.randomizer.presentation.screens.coins.RandomCoinScreen
 import com.example.randomizer.presentation.screens.colors.RandomColorScreen
-import com.example.randomizer.presentation.screens.countries.RandomCountriesScreen
+import com.example.randomizer.presentation.screens.countries.RandomCountryScreen
+import com.example.randomizer.presentation.screens.dice.RandomDiceScreen
 import com.example.randomizer.presentation.screens.lists.CreateListScreen
 import com.example.randomizer.presentation.screens.lists.MenuListScreen
 import com.example.randomizer.presentation.screens.lists.RandomListScreen
@@ -64,11 +64,7 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
             composable(ScreenRouteType.Main.ListScreen.List.CreateList.route) {
                 CreateListScreen(
                     onBack = {
-                        if (navController.currentBackStackEntry?.lifecycle?.currentState
-                            == Lifecycle.State.RESUMED
-                        ) {
-                            navController.popBackStack()
-                        }
+                        navigateBack(navController)
                     })
             }
             composable(
@@ -83,16 +79,13 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
                     navController = listNavController,
                     id = id!!,
                     onBack = {
-                        if (navController.currentBackStackEntry?.lifecycle?.currentState
-                            == Lifecycle.State.RESUMED
-                        ) {
-                            navController.popBackStack()
-                        }
+                        navigateBack(navController)
                     }
                 )
             }
         }
-        composable(ScreenRouteType.Main.Country.route) { RandomCountriesScreen(paddingValues = innerPadding) }
+        composable(ScreenRouteType.Main.Country.route) { RandomCountryScreen(paddingValues = innerPadding) }
         composable(ScreenRouteType.Main.Color.route) { RandomColorScreen(paddingValues = innerPadding) }
+        composable(ScreenRouteType.Main.Dice.route) { RandomDiceScreen(paddingValues = innerPadding) }
     }
 }
