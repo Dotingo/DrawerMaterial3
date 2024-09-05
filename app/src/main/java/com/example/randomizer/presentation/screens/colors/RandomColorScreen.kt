@@ -1,6 +1,5 @@
 package com.example.randomizer.presentation.screens.colors
 
-
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -25,9 +24,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.ColorUtils
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.components.CustomDropdownMenu
-import com.example.randomizer.presentation.screens.components.GenerateButton
-import com.example.randomizer.presentation.screens.components.ResultSection
+import com.example.randomizer.presentation.components.CustomDropdownMenu
+import com.example.randomizer.presentation.components.GenerateButton
+import com.example.randomizer.presentation.components.ResultSection
 import com.example.randomizer.presentation.util.Dimens.SmallPadding
 
 @Composable

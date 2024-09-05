@@ -2,11 +2,11 @@ package com.example.randomizer.presentation.screens.colors
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.example.randomizer.presentation.screens.components.toCmyk
-import com.example.randomizer.presentation.screens.components.toHex
-import com.example.randomizer.presentation.screens.components.toHsl
-import com.example.randomizer.presentation.screens.components.toHsv
-import com.example.randomizer.presentation.screens.components.toRgb
+import com.example.randomizer.presentation.components.toCmyk
+import com.example.randomizer.presentation.components.toHex
+import com.example.randomizer.presentation.components.toHsl
+import com.example.randomizer.presentation.components.toHsv
+import com.example.randomizer.presentation.components.toRgb
 import kotlin.random.Random
 
 class RandomColorsViewModel: ViewModel() {

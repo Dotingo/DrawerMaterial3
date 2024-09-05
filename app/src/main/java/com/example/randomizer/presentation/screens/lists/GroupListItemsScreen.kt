@@ -34,10 +34,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.components.CustomSlider
-import com.example.randomizer.presentation.screens.components.GenerateButton
-import com.example.randomizer.presentation.screens.components.InfoScreen
-import com.example.randomizer.presentation.screens.components.verticalScrollbar
+import com.example.randomizer.presentation.components.CustomSlider
+import com.example.randomizer.presentation.components.GenerateButton
+import com.example.randomizer.presentation.components.InfoScreen
+import com.example.randomizer.presentation.components.verticalScrollbar
 
 @Composable
 fun GroupListItemsScreen(

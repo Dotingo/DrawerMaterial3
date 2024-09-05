@@ -1,4 +1,4 @@
-package com.example.randomizer.presentation.screens.components
+package com.example.randomizer.presentation.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.AlertDialog

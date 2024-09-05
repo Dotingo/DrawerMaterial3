@@ -24,7 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.randomizer.R
 import com.example.randomizer.navigation.ListNavigation
 import com.example.randomizer.navigation.NavigationItem
-import com.example.randomizer.presentation.screens.components.DeleteDialog
+import com.example.randomizer.presentation.components.DeleteDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

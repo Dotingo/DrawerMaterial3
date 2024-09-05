@@ -31,12 +31,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.components.GenerateButton
-import com.example.randomizer.presentation.screens.components.ResultSection
+import com.example.randomizer.presentation.components.GenerateButton
+import com.example.randomizer.presentation.components.ResultSection
 import com.example.randomizer.presentation.util.Dimens.SmallPadding
 
 @Composable
-fun RandomCountriesScreen(
+fun RandomCountryScreen(
     paddingValues: PaddingValues,
     viewModel: RandomCountriesViewModel = hiltViewModel()
 ) {

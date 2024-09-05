@@ -1,4 +1,4 @@
-package com.example.randomizer.presentation.screens.components
+package com.example.randomizer.presentation.components
 
 import android.content.ClipData
 import android.content.ClipboardManager

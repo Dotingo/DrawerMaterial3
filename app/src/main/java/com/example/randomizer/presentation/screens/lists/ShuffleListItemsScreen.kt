@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.components.GenerateButton
-import com.example.randomizer.presentation.screens.components.ResultSection
+import com.example.randomizer.presentation.components.GenerateButton
+import com.example.randomizer.presentation.components.ResultSection
 
 @Composable
 fun ShuffleListItemsScreen(

@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.components.TextedRadioButton
+import com.example.randomizer.presentation.components.TextedRadioButton
 import com.example.randomizer.presentation.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

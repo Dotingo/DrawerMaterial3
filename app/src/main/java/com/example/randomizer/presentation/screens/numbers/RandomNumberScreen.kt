@@ -32,10 +32,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.components.CustomCheckbox
-import com.example.randomizer.presentation.screens.components.CustomSlider
-import com.example.randomizer.presentation.screens.components.GenerateButton
-import com.example.randomizer.presentation.screens.components.ResultSection
+import com.example.randomizer.presentation.components.CustomCheckbox
+import com.example.randomizer.presentation.components.CustomSlider
+import com.example.randomizer.presentation.components.GenerateButton
+import com.example.randomizer.presentation.components.ResultSection
 import com.example.randomizer.presentation.util.Dimens.ExtraSmallPadding
 import com.example.randomizer.presentation.util.Dimens.SmallPadding
 

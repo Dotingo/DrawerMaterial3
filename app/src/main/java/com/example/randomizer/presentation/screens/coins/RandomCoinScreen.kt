@@ -35,7 +35,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.randomizer.R
-import com.example.randomizer.presentation.screens.components.GenerateButton
+import com.example.randomizer.presentation.components.GenerateButton
 import com.example.randomizer.presentation.util.Dimens
 
 @Composable

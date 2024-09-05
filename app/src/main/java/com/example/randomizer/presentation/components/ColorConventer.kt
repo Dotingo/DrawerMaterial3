@@ -1,4 +1,4 @@
-package com.example.randomizer.presentation.screens.components
+package com.example.randomizer.presentation.components
 
 import androidx.compose.ui.graphics.Color
 import kotlin.math.abs
