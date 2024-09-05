@@ -86,6 +86,11 @@ fun MainDrawer(
             stringResource(R.string.color_rand),
             ImageVector.vectorResource(id = R.drawable.ic_color_swatch),
             ScreenRouteType.Main.Color.route
+        ),
+        DrawerItem(
+            stringResource(R.string.dice_rand),
+            ImageVector.vectorResource(id = R.drawable.ic_dice),
+            ScreenRouteType.Main.Dice.route
         )
     )
     val currentRandomizerScreen = viewModel.currentRandomizerScreen.collectAsState()
