@@ -10,10 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,9 +33,9 @@ fun RandomColorScreen(
     paddingValues: PaddingValues,
     viewModel: RandomColorsViewModel = hiltViewModel()
 ) {
-    var generatedColor by remember { mutableStateOf(Color.Unspecified) }
+    val generatedColor by viewModel.generatedColor.collectAsState()
     var selectedColorTypeIndex by rememberSaveable { mutableIntStateOf(0) }
-    val colorTypes = arrayOf("HEX", "RGB", "HSL", "HSV", "CMYK")
+    val colorTypes = arrayOf("HEX", "RGB","HSL", "HSV", "CMYK")
 
     val animatedColor by animateColorAsState(
         targetValue = generatedColor,
@@ -47,12 +46,10 @@ fun RandomColorScreen(
     val luminance = ColorUtils.calculateLuminance(generatedColor.toArgb())
     val onCardColor = if (luminance > 0.5) MaterialTheme.colorScheme.scrim else Color.White
 
-    var colorText by remember {
-        mutableStateOf("")
-    }
+    val colorText by viewModel.colorText.collectAsState()
 
     LaunchedEffect(selectedColorTypeIndex, generatedColor) {
-        colorText = viewModel.getColors(colorTypes[selectedColorTypeIndex], generatedColor)
+        viewModel.updateColorText(colorTypes[selectedColorTypeIndex])
     }
 
     Column(
@@ -67,8 +64,7 @@ fun RandomColorScreen(
             output = if (generatedColor != Color.Unspecified) listOf(colorText) else emptyList(),
             separator = "",
             iconColor = onCardColor,
-            textColor = onCardColor,
-            size = 0.75f,
+            textColor = onCardColor,size = 0.75f,
             clipboardText = colorText.substringAfter("(").substringBefore(")"),
             cardColor = animatedColor
         )
@@ -81,7 +77,7 @@ fun RandomColorScreen(
             }
         )
         GenerateButton(label = stringResource(R.string.generate_colors)) {
-            generatedColor = viewModel.generateRandomColor()
+            viewModel.generateRandomColor()
         }
     }
 }
