@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,11 +41,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import com.example.randomizer.R
 import com.example.randomizer.data.local.entities.ListEntity
-import com.example.randomizer.presentation.screens.components.DeleteDialog
+import com.example.randomizer.navigation.navigateBack
+import com.example.randomizer.presentation.components.DeleteDialog
+import com.example.randomizer.presentation.components.EditDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,23 +56,20 @@ fun EditListScreen(
     onBack: () -> Unit,
     listViewModel: ListViewModel
 ) {
-    var openDialog by remember {
-        mutableStateOf(false)
-    }
-    var listItem by remember {
-        mutableStateOf("")
-    }
-    val listItems = items.toMutableStateList()
+    var openDeleteDialog by remember { mutableStateOf(false) }
+    var openEditDialog by remember { mutableStateOf(false) }
+    var listItem by remember { mutableStateOf("") }
+    val listItems = remember { items.toMutableStateList() }
+
+    var editIndex by remember { mutableIntStateOf(-1) }
+    var editText by remember { mutableStateOf("") }
+
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(text = listViewModel.list.name) },
             navigationIcon = {
                 IconButton(onClick = {
-                    if (navController.currentBackStackEntry?.lifecycle?.currentState
-                        == Lifecycle.State.RESUMED
-                    ) {
-                        navController.popBackStack()
-                    }
+                    navigateBack(navController)
                 }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
@@ -81,7 +80,7 @@ fun EditListScreen(
             actions = {
                 IconButton(
                     onClick = {
-                        openDialog = true
+                        openDeleteDialog = true
                     }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_trash),
@@ -92,11 +91,12 @@ fun EditListScreen(
         )
     }) { paddingValues ->
         DeleteDialog(
-            openDialog = openDialog,
-            onClose = { openDialog = false },
+            openDialog = openDeleteDialog,
+            onClose = { openDeleteDialog = false },
             onBack = onBack,
             listViewModel = listViewModel
         )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -168,6 +168,19 @@ fun EditListScreen(
                         IconButton(
                             enabled = listItems.size != 1,
                             onClick = {
+                                editIndex = index
+                                editText = item
+                                openEditDialog = true
+                            }
+                        ) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
+                                contentDescription = "edit"
+                            )
+                        }
+                        IconButton(
+                            enabled = listItems.size != 1,
+                            onClick = {
                                 listItems.removeAt(index)
                                 val list = ListEntity(
                                     id = listViewModel.list.id,
@@ -189,5 +202,22 @@ fun EditListScreen(
                 }
             }
         }
+    }
+
+    if (openEditDialog && editIndex != -1) {
+        EditDialog(
+            onClose = { openEditDialog = false },
+            initialText = editText,
+            onConfirm = { newItemText ->
+                listItems[editIndex] = newItemText
+                val list = ListEntity(
+                    id = listViewModel.list.id,
+                    name = listViewModel.list.name,
+                    items = listItems.joinToString("|")
+                )
+                listViewModel.updateList(list)
+                openEditDialog = false
+            }
+        )
     }
 }
