@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.SearchBarDefaults
 import com.example.randomizer.data.local.entities.ListEntity
 import com.example.randomizer.presentation.components.lazyVerticalScrollbar
 
@@ -87,50 +88,55 @@ fun MenuListScreen(
                 .padding(top = (paddingValues.calculateTopPadding().value - it.calculateTopPadding().value).dp)
         ) {
             SearchBar(
-                query = query,
-                onQueryChange = {changedQuery ->
-                    query = changedQuery
-                },
-                onSearch = {
-                    focusManager.clearFocus()
-                },
-                placeholder = { Text(text = stringResource(R.string.search_bar_placeholder)) },
-                active = false,
-                onActiveChange = {},
-                trailingIcon = {
-                    if (query.isNotBlank()) {
-                        IconButton(onClick = {
-                            query = ""
-                        }) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
-                                contentDescription = "clear"
-                            )
-                        }
-                    }
-                },
-                leadingIcon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
-                        contentDescription = "search"
-                    )
-                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(5.dp)
+                    .padding(5.dp),
+                colors = SearchBarDefaults.colors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                inputField = {
+                    SearchBarDefaults.InputField(
+                        query = query,
+                        onQueryChange = { changedQuery ->
+                            query = changedQuery
+                        },
+                        onSearch = { focusManager.clearFocus() },
+                        placeholder = { Text(text = stringResource(R.string.search_bar_placeholder)) },
+                        expanded = false,
+                        onExpandedChange = {},
+                        trailingIcon = {
+                            if (query.isNotBlank()) {
+                                IconButton(onClick = {
+                                    query = ""
+                                }) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
+                                        contentDescription = "clear"
+                                    )
+                                }
+                            }
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
+                                contentDescription = "search"
+                            )
+                        }
+                    )
+                },
+                expanded = false,
+                onExpandedChange = {}
             ) {}
-                val lazyListState = rememberLazyListState()
-                LazyColumn(
-                    state = lazyListState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 10.dp)
-                        .lazyVerticalScrollbar(lazyListState)
-                ) {
-                    items(items = listsSearch, key = {item -> item.id!! }) { list ->
-                        Lists(list, navigateToList, list.items)
-                    }
+            val lazyListState = rememberLazyListState()
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 10.dp)
+                    .lazyVerticalScrollbar(lazyListState)
+            ) {
+                items(items = listsSearch, key = { item -> item.id!! }) { list ->
+                    Lists(list, navigateToList, list.items)
                 }
+            }
         }
     }
 }

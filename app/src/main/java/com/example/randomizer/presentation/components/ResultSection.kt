@@ -35,7 +35,7 @@ import com.example.randomizer.presentation.util.Dimens
 fun ResultSection(
     output: List<Any>?,
     size: Float = 0.5f,
-    cardColor: Color = Color.Unspecified,
+    cardColor: Color = MaterialTheme.colorScheme.primaryContainer,
     textColor: Color = Color.Unspecified,
     iconColor: Color = LocalContentColor.current,
     separator: String,

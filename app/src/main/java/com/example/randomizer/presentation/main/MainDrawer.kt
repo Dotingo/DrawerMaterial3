@@ -106,7 +106,10 @@ fun MainDrawer(
         ModalNavigationDrawer(
             gesturesEnabled = gesturesEnabled,
             drawerContent = {
-                ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
+                ModalDrawerSheet(
+                    drawerContainerColor = MaterialTheme.colorScheme.background,
+                    modifier = Modifier.width(300.dp)
+                ) {
                     LazyColumn(modifier = Modifier.padding(10.dp)) {
                         item {
                             Image(
@@ -152,7 +155,6 @@ fun MainDrawer(
 
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
-
 
             Scaffold(topBar = {
                 if (

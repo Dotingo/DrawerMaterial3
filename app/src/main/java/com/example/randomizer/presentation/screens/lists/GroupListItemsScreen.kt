@@ -93,7 +93,9 @@ private fun GroupsResultSection(result: List<List<String>>) {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.7f),
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(2.dp),
+        colors = CardDefaults
+            .cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         val scrollState = rememberScrollState()
         Column(

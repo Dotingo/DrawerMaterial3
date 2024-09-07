@@ -3,6 +3,7 @@ package com.example.randomizer.presentation.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -18,15 +19,14 @@ import com.example.randomizer.R
 
 @Composable
 fun EditDialog(
-
     onClose: () -> Unit,
     onConfirm: (String) -> Unit,
     initialText: String = ""
 ) {
     var itemText by remember { mutableStateOf(initialText) }
 
-
     AlertDialog(
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
         title = { Text(text = stringResource(R.string.edit_item)) },
         onDismissRequest = {},
         text = {

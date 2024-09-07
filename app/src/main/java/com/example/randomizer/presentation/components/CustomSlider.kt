@@ -2,8 +2,10 @@ package com.example.randomizer.presentation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,12 +33,14 @@ fun CustomSlider(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "${valueRange.first}")
+            Spacer(modifier = Modifier.width(3.dp))
             Slider(
                 value = currentValue.toFloat(),
                 onValueChange = { onValueChange(it.toInt()) },
                 valueRange = valueRange.first.toFloat()..valueRange.last.toFloat(),
                 modifier = Modifier.weight(1f),
             )
+            Spacer(modifier = Modifier.width(3.dp))
             Text(text = "${valueRange.last}")
         }
     }

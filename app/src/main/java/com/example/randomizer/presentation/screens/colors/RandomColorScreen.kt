@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,6 +25,7 @@ import com.example.randomizer.R
 import com.example.randomizer.presentation.components.CustomDropdownMenu
 import com.example.randomizer.presentation.components.GenerateButton
 import com.example.randomizer.presentation.components.ResultSection
+import com.example.randomizer.presentation.ui.theme.blackBrown
 import com.example.randomizer.presentation.util.Dimens.SmallPadding
 
 @Composable
@@ -44,7 +44,7 @@ fun RandomColorScreen(
     )
 
     val luminance = ColorUtils.calculateLuminance(generatedColor.toArgb())
-    val onCardColor = if (luminance > 0.5) MaterialTheme.colorScheme.scrim else Color.White
+    val onCardColor = if (luminance > 0.5) blackBrown else Color.White
 
     val colorText by viewModel.colorText.collectAsState()
 
@@ -64,7 +64,8 @@ fun RandomColorScreen(
             output = if (generatedColor != Color.Unspecified) listOf(colorText) else emptyList(),
             separator = "",
             iconColor = onCardColor,
-            textColor = onCardColor,size = 0.75f,
+            textColor = onCardColor,
+            size = 0.75f,
             clipboardText = colorText.substringAfter("(").substringBefore(")"),
             cardColor = animatedColor
         )
