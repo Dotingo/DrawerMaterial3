@@ -6,6 +6,7 @@ import com.example.randomizer.data.local.entities.CountriesEntity
 import com.example.randomizer.repository.CountriesDaoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -18,7 +19,8 @@ class RandomCountriesViewModel @Inject constructor(
     private val _country = MutableStateFlow<List<CountriesEntity>>(emptyList())
     val generatedCountry = MutableStateFlow<List<String>>(emptyList())
 
-
+    private val _link = MutableStateFlow<String>("")
+    val link: StateFlow<String> = _link
 
     fun getCountries() {
         viewModelScope.launch {
@@ -33,10 +35,11 @@ class RandomCountriesViewModel @Inject constructor(
                 generatedCountry.value = listOf(it)
             }
         }
+        getLink()
     }
 
-    fun getLink(): String{
-        return when(getLanguage()){
+    private fun getLink(){
+        _link.value = when(getLanguage()){
             "Russian" -> "https://ru.wikipedia.org/wiki/"
             else -> "https://en.wikipedia.org/wiki/"
         }

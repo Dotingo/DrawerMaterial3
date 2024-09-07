@@ -86,6 +86,7 @@ fun RandomDiceScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.75f),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             elevation = CardDefaults.cardElevation(2.dp)
         ) {
             Column(

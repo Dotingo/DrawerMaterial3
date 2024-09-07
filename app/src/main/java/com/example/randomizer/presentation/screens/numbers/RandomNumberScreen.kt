@@ -17,14 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,9 +39,12 @@ fun RandomNumber(
     paddingValues: PaddingValues,
     randomNumberViewModel: RandomNumberViewModel = hiltViewModel()
 ) {
-    var generatedNumbersText by rememberSaveable {
-        mutableStateOf(listOf<Int>())
-    }
+    val generatedNumbers by randomNumberViewModel.generatedNumbers.collectAsState()
+    val minNumState by randomNumberViewModel.minNumState.collectAsState()
+    val maxNumState by randomNumberViewModel.maxNumState.collectAsState()
+    val resultCount by randomNumberViewModel.resultCount.collectAsState()
+    val allowDuplicates by randomNumberViewModel.allowDuplicates.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,39 +53,25 @@ fun RandomNumber(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        val minNumState by randomNumberViewModel.minNumState.collectAsState("0")
-        val maxNumState by randomNumberViewModel.maxNumState.collectAsState("100")
-        var allowDuplicates by remember { mutableStateOf(true) }
-        var resultCount by remember { mutableIntStateOf(1) }
-        val context = LocalContext.current
-
         ResultSection(
-            output = generatedNumbersText,
+            output = generatedNumbers,
             separator = ", ",
-            clipboardText = generatedNumbersText.joinToString(", ")
+            clipboardText = generatedNumbers.joinToString(", ")
         )
         InputSection(minNumState, randomNumberViewModel, maxNumState)
         CustomSlider(
             valueRange = 1..10,
             currentValue = resultCount,
-            onValueChange = { resultCount = it }
+            onValueChange = { randomNumberViewModel.setResultCount(it) }
         )
         CustomCheckbox(
             checked = allowDuplicates,
             text = stringResource(id = R.string.repeat_values),
-            onCheckedChange = { allowDuplicates = it }
+            onCheckedChange = { randomNumberViewModel.setAllowDuplicates(it) }
         )
         GenerateButton(stringResource(id = R.string.generate_num)) {
-            randomNumberViewModel.generateRandomNumber(
-                context,
-                randomNumberViewModel.minNumState.value,
-                randomNumberViewModel.maxNumState.value,
-                resultCount,
-                allowDuplicates
-            )
-            generatedNumbersText = randomNumberViewModel.generatedNumbers.value
+            randomNumberViewModel.generateRandomNumber()
         }
-
     }
 }
 
@@ -122,7 +105,6 @@ private fun InputSection(
             visualTransformation = VisualTransformation.None,
             shape = RoundedCornerShape(16.dp, 0.dp, 0.dp, 16.dp),
             label = { Text(stringResource(id = R.string.min_num)) }
-
         )
         OutlinedTextField(
             value = maxNumState,

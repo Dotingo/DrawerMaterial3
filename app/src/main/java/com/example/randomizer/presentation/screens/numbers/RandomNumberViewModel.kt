@@ -1,7 +1,6 @@
 package com.example.randomizer.presentation.screens.numbers
 
 import android.app.Application
-import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,14 +13,23 @@ import kotlinx.coroutines.launch
 
 class RandomNumberViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application
+
     private val _generatedNumbers = MutableStateFlow<List<Int>>(emptyList())
     val generatedNumbers: StateFlow<List<Int>> = _generatedNumbers
-    private val dataStoreManager = DataStoreManager(context)
+
     private val _minNumState = MutableStateFlow("0")
     val minNumState: StateFlow<String> = _minNumState
 
     private val _maxNumState = MutableStateFlow("100")
     val maxNumState: StateFlow<String> = _maxNumState
+
+    private val _resultCount = MutableStateFlow(1)
+    val resultCount: StateFlow<Int> = _resultCount
+
+    private val _allowDuplicates = MutableStateFlow(true)
+    val allowDuplicates: StateFlow<Boolean> = _allowDuplicates
+
+    private val dataStoreManager = DataStoreManager(context)
 
     init {
         fetchDataFromDataStore()
@@ -40,35 +48,33 @@ class RandomNumberViewModel(application: Application) : AndroidViewModel(applica
         _minNumState.value = value
     }
 
-    // Function to update maxNumState
     fun setMaxNum(value: String) {
         _maxNumState.value = value
     }
 
-    fun generateRandomNumber(
-        context: Context,
-        minNum: String,
-        maxNum: String,
-        slideValueState: Int,
-        checkedState: Boolean
-    ) {
+    fun setResultCount(value: Int) {
+        _resultCount.value = value
+    }
 
+    fun setAllowDuplicates(value: Boolean) {
+        _allowDuplicates.value = value
+    }
+
+    fun generateRandomNumber() {
         try {
-            val min = minNum.replace(',', '.').toInt()
-            val max = maxNum.replace(',', '.').toInt()
+            val min = _minNumState.value.replace(',', '.').toInt()
+            val max = _maxNumState.value.replace(',', '.').toInt()
 
             viewModelScope.launch {
-                dataStoreManager.saveNumRange(
-                    NumRangeData(min, max)
-                )
+                dataStoreManager.saveNumRange(NumRangeData(min, max))
             }
 
             if (min < max) {
                 val randomNumbers = generateUniqueRandomNumbers(
                     min,
                     max,
-                    slideValueState,
-                    checkedState
+                    _resultCount.value,
+                    _allowDuplicates.value
                 )
                 if (randomNumbers.isNotEmpty()) {
                     _generatedNumbers.value = randomNumbers
@@ -78,7 +84,6 @@ class RandomNumberViewModel(application: Application) : AndroidViewModel(applica
                         context.getString(R.string.cannot_generate_unique),
                         Toast.LENGTH_SHORT
                     ).show()
-
                 }
             } else {
                 Toast.makeText(
@@ -94,7 +99,6 @@ class RandomNumberViewModel(application: Application) : AndroidViewModel(applica
                 Toast.LENGTH_SHORT
             ).show()
         }
-
     }
 
     private fun generateUniqueRandomNumbers(

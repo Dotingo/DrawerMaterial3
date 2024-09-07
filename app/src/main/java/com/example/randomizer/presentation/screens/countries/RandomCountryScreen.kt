@@ -19,10 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -41,11 +38,10 @@ fun RandomCountryScreen(
     viewModel: RandomCountriesViewModel = hiltViewModel()
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val generatedCountry by viewModel.generatedCountry.collectAsState(emptyList())
+    val generatedCountry by viewModel.generatedCountry.collectAsState()
+    val link by viewModel.link.collectAsState()
     val uriHandler = LocalUriHandler.current
-    var link by rememberSaveable {
-        mutableStateOf("")
-    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -94,7 +90,6 @@ fun RandomCountryScreen(
             label = stringResource(R.string.generate_countries)
         ) {
             viewModel.generateRandomName()
-            link = viewModel.getLink()
         }
     }
 }
