@@ -57,4 +57,5 @@
     <string name="change_dice">Изменить кости</string>
     <string name="apply">Принять</string>
     <string name="close">Закрыть</string>
+    <string name="musical_genres_rand">Музыкальные жанры</string>
 </resources>

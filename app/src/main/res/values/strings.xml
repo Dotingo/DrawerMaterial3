@@ -56,4 +56,5 @@
     <string name="change_dice">Change dice</string>
     <string name="apply">Apply</string>
     <string name="close">Close</string>
+    <string name="musical_genres_rand">Musical genres</string>
 </resources>
