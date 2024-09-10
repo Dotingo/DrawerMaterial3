@@ -91,6 +91,11 @@ fun MainDrawer(
             stringResource(R.string.dice_rand),
             ImageVector.vectorResource(id = R.drawable.ic_dice),
             ScreenRouteType.Main.Dice.route
+        ),
+        DrawerItem(
+            stringResource(R.string.musical_genres_rand),
+            ImageVector.vectorResource(id = R.drawable.ic_music_record),
+            ScreenRouteType.Main.MusGenres.route
         )
     )
     val currentRandomizerScreen = viewModel.currentRandomizerScreen.collectAsState()

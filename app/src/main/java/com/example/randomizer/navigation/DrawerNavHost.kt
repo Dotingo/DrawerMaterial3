@@ -17,7 +17,8 @@ import com.example.randomizer.presentation.screens.countries.RandomCountryScreen
 import com.example.randomizer.presentation.screens.dice.RandomDiceScreen
 import com.example.randomizer.presentation.screens.lists.CreateListScreen
 import com.example.randomizer.presentation.screens.lists.MenuListScreen
-import com.example.randomizer.presentation.screens.lists.RandomListScreen
+import com.example.randomizer.presentation.screens.lists.ListBars
+import com.example.randomizer.presentation.screens.musical_genres.RandomMusicalGenresScreen
 import com.example.randomizer.presentation.screens.names.RandomNameScreen
 import com.example.randomizer.presentation.screens.numbers.RandomNumber
 
@@ -75,7 +76,7 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
             ) { navBackStackEntry ->
                 val listNavController = rememberNavController()
                 val id = navBackStackEntry.arguments?.getInt("id")
-                RandomListScreen(
+                ListBars(
                     navController = listNavController,
                     id = id!!,
                     onBack = {
@@ -87,5 +88,6 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
         composable(ScreenRouteType.Main.Country.route) { RandomCountryScreen(paddingValues = innerPadding) }
         composable(ScreenRouteType.Main.Color.route) { RandomColorScreen(paddingValues = innerPadding) }
         composable(ScreenRouteType.Main.Dice.route) { RandomDiceScreen(paddingValues = innerPadding) }
+        composable(ScreenRouteType.Main.MusGenres.route) { RandomMusicalGenresScreen(paddingValues = innerPadding) }
     }
 }
