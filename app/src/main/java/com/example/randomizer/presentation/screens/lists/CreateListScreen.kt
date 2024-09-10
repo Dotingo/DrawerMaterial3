@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -38,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,6 +49,7 @@ import com.example.randomizer.data.local.entities.ListEntity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateListScreen(onBack: () -> Unit, listViewModel: ListViewModel = hiltViewModel()) {
+
     var listName by remember {
         mutableStateOf("")
     }
@@ -65,7 +68,7 @@ fun CreateListScreen(onBack: () -> Unit, listViewModel: ListViewModel = hiltView
                 }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
-                        contentDescription = null
+                        contentDescription = "back"
                     )
                 }
             },
@@ -73,10 +76,10 @@ fun CreateListScreen(onBack: () -> Unit, listViewModel: ListViewModel = hiltView
                 IconButton(
                     enabled = listName.isNotEmpty() && listItems.isNotEmpty(),
                     onClick = {
-                    val list = ListEntity(name =  listName, items =  listItems.joinToString("|"))
-                    listViewModel.insertList(list)
-                    onBack()
-                }) {
+                        val list = ListEntity(name = listName, items = listViewModel.listToJson(listItems))
+                        listViewModel.insertList(list)
+                        onBack()
+                    }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_apply),
                         contentDescription = "apply"
@@ -98,7 +101,10 @@ fun CreateListScreen(onBack: () -> Unit, listViewModel: ListViewModel = hiltView
                 value = listName,
                 onValueChange = { listName = it },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences),
+                keyboardOptions = KeyboardOptions(
+                    KeyboardCapitalization.Sentences,
+                    imeAction = ImeAction.Next
+                ),
                 label = { Text(text = stringResource(R.string.list_name)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -114,9 +120,13 @@ fun CreateListScreen(onBack: () -> Unit, listViewModel: ListViewModel = hiltView
                         .weight(1f),
                     value = listItem,
                     keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences),
-                    onValueChange = {newValue ->
-                        val filteredText = newValue.filter { it != '|'}
-                        listItem = filteredText },
+                    keyboardActions = KeyboardActions(onDone = {
+                        listItems.add(listItem)
+                        listItem = ""
+                    }),
+                    onValueChange = { value ->
+                        listItem = value
+                    },
                     singleLine = true,
                     label = { Text(text = stringResource(R.string.item)) }
                 )
@@ -144,7 +154,7 @@ fun CreateListScreen(onBack: () -> Unit, listViewModel: ListViewModel = hiltView
             }
             Spacer(modifier = Modifier.height(10.dp))
             LazyColumn(modifier = Modifier.weight(1f)) {
-                itemsIndexed(listItems){index, item ->
+                itemsIndexed(listItems) { index, item ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -157,10 +167,10 @@ fun CreateListScreen(onBack: () -> Unit, listViewModel: ListViewModel = hiltView
                             style = MaterialTheme.typography.titleSmall
                         )
                         IconButton(onClick = { listItems.removeAt(index) }) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
-                            contentDescription = "delete"
-                        )
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
+                                contentDescription = "delete"
+                            )
                         }
                     }
                     if (index != listItems.size - 1) {

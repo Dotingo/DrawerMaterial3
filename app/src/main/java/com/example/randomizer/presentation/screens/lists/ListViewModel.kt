@@ -7,8 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.randomizer.data.local.entities.ListEntity
 import com.example.randomizer.repository.ListsDaoRepository
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,10 +27,30 @@ class ListViewModel @Inject constructor(
 
     private var deletedList: ListEntity? = null
 
+    private val _query = MutableStateFlow("")
+    val query: StateFlow<String> = _query
+
+    private val _openEditDialog = MutableStateFlow(false)
+    val openEditDialog: StateFlow<Boolean> = _openEditDialog
+    fun changeEditDialogState(state: Boolean) {
+        _openEditDialog.value = state
+    }
+
+    private val _openDeleteDialog = MutableStateFlow(false)
+    val openDeleteDialog: StateFlow<Boolean> = _openDeleteDialog
+    fun changeDeleteDialogState(state: Boolean) {
+        _openDeleteDialog.value = state
+    }
+
+    //db queries
     fun insertList(list: ListEntity) {
         viewModelScope.launch {
             repository.insertList(list)
         }
+    }
+
+    fun updateQuery(newQuery: String) {
+        _query.value = newQuery
     }
 
     fun deleteList(list: ListEntity) {
@@ -50,6 +74,7 @@ class ListViewModel @Inject constructor(
 
     private fun selectList(): Flow<List<ListEntity>> = repository.getAllLists()
 
+    //randomizer functions
     fun shuffleList(list: List<String>, count: Int): List<String> {
         val shuffledItems = list.shuffled()
         return shuffledItems.take(count)
@@ -70,6 +95,23 @@ class ListViewModel @Inject constructor(
         }
 
         return groups
+    }
+
+    fun listFromJson(json: String): List<String> {
+        val itemsType = object : TypeToken<List<String>>() {}.type
+        return Gson().fromJson(json, itemsType)
+    }
+
+    fun listToJson(list: List<String>): String {
+        return Gson().toJson(list)
+    }
+
+    fun updateListEntity(items: List<String>): ListEntity {
+        return ListEntity(
+            id = list.id,
+            name = list.name,
+            items = listToJson(items)
+        )
     }
 }
 

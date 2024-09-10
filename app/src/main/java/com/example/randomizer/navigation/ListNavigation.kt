@@ -4,6 +4,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,7 +18,7 @@ import com.example.randomizer.presentation.screens.lists.ShuffleListItemsScreen
 fun ListNavigation(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    splitItems: List<String>,
+    items: List<String>,
     onBack: () -> Unit,
     listViewModel: ListViewModel
 ) {
@@ -36,16 +37,16 @@ fun ListNavigation(
         }
     ) {
         composable(NavigationItem.Pick.route) {
-            PickListItemsScreen(paddingValues, splitItems, listViewModel)
+            PickListItemsScreen(paddingValues, items, listViewModel)
         }
         composable(NavigationItem.Shuffle.route) {
-            ShuffleListItemsScreen(paddingValues, splitItems, listViewModel)
+            ShuffleListItemsScreen(paddingValues, items, listViewModel)
         }
         composable(NavigationItem.Group.route) {
-            GroupListItemsScreen(paddingValues, splitItems, listViewModel)
+            GroupListItemsScreen(paddingValues, items, listViewModel)
         }
         composable("edit_screen") {
-            EditListScreen(navController, splitItems, onBack, listViewModel)
+            EditListScreen(navController, items.toMutableStateList(), onBack, listViewModel)
         }
     }
 }

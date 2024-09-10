@@ -1,23 +1,26 @@
 package com.example.randomizer.presentation.screens.lists
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -26,10 +29,12 @@ import com.example.randomizer.R
 import com.example.randomizer.navigation.ListNavigation
 import com.example.randomizer.navigation.NavigationItem
 import com.example.randomizer.presentation.components.DeleteDialog
+import com.exyte.animatednavbar.AnimatedNavigationBar
+import com.exyte.animatednavbar.animation.balltrajectory.Straight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RandomListScreen(
+fun ListBars(
     navController: NavHostController, id: Int, onBack: () -> Unit,
     listViewModel: ListViewModel = hiltViewModel()
 ) {
@@ -37,20 +42,33 @@ fun RandomListScreen(
         mutableStateOf(false)
     }
 
-    LaunchedEffect(key1 = id) {
-        listViewModel.getListById(id)
-    }
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    LaunchedEffect(navBackStackEntry) {
+    val items = listOf(
+        NavigationItem.Pick,
+        NavigationItem.Shuffle,
+        NavigationItem.Group
+    )
+
+    val selectedIndex = items.indexOfFirst { it.route == currentRoute }.takeIf { it != -1 } ?: 0
+
+
+    LaunchedEffect(key1 = id, key2 = navBackStackEntry) {
         if (currentRoute != "edit_screen") {
             listViewModel.getListById(id)
         }
     }
 
-    val splitItems = listViewModel.list.items.split("|")
+    val listItems by remember {
+        derivedStateOf {
+            if (listViewModel.list.items.isNotEmpty()) {
+                listViewModel.listFromJson(listViewModel.list.items)
+            } else {
+                emptyList()
+            }
+        }
+    }
 
     Scaffold(topBar = {
         if (currentRoute != "edit_screen") {
@@ -67,7 +85,7 @@ fun RandomListScreen(
                         onBack()
                     }) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                            painter = painterResource(id = R.drawable.ic_back),
                             contentDescription = null
                         )
                     }
@@ -78,7 +96,7 @@ fun RandomListScreen(
                     }
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
+                            painter = painterResource(id = R.drawable.ic_edit),
                             contentDescription = "edit"
                         )
                     }
@@ -88,7 +106,7 @@ fun RandomListScreen(
                         }
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_trash),
+                            painter = painterResource(id = R.drawable.ic_trash),
                             contentDescription = "delete"
                         )
                     }
@@ -98,41 +116,31 @@ fun RandomListScreen(
     },
         bottomBar = {
             if (currentRoute != "edit_screen") {
-                NavigationBar(containerColor = MaterialTheme.colorScheme.secondaryContainer) {
-                    val items = listOf(
-                        NavigationItem.Pick,
-                        NavigationItem.Shuffle,
-                        NavigationItem.Group
-                    )
+                AnimatedNavigationBar(
+                    barColor = MaterialTheme.colorScheme.secondaryContainer,
+                    ballColor = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.navigationBarsPadding(),
+                    selectedIndex = selectedIndex,
+                    ballAnimation = Straight(tween(300))
+                ) {
                     items.forEach { item ->
-                        val selected = currentRoute == item.route
-                        NavigationBarItem(
-                            selected = selected,
-                            onClick = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            IconButton(onClick = {
                                 navController.navigate(item.route) {
                                     popUpTo(0)
                                 }
-                            },
-                            icon = {
-                                if (!selected) {
-                                    Icon(
-                                        imageVector = ImageVector.vectorResource(item.icon),
-                                        contentDescription = "pick item"
-                                    )
-                                } else {
-                                    Icon(
-                                        imageVector = ImageVector.vectorResource(item.filledIcon),
-                                        contentDescription = "pick item"
-                                    )
-                                }
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(item.label),
-                                    overflow = TextOverflow.Ellipsis,
-                                    maxLines = 1
+                            }) {
+                                Icon(
+                                    painter = painterResource(item.icon),
+                                    contentDescription = "Randomizer icon"
                                 )
-                            })
+                            }
+                            Text(
+                                text = stringResource(item.label),
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1
+                            )
+                        }
                     }
                 }
             }
@@ -143,6 +151,7 @@ fun RandomListScreen(
             onBack = onBack,
             listViewModel = listViewModel
         )
-        ListNavigation(navController, paddingValues, splitItems, onBack, listViewModel)
+
+        ListNavigation(navController, paddingValues, listItems, onBack, listViewModel)
     }
 }

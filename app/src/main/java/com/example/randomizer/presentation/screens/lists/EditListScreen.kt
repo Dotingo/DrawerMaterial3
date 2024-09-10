@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -26,12 +27,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +44,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.randomizer.R
-import com.example.randomizer.data.local.entities.ListEntity
 import com.example.randomizer.navigation.navigateBack
 import com.example.randomizer.presentation.components.DeleteDialog
 import com.example.randomizer.presentation.components.EditDialog
@@ -52,15 +52,13 @@ import com.example.randomizer.presentation.components.EditDialog
 @Composable
 fun EditListScreen(
     navController: NavHostController,
-    items: List<String>,
+    items: MutableList<String>,
     onBack: () -> Unit,
     listViewModel: ListViewModel
 ) {
-    var openDeleteDialog by remember { mutableStateOf(false) }
-    var openEditDialog by remember { mutableStateOf(false) }
+    val openDeleteDialog by listViewModel.openDeleteDialog.collectAsState()
+    val openEditDialog by listViewModel.openEditDialog.collectAsState()
     var listItem by remember { mutableStateOf("") }
-    val listItems = remember { items.toMutableStateList() }
-
     var editIndex by remember { mutableIntStateOf(-1) }
     var editText by remember { mutableStateOf("") }
 
@@ -80,7 +78,7 @@ fun EditListScreen(
             actions = {
                 IconButton(
                     onClick = {
-                        openDeleteDialog = true
+                        listViewModel.changeDeleteDialogState(true)
                     }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_trash),
@@ -89,10 +87,11 @@ fun EditListScreen(
                 }
             }
         )
-    }) { paddingValues ->
+    }
+    ) { paddingValues ->
         DeleteDialog(
             openDialog = openDeleteDialog,
-            onClose = { openDeleteDialog = false },
+            onClose = { listViewModel.changeDeleteDialogState(false) },
             onBack = onBack,
             listViewModel = listViewModel
         )
@@ -115,9 +114,14 @@ fun EditListScreen(
                         .weight(1f),
                     value = listItem,
                     keyboardOptions = KeyboardOptions(KeyboardCapitalization.Sentences),
-                    onValueChange = { newValue ->
-                        val filteredText = newValue.filter { it != '|' }
-                        listItem = filteredText
+                    keyboardActions = KeyboardActions(onDone = {
+                        items.add(listItem)
+                        listItem = ""
+                        val list = listViewModel.updateListEntity(items)
+                        listViewModel.updateList(list)
+                    }),
+                    onValueChange = { value ->
+                        listItem = value
                     },
                     singleLine = true,
                     label = { Text(text = stringResource(R.string.item)) }
@@ -131,13 +135,9 @@ fun EditListScreen(
                         .clip(CircleShape)
                         .background(if (listItem.isNotBlank()) MaterialTheme.colorScheme.primary else Color.Gray)
                         .clickable(enabled = listItem.isNotBlank()) {
-                            listItems.add(listItem)
+                            items.add(listItem)
                             listItem = ""
-                            val list = ListEntity(
-                                id = listViewModel.list.id,
-                                name = listViewModel.list.name,
-                                items = listItems.joinToString("|")
-                            )
+                            val list = listViewModel.updateListEntity(items)
                             listViewModel.updateList(list)
                         },
                     contentAlignment = Alignment.Center
@@ -153,7 +153,7 @@ fun EditListScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             LazyColumn(modifier = Modifier.weight(1f)) {
-                itemsIndexed(listItems) { index, item ->
+                itemsIndexed(items) { index, item ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -166,11 +166,10 @@ fun EditListScreen(
                             style = MaterialTheme.typography.titleSmall
                         )
                         IconButton(
-                            enabled = listItems.size != 1,
                             onClick = {
                                 editIndex = index
                                 editText = item
-                                openEditDialog = true
+                                listViewModel.changeEditDialogState(true)
                             }
                         ) {
                             Icon(
@@ -179,14 +178,10 @@ fun EditListScreen(
                             )
                         }
                         IconButton(
-                            enabled = listItems.size != 1,
+                            enabled = items.size != 1,
                             onClick = {
-                                listItems.removeAt(index)
-                                val list = ListEntity(
-                                    id = listViewModel.list.id,
-                                    name = listViewModel.list.name,
-                                    items = listItems.joinToString("|")
-                                )
+                                items.removeAt(index)
+                                val list = listViewModel.updateListEntity(items)
                                 listViewModel.updateList(list)
                             }
                         ) {
@@ -196,7 +191,7 @@ fun EditListScreen(
                             )
                         }
                     }
-                    if (index != listItems.size - 1) {
+                    if (index != items.size - 1) {
                         HorizontalDivider()
                     }
                 }
@@ -206,17 +201,13 @@ fun EditListScreen(
 
     if (openEditDialog && editIndex != -1) {
         EditDialog(
-            onClose = { openEditDialog = false },
+            onClose = { listViewModel.changeEditDialogState(false) },
             initialText = editText,
             onConfirm = { newItemText ->
-                listItems[editIndex] = newItemText
-                val list = ListEntity(
-                    id = listViewModel.list.id,
-                    name = listViewModel.list.name,
-                    items = listItems.joinToString("|")
-                )
+                items[editIndex] = newItemText
+                val list = listViewModel.updateListEntity(items)
                 listViewModel.updateList(list)
-                openEditDialog = false
+                listViewModel.changeEditDialogState(false)
             }
         )
     }
