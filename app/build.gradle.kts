@@ -46,9 +46,7 @@ android {
     buildFeatures {
         compose = true
     }
-//    composeOptions {
-//        kotlinCompilerExtensionVersion = "1.5.3"
-//    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -78,6 +76,11 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.androidx.lifecycle.runtime.compose)
+
+    implementation(libs.animated.navigation.bar)
+
+    //gson
+    implementation (libs.gson)
 
     //cool preview
     debugImplementation(libs.androidx.ui.tooling.preview)
