@@ -31,6 +31,7 @@ import com.example.randomizer.R
 import com.example.randomizer.presentation.components.GenerateButton
 import com.example.randomizer.presentation.components.ResultSection
 import com.example.randomizer.presentation.util.Dimens.SmallPadding
+import java.util.Locale
 
 @Composable
 fun RandomCountryScreen(
@@ -50,9 +51,12 @@ fun RandomCountryScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        LaunchedEffect(Unit) {
+        val currentLocale = Locale.getDefault().language
+
+        LaunchedEffect(currentLocale) {
             viewModel.getCountries()
         }
+
         ResultSection(
             output = generatedCountry,
             separator = "",

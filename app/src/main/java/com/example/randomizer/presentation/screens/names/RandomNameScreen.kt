@@ -26,6 +26,7 @@ import com.example.randomizer.presentation.components.CustomDropdownMenu
 import com.example.randomizer.presentation.components.CustomSlider
 import com.example.randomizer.presentation.components.GenerateButton
 import com.example.randomizer.presentation.components.ResultSection
+import java.util.Locale
 
 @Composable
 fun RandomNameScreen(
@@ -34,10 +35,17 @@ fun RandomNameScreen(
 ) {
     val generatedNames by viewModel.generatedNames.collectAsState()
     val selectedGenderIndex by viewModel.selectedGenderIndex.collectAsState()
-    val selectedNamesRegionsIndex by viewModel.selectedRegionIndex.collectAsState()
-    val currentValueState by viewModel.sliderValue.collectAsState()
+    val selectedRegionIndex by viewModel.selectedRegionIndex.collectAsState()
+    val sliderValue by viewModel.sliderValue.collectAsState()
+
     val regionNames = stringArrayResource(id = R.array.names_region)
     val genderNames = stringArrayResource(id = R.array.names_gender)
+
+    val currentLocale = Locale.getDefault().language
+
+    LaunchedEffect(currentLocale) {
+        viewModel.getNames()
+    }
 
     Column(
         modifier = Modifier
@@ -48,10 +56,12 @@ fun RandomNameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        ResultSection(output = generatedNames, separator = "\n", clipboardText = generatedNames.joinToString(", "))
-        LaunchedEffect(selectedGenderIndex, selectedNamesRegionsIndex) {
-            viewModel.getNames()
-        }
+        ResultSection(
+            output = generatedNames,
+            separator = "\n",
+            clipboardText = generatedNames.joinToString(", ")
+        )
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
@@ -60,22 +70,28 @@ fun RandomNameScreen(
                 selectedItem = genderNames[selectedGenderIndex],
                 items = genderNames,
                 label = stringResource(R.string.name_gender),
-                onItemSelected = { index -> viewModel.setGenderIndex(index) },
+                onItemSelected = { index ->
+                    viewModel.setGenderIndex(index)
+                },
                 modifier = Modifier.width(145.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
             CustomDropdownMenu(
-                selectedItem = regionNames[selectedNamesRegionsIndex],
+                selectedItem = regionNames[selectedRegionIndex],
                 items = regionNames,
                 label = stringResource(R.string.name_regions),
-                onItemSelected = { index -> viewModel.setRegionIndex(index) },
+                onItemSelected = { index ->
+                    viewModel.setRegionIndex(index)
+                },
                 modifier = Modifier.weight(1f)
             )
         }
 
-        CustomSlider(valueRange = 1..10, currentValue = currentValueState) {
-            viewModel.setSliderValue(it)
-        }
+        CustomSlider(
+            valueRange = 1..10,
+            currentValue = sliderValue,
+            onValueChange = { viewModel.setSliderValue(it) }
+        )
 
         GenerateButton(
             label = stringResource(id = R.string.generate_names)

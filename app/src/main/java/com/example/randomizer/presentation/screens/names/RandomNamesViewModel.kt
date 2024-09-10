@@ -38,6 +38,10 @@ class RandomNamesViewModel @Inject constructor(
         "Central Asia", "South Asia"
     )
 
+    init {
+        getNames()
+    }
+
     fun setGenderIndex(index: Int) {
         _selectedGenderIndex.value = index
         getNames()

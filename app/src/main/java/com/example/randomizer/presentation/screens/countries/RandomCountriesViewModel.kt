@@ -19,7 +19,7 @@ class RandomCountriesViewModel @Inject constructor(
     private val _country = MutableStateFlow<List<CountriesEntity>>(emptyList())
     val generatedCountry = MutableStateFlow<List<String>>(emptyList())
 
-    private val _link = MutableStateFlow<String>("")
+    private val _link = MutableStateFlow("")
     val link: StateFlow<String> = _link
 
     fun getCountries() {
