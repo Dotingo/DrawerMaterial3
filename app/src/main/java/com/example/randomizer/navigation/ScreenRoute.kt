@@ -14,6 +14,7 @@ sealed class ScreenRouteType(val route: String) {
         data object Country : ScreenRouteType(route = "random_country_screen")
         data object Color : ScreenRouteType(route = "random_color_screen")
         data object Dice : ScreenRouteType(route = "random_dice_screen")
+        data object Password : ScreenRouteType(route = "random_password_screen")
         data object MusGenres : ScreenRouteType(route = "random_musical_genres_screen")
     }
 

@@ -21,6 +21,7 @@ import com.example.randomizer.presentation.screens.lists.ListBars
 import com.example.randomizer.presentation.screens.musical_genres.RandomMusicalGenresScreen
 import com.example.randomizer.presentation.screens.names.RandomNameScreen
 import com.example.randomizer.presentation.screens.numbers.RandomNumber
+import com.example.randomizer.presentation.screens.password.RandomPasswordScreen
 
 @Composable
 fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues) {
@@ -88,6 +89,7 @@ fun DrawerNavHost(navController: NavHostController, innerPadding: PaddingValues)
         composable(ScreenRouteType.Main.Country.route) { RandomCountryScreen(paddingValues = innerPadding) }
         composable(ScreenRouteType.Main.Color.route) { RandomColorScreen(paddingValues = innerPadding) }
         composable(ScreenRouteType.Main.Dice.route) { RandomDiceScreen(paddingValues = innerPadding) }
+        composable(ScreenRouteType.Main.Password.route) { RandomPasswordScreen(paddingValues = innerPadding) }
         composable(ScreenRouteType.Main.MusGenres.route) { RandomMusicalGenresScreen(paddingValues = innerPadding) }
     }
 }

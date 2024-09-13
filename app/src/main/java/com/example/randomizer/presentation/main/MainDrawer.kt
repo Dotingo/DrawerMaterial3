@@ -93,6 +93,11 @@ fun MainDrawer(
             ScreenRouteType.Main.Dice.route
         ),
         DrawerItem(
+            stringResource(R.string.password_rand),
+            ImageVector.vectorResource(id = R.drawable.ic_password),
+            ScreenRouteType.Main.Password.route
+        ),
+        DrawerItem(
             stringResource(R.string.musical_genres_rand),
             ImageVector.vectorResource(id = R.drawable.ic_music_record),
             ScreenRouteType.Main.MusGenres.route
