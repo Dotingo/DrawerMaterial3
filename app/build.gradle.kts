@@ -77,6 +77,8 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.runtime.compose)
 
+    implementation (libs.colors.converter)
+
     implementation(libs.animated.navigation.bar)
 
     //gson
