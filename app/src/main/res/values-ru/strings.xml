@@ -58,4 +58,6 @@
     <string name="apply">Принять</string>
     <string name="close">Закрыть</string>
     <string name="musical_genres_rand">Музыкальные жанры</string>
+    <string name="password_rand">Пароль</string>
+    <string name="generate_password">Сгенерировать пароль</string>
 </resources>
