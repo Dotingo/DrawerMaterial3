@@ -2,11 +2,11 @@ package com.example.randomizer.presentation.screens.colors
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.example.randomizer.presentation.components.toCmyk
-import com.example.randomizer.presentation.components.toHex
-import com.example.randomizer.presentation.components.toHsl
-import com.example.randomizer.presentation.components.toHsv
-import com.example.randomizer.presentation.components.toRgb
+import com.dotingo.colorsconverter.toCmyk
+import com.dotingo.colorsconverter.toHex
+import com.dotingo.colorsconverter.toHsl
+import com.dotingo.colorsconverter.toHsv
+import com.dotingo.colorsconverter.toRgb
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
