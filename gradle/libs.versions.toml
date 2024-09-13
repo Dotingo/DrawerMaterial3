@@ -4,6 +4,7 @@ activity-compose = "1.9.2"
 agp = "8.5.2"
 animated-navigation-bar = "1.0.0"
 appcompat = "1.7.0"
+colors-converter = "1.0.1"
 core-splashscreen = "1.0.1"
 gson = "2.10.1"
 hilt-android = "2.49"
@@ -22,11 +23,11 @@ lottie-compose = "6.4.1"
 navigation-compose = "2.8.0"
 room-compiler = "2.6.1"
 room-ktx = "2.6.1"
-runtime-livedata = "1.7.0"
+runtime-livedata = "1.7.1"
 timber = "5.0.1"
-compose-bom = "2024.09.00"
+compose-bom = "2024.09.01"
 junit = "4.13.2"
-ui-tooling-preview = "1.7.0"
+ui-tooling-preview = "1.7.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist-systemuicontroller" }
@@ -46,6 +47,7 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-ktx
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtime-livedata" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "ui-tooling-preview" }
 animated-navigation-bar = { module = "com.exyte:animated-navigation-bar", version.ref = "animated-navigation-bar" }
+colors-converter = { module = "com.github.Dotingo:colors-converter", version.ref = "colors-converter" }
 dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android-compiler" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
