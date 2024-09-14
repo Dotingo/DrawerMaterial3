@@ -18,13 +18,6 @@ class SettingsViewModel: ViewModel() {
 
     private val _selectedLang = MutableStateFlow("")
     val selectedLang: StateFlow<String> = _selectedLang
-
-    fun initializeLanguage(initialLang: String) {
-        if (_selectedLang.value.isBlank()) {
-            _selectedLang.value = initialLang
-        }
-    }
-
     fun changeLanguage(lang: String, systemLocale: String) {
         _selectedLang.value = lang
         changeLocales(
@@ -34,6 +27,12 @@ class SettingsViewModel: ViewModel() {
                 else -> systemLocale
             }
         )
+    }
+
+    fun initializeLanguage(initialLang: String) {
+        if (_selectedLang.value.isBlank()) {
+            _selectedLang.value = initialLang
+        }
     }
 
     private fun changeLocales(localeString: String) {

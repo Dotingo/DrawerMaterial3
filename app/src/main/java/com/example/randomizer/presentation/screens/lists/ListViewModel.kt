@@ -97,15 +97,6 @@ class ListViewModel @Inject constructor(
         return groups
     }
 
-    fun listFromJson(json: String): List<String> {
-        val itemsType = object : TypeToken<List<String>>() {}.type
-        return Gson().fromJson(json, itemsType)
-    }
-
-    fun listToJson(list: List<String>): String {
-        return Gson().toJson(list)
-    }
-
     fun updateListEntity(items: List<String>): ListEntity {
         return ListEntity(
             id = list.id,
@@ -113,5 +104,15 @@ class ListViewModel @Inject constructor(
             items = listToJson(items)
         )
     }
+    
+    fun listFromJson(json: String): List<String> {
+        val itemsType = object : TypeToken<List<String>>() {}.type
+        return Gson().fromJson(json, itemsType)
+    }
+    fun listToJson(list: List<String>): String {
+        return Gson().toJson(list)
+    }
+
+
 }
 

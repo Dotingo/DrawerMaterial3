@@ -3,6 +3,7 @@ package com.example.randomizer.presentation.screens.dice
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +37,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import com.example.randomizer.presentation.components.verticalScrollbar
 import com.example.randomizer.presentation.util.Dimens.SmallPadding
@@ -61,10 +63,10 @@ import com.example.randomizer.presentation.util.Dimens.SmallPadding
 fun RandomDiceScreen(
     viewModel: RandomDiceViewModel = hiltViewModel(), paddingValues: PaddingValues
 ) {
-    val diceConfigurations by viewModel.diceConfigurations.collectAsState()
-    val rotation by viewModel.rotation.collectAsState()
-    val diceResults by viewModel.diceResults.collectAsState()
-    val showBottomSheet by viewModel.showBottomSheet.collectAsState()
+    val diceConfigurations by viewModel.diceConfigurations.collectAsStateWithLifecycle()
+    val rotation by viewModel.rotation.collectAsStateWithLifecycle()
+    val diceResults by viewModel.diceResults.collectAsStateWithLifecycle()
+    val showBottomSheet by viewModel.showBottomSheet.collectAsStateWithLifecycle()
 
     val animatedRotation by animateFloatAsState(
         targetValue = rotation,
@@ -152,6 +154,7 @@ fun DiceConfig(
     val diceConfigs = remember { mutableStateListOf(*initialConfigs.toTypedArray()) }
 
     ModalBottomSheet(
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
         onDismissRequest = {
             onSave(diceConfigs)
             onDismiss()
@@ -231,14 +234,20 @@ fun DiceConfigRow(
                 contentDescription = "Delete"
             )
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        DropdownMenu(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            expanded = expanded, onDismissRequest = { expanded = false }) {
             DiceType.entries.forEach { diceType ->
                 DropdownMenuItem(
                     text = { Text(text = diceType.label) },
                     onClick = {
                         onConfigChange(diceConfig.copy(diceType = diceType))
                         expanded = false
-                    }
+                    },
+                    modifier = Modifier.background(
+                        if (diceConfig.diceType == diceType) MaterialTheme.colorScheme.onSecondary
+                        else Color.Unspecified
+                    )
                 )
             }
         }

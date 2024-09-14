@@ -13,7 +13,6 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import com.example.randomizer.presentation.components.CustomSlider
 import com.example.randomizer.presentation.components.GenerateButton
@@ -34,9 +34,9 @@ fun RandomPasswordScreen(
     randomPasswordViewModel: RandomPasswordViewModel = hiltViewModel()
 ) {
 
-    val resultCount by randomPasswordViewModel.resultCount.collectAsState()
-    val checkedList by randomPasswordViewModel.checkedList.collectAsState()
-    val output by randomPasswordViewModel.password.collectAsState()
+    val resultCount by randomPasswordViewModel.resultCount.collectAsStateWithLifecycle()
+    val checkedList by randomPasswordViewModel.checkedList.collectAsStateWithLifecycle()
+    val output by randomPasswordViewModel.password.collectAsStateWithLifecycle()
     val options =
         listOf(
             "Числа", "Заглавные буквы",

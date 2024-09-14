@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,8 +59,8 @@ private fun GroupItemsContent(
     items: List<String>,
     listViewModel: ListViewModel
 ) {
-    var currentSlideValue by remember { mutableIntStateOf(2) }
-    var result by remember { mutableStateOf<List<List<String>>>(emptyList()) }
+    var currentSlideValue by rememberSaveable { mutableIntStateOf(2) }
+    var result by rememberSaveable { mutableStateOf<List<List<String>>>(emptyList()) }
 
     Column(
         modifier = Modifier

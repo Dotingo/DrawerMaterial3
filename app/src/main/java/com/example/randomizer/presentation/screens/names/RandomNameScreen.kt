@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import com.example.randomizer.presentation.components.CustomDropdownMenu
 import com.example.randomizer.presentation.components.CustomSlider
@@ -33,10 +33,10 @@ fun RandomNameScreen(
     paddingValues: PaddingValues,
     viewModel: RandomNamesViewModel = hiltViewModel()
 ) {
-    val generatedNames by viewModel.generatedNames.collectAsState()
-    val selectedGenderIndex by viewModel.selectedGenderIndex.collectAsState()
-    val selectedRegionIndex by viewModel.selectedRegionIndex.collectAsState()
-    val sliderValue by viewModel.sliderValue.collectAsState()
+    val generatedNames by viewModel.generatedNames.collectAsStateWithLifecycle()
+    val selectedGenderIndex by viewModel.selectedGenderIndex.collectAsStateWithLifecycle()
+    val selectedRegionIndex by viewModel.selectedRegionIndex.collectAsStateWithLifecycle()
+    val sliderValue by viewModel.sliderValue.collectAsStateWithLifecycle()
 
     val regionNames = stringArrayResource(id = R.array.names_region)
     val genderNames = stringArrayResource(id = R.array.names_gender)

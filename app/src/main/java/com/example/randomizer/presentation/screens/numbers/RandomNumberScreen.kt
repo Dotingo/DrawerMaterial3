@@ -15,7 +15,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import com.example.randomizer.presentation.components.CustomCheckbox
 import com.example.randomizer.presentation.components.CustomSlider
@@ -39,11 +39,11 @@ fun RandomNumber(
     paddingValues: PaddingValues,
     randomNumberViewModel: RandomNumberViewModel = hiltViewModel()
 ) {
-    val generatedNumbers by randomNumberViewModel.generatedNumbers.collectAsState()
-    val minNumState by randomNumberViewModel.minNumState.collectAsState()
-    val maxNumState by randomNumberViewModel.maxNumState.collectAsState()
-    val resultCount by randomNumberViewModel.resultCount.collectAsState()
-    val allowDuplicates by randomNumberViewModel.allowDuplicates.collectAsState()
+    val generatedNumbers by randomNumberViewModel.generatedNumbers.collectAsStateWithLifecycle()
+    val minNumState by randomNumberViewModel.minNumState.collectAsStateWithLifecycle()
+    val maxNumState by randomNumberViewModel.maxNumState.collectAsStateWithLifecycle()
+    val resultCount by randomNumberViewModel.resultCount.collectAsStateWithLifecycle()
+    val allowDuplicates by randomNumberViewModel.allowDuplicates.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier

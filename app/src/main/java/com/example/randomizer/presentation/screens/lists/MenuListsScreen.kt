@@ -23,7 +23,6 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -50,7 +49,7 @@ fun MenuListScreen(
 ) {
     val focusManager = LocalFocusManager.current
 
-    val query by listViewModel.query.collectAsState()
+    val query by listViewModel.query.collectAsStateWithLifecycle()
     val lists by listViewModel.getAllLists.collectAsStateWithLifecycle(initialValue = emptyList())
 
     val listsSearch by remember(lists, query) {

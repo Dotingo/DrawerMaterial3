@@ -7,10 +7,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class RandomDiceViewModel : ViewModel() {
+
     private val _diceConfigurations = MutableStateFlow<List<DiceConfiguration>>(
         mutableStateListOf(DiceConfiguration(DiceType.D6, 1))
     )
     val diceConfigurations: StateFlow<List<DiceConfiguration>> = _diceConfigurations.asStateFlow()
+    fun updateDiceConfigurations(newConfigs: List<DiceConfiguration>) {
+        _diceConfigurations.value = newConfigs
+    }
 
     private val _rotation = MutableStateFlow(0f)
     val rotation: StateFlow<Float> = _rotation.asStateFlow()
@@ -20,6 +24,12 @@ class RandomDiceViewModel : ViewModel() {
 
     private val _showBottomSheet = MutableStateFlow(false)
     val showBottomSheet: StateFlow<Boolean> = _showBottomSheet.asStateFlow()
+    fun showBottomSheet() {
+        _showBottomSheet.value = true
+    }
+    fun hideBottomSheet() {
+        _showBottomSheet.value = false
+    }
 
     fun rollDice() {
         _rotation.value += 360f
@@ -30,17 +40,5 @@ class RandomDiceViewModel : ViewModel() {
             }
         }
         _diceResults.value = results
-    }
-
-    fun showBottomSheet() {
-        _showBottomSheet.value = true
-    }
-
-    fun hideBottomSheet() {
-        _showBottomSheet.value = false
-    }
-
-    fun updateDiceConfigurations(newConfigs: List<DiceConfiguration>) {
-        _diceConfigurations.value = newConfigs
     }
 }

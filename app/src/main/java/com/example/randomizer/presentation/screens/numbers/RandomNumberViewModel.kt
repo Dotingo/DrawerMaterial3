@@ -19,15 +19,27 @@ class RandomNumberViewModel(application: Application) : AndroidViewModel(applica
 
     private val _minNumState = MutableStateFlow("0")
     val minNumState: StateFlow<String> = _minNumState
+    fun setMinNum(value: String) {
+        _minNumState.value = value
+    }
 
     private val _maxNumState = MutableStateFlow("100")
     val maxNumState: StateFlow<String> = _maxNumState
+    fun setMaxNum(value: String) {
+        _maxNumState.value = value
+    }
 
     private val _resultCount = MutableStateFlow(1)
     val resultCount: StateFlow<Int> = _resultCount
+    fun setResultCount(value: Int) {
+        _resultCount.value = value
+    }
 
     private val _allowDuplicates = MutableStateFlow(true)
     val allowDuplicates: StateFlow<Boolean> = _allowDuplicates
+    fun setAllowDuplicates(value: Boolean) {
+        _allowDuplicates.value = value
+    }
 
     private val dataStoreManager = DataStoreManager(context)
 
@@ -42,22 +54,6 @@ class RandomNumberViewModel(application: Application) : AndroidViewModel(applica
                 _maxNumState.value = range.maxValue.toString()
             }
         }
-    }
-
-    fun setMinNum(value: String) {
-        _minNumState.value = value
-    }
-
-    fun setMaxNum(value: String) {
-        _maxNumState.value = value
-    }
-
-    fun setResultCount(value: Int) {
-        _resultCount.value = value
-    }
-
-    fun setAllowDuplicates(value: Boolean) {
-        _allowDuplicates.value = value
     }
 
     fun generateRandomNumber() {
@@ -120,7 +116,6 @@ class RandomNumberViewModel(application: Application) : AndroidViewModel(applica
                 generatedSet.add(randomNum)
             }
         }
-
         return randomNumbers
     }
 }

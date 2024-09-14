@@ -27,7 +27,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.randomizer.R
 import com.example.randomizer.navigation.navigateBack
@@ -56,8 +56,8 @@ fun EditListScreen(
     onBack: () -> Unit,
     listViewModel: ListViewModel
 ) {
-    val openDeleteDialog by listViewModel.openDeleteDialog.collectAsState()
-    val openEditDialog by listViewModel.openEditDialog.collectAsState()
+    val openDeleteDialog by listViewModel.openDeleteDialog.collectAsStateWithLifecycle()
+    val openEditDialog by listViewModel.openEditDialog.collectAsStateWithLifecycle()
     var listItem by remember { mutableStateOf("") }
     var editIndex by remember { mutableIntStateOf(-1) }
     var editText by remember { mutableStateOf("") }

@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import com.example.randomizer.presentation.components.GenerateButton
 import com.example.randomizer.presentation.components.ResultSection
@@ -39,8 +39,8 @@ fun RandomCountryScreen(
     viewModel: RandomCountriesViewModel = hiltViewModel()
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val generatedCountry by viewModel.generatedCountry.collectAsState()
-    val link by viewModel.link.collectAsState()
+    val generatedCountry by viewModel.generatedCountry.collectAsStateWithLifecycle()
+    val link by viewModel.link.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
 
     Column(

@@ -20,12 +20,23 @@ class RandomNamesViewModel @Inject constructor(
 
     private val _selectedGenderIndex = MutableStateFlow(0)
     val selectedGenderIndex: StateFlow<Int> = _selectedGenderIndex
+    fun setGenderIndex(index: Int) {
+        _selectedGenderIndex.value = index
+        getNames()
+    }
 
     private val _selectedRegionIndex = MutableStateFlow(0)
     val selectedRegionIndex: StateFlow<Int> = _selectedRegionIndex
+    fun setRegionIndex(index: Int) {
+        _selectedRegionIndex.value = index
+        getNames()
+    }
 
     private val _sliderValue = MutableStateFlow(1)
     val sliderValue: StateFlow<Int> = _sliderValue
+    fun setSliderValue(value: Int) {
+        _sliderValue.value = value
+    }
 
     private val _generatedNames = MutableStateFlow<List<String>>(emptyList())
     val generatedNames: StateFlow<List<String>> = _generatedNames
@@ -40,20 +51,6 @@ class RandomNamesViewModel @Inject constructor(
 
     init {
         getNames()
-    }
-
-    fun setGenderIndex(index: Int) {
-        _selectedGenderIndex.value = index
-        getNames()
-    }
-
-    fun setRegionIndex(index: Int) {
-        _selectedRegionIndex.value = index
-        getNames()
-    }
-
-    fun setSliderValue(value: Int) {
-        _sliderValue.value = value
     }
 
     fun generateRandomNames() {

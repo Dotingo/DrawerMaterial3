@@ -11,9 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +18,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.ColorUtils
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.randomizer.R
 import com.example.randomizer.presentation.components.CustomDropdownMenu
 import com.example.randomizer.presentation.components.GenerateButton
@@ -33,8 +31,8 @@ fun RandomColorScreen(
     paddingValues: PaddingValues,
     viewModel: RandomColorsViewModel = hiltViewModel()
 ) {
-    val generatedColor by viewModel.generatedColor.collectAsState()
-    var selectedColorTypeIndex by rememberSaveable { mutableIntStateOf(0) }
+    val generatedColor by viewModel.generatedColor.collectAsStateWithLifecycle()
+    val selectedColorTypeIndex by viewModel.selectedColorTypeIndex.collectAsStateWithLifecycle()
     val colorTypes = arrayOf("HEX", "RGB","HSL", "HSV", "CMYK")
 
     val animatedColor by animateColorAsState(
@@ -74,7 +72,7 @@ fun RandomColorScreen(
             items = colorTypes,
             label = stringResource(R.string.color_type),
             onItemSelected = { index ->
-                selectedColorTypeIndex = index
+                viewModel.changeSelectedColorTypeIndex(index)
             }
         )
         GenerateButton(label = stringResource(R.string.generate_colors)) {

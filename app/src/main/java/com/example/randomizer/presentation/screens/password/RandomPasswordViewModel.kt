@@ -8,14 +8,14 @@ import kotlinx.coroutines.launch
 
 class RandomPasswordViewModel : ViewModel() {
 
+    private val _password = MutableStateFlow("")
+    val password: StateFlow<String> = _password
+
     private val _resultCount = MutableStateFlow(4)
     val resultCount: StateFlow<Int> = _resultCount
     fun setResultCount(value: Int) {
         _resultCount.value = value
     }
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password
 
     private var lastClickTimestamp = 0L
     private val clickThreshold = 200L
