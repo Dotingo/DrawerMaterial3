@@ -23,4 +23,11 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+
+    <string-array name="password_filters">
+        <item>Numbers</item>
+        <item>Uppercase letters</item>
+        <item>Lowercase letters</item>
+        <item>Symbols</item>
+    </string-array>
 </resources>

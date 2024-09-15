@@ -23,4 +23,11 @@
         <item>Мужской</item>
         <item>Женский</item>
     </string-array>
+
+    <string-array name="password_filters">
+        <item>Числа</item>
+        <item>Заглавные буквы</item>
+        <item>Строчные буквы</item>
+        <item>Символы</item>
+    </string-array>
 </resources>
