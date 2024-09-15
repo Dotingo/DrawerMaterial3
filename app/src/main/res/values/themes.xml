@@ -3,7 +3,7 @@
 
     <style name="Theme.RandomSplashScreen" parent="Theme.SplashScreen">
         <item  name="windowSplashScreenBackground" >@color/dark_gray</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/dice</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/main_dice_icon</item>
         <item name="postSplashScreenTheme">@style/Theme.Randomizer</item>
     </style>
 
