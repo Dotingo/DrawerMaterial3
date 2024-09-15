@@ -4,10 +4,11 @@ plugins {
     alias(libs.plugins.devtoolsKsp)
     alias(libs.plugins.daggerHilt)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.example.randomizer"
+    namespace = "com.dotingo.randomizer"
     compileSdk = 34
 
     androidResources {
@@ -15,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.randomizer"
+        applicationId = "com.dotingo.randomizer"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -80,6 +81,8 @@ dependencies {
     implementation (libs.colors.converter)
 
     implementation(libs.animated.navigation.bar)
+
+    implementation(libs.kotlinx.serialization.json)
 
     //gson
     implementation (libs.gson)
