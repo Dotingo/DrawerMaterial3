@@ -59,4 +59,5 @@
     <string name="musical_genres_rand">Musical genres</string>
     <string name="password_rand">Password</string>
     <string name="generate_password">Generate password</string>
+    <string name="password_lenght">Password lenght:</string>
 </resources>
