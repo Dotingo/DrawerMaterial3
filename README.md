@@ -12,14 +12,15 @@
   <p><li>Кастомный список</li>
   <p><li>Страны</li>
   <p><li>Цвета</li>
+  <p><li>Кубики</li>
+  <p><li>Пароли</li>
 </ul>
 <p>-------------------------------------
 <p>Будущие рандомайзеры:
   <p><li>Интересные факты</li>
-  <p><li>Пароли</li>
   <p><li>Жанры музыки</li>
   <p><li>Рецепты</li>
-  <p><li>Кубики</li>
+
 
 <h1>Randomizer</h1>
 <p>A randomizer application that will feature various randomizers (from numbers to cat breeds 🐈‍⬛). The app is designed to help with decision-making by doing it randomly.</p>
@@ -35,13 +36,13 @@
   <p><li>Custom List</li>
   <p><li>Countries</li>
   <p><li>Colors</li>
+  <p><li>Dices</li>
+  <p><li>Music Genres</li>  
 </ul>
 <p>-------------------------------------</p>
 <p>Upcoming randomizers:</p>
 <ul>
   <p><li>Interesting Facts</li>
   <p><li>Passwords</li>
-  <p><li>Music Genres</li>
   <p><li>Recipes</li>
-  <p><li>Dices</li>
 </ul>
